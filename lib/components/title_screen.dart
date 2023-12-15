@@ -4,7 +4,6 @@ import 'package:fall_game/config.dart';
 import 'package:fall_game/game.dart';
 
 import 'package:url_launcher/url_launcher.dart';
-import 'package:games_services/games_services.dart';
 
 List<SpriteComponent> createTitleScreen() {
   return [
