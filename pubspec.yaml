@@ -92,6 +92,7 @@ flutter:
     - assets/images/10-icon.png
     - assets/images/11-icon.png
     - assets/images/back_background.png
+    - assets/images/back_foreground.png
     - assets/images/title.png
     - assets/images/start.png
     - assets/images/multi.png

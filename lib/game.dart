@@ -101,6 +101,8 @@ class FallGameWorld extends Base with HasGameReference<Forge2DGame> {
 
     createWall().forEach(add);
     // final backgroundImage = game.images.fromCache(Config.IMAGE_BACKGROUND);
+    final foregroundImage = await img.load(Config.IMAGE_FOREGROUND);
+    createForegound(foregroundImage).forEach(add);
     final backgroundImage = await img.load(Config.IMAGE_BACKGROUND);
     createBackgound(backgroundImage).forEach(add);
 

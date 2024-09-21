@@ -15,22 +15,23 @@ class Config {
   static const CHAIN_INTERVAL = 1000;
   static const MIN_CHAIN = 3;
 
-  static const PRIORITY_MAX = 100;
-  static const PRIORITY_TITLE_LOGO = 12;
-  static const PRIORITY_GAME_OVER_LOGO = 11;
-  static const PRIORITY_TAP_TITLE = 10;
-  static const PRIORITY_CANCEL = 9;
-  static const PRIORITY_CONNECT = 8;
-  static const PRIORITY_START_BUTTON = 7;
-  static const PRIORITY_MENU = 6;
-  static const PRIORITY_FALL_ITEM = 5;
-  static const PRIORITY_GAME_COMPONENT = 4;
-  static const PRIORITY_FALL_ITEM_SPRITE = 3;
-  static const PRIORITY_FALL_ITEM_NEXT = 2;
-  static const PRIORITY_LINE = 1;
+  static const PRIORITY_MAX = 999;
+  static const PRIORITY_TITLE_LOGO = 120;
+  static const PRIORITY_GAME_OVER_LOGO = 110;
+  static const PRIORITY_TAP_TITLE = 100;
+  static const PRIORITY_CANCEL = 90;
+  static const PRIORITY_CONNECT = 80;
+  static const PRIORITY_START_BUTTON = 70;
+  static const PRIORITY_MENU = 60;
+  static const PRIORITY_BACK_F = 55;
+  static const PRIORITY_FALL_ITEM = 50;
+  static const PRIORITY_GAME_COMPONENT = 40;
+  static const PRIORITY_FALL_ITEM_SPRITE = 30;
+  static const PRIORITY_FALL_ITEM_NEXT = 20;
+  static const PRIORITY_LINE = 10;
   // static const PRIORITY = 0; // SpriteBodyComponent
-  static const PRIORITY_BACK_B = -1;
-  static const PRIORITY_MIN = -100;
+  static const PRIORITY_BACK_B = -10;
+  static const PRIORITY_MIN = -999;
 
   static const IMAGE_1 = "1-icon.png";
   static const IMAGE_2 = "2-icon.png";
@@ -44,6 +45,7 @@ class Config {
   static const IMAGE_10 = "10-icon.png";
   static const IMAGE_11 = "11-icon.png";
   static const IMAGE_BACKGROUND = "back_background.png";
+  static const IMAGE_FOREGROUND = "back_foreground.png";
   static const IMAGE_TITLE = "title.png";
   static const IMAGE_START = "start.png";
   static const IMAGE_MULTI = "multi.png";
