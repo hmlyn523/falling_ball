@@ -1,5 +1,5 @@
 {
-    "dart.flutterSdkPath": "C:\\Users\\sagara\\scoop\\apps\\flutter\\current",
-    "java.configuration.updateBuildConfiguration": "interactive",
-    "java.jdt.ls.java.home": "/Library/Java/JavaVirtualMachines/adoptopenjdk-17.0.8+101/Contents/Home"
+  "dart.flutterSdkPath": "/Users/tatsuya/.mise/installs/flutter/3.24.3-stable/",
+  "java.configuration.updateBuildConfiguration": "interactive",
+  "java.jdt.ls.java.home": "/Library/Java/JavaVirtualMachines/adoptopenjdk-17.0.8+101/Contents/Home"
 }
