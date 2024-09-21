@@ -23,17 +23,17 @@ import 'package:flutter/material.dart';
 class FallGame extends Forge2DGame {
   final context;
 
-  FallGame({required this.context}) :
-  super(
-    //zoom: 40,
-    gravity: Vector2(0, 30.0),
-    world: FallGameWorld(),
-    cameraComponent: CameraComponent.withFixedResolution(
+  FallGame({required this.context})
+      : super(
+          //zoom: 40,
+          gravity: Vector2(0, 30.0),
+          world: FallGameWorld(),
+          cameraComponent: CameraComponent.withFixedResolution(
             width: Config.WORLD_WIDTH,
             height: Config.WORLD_HEIGHT,
           ),
-    zoom: 1,
-  );
+          zoom: 1,
+        );
 }
 
 class FallGameWorld extends Base with HasGameReference<Forge2DGame> {
@@ -77,7 +77,7 @@ class FallGameWorld extends Base with HasGameReference<Forge2DGame> {
     multiGame.opponetBall.addListener(() {
       var chain = multiGame.opponetBall.value;
       for (int i = 0; i < chain; i++) {
-        var rand = Random().nextDouble() * (.8 - .2) + .2; 
+        var rand = Random().nextDouble() * (.8 - .2) + .2;
         var posWidth = Config.WORLD_WIDTH * rand;
         var pos = Vector2(posWidth, Config.WORLD_HEIGHT * .8);
         this.add(_createFallItem(0, pos));
@@ -106,25 +106,19 @@ class FallGameWorld extends Base with HasGameReference<Forge2DGame> {
     final backgroundImage = await img.load(Config.IMAGE_BACKGROUND);
     createBackgound(backgroundImage).forEach(add);
 
-    add(
-      _scoreLabel = ScoreLabel(
+    add(_scoreLabel = ScoreLabel(
         score: await GameBoard.getScore(),
         position: Vector2(Config.WORLD_WIDTH * .85, Config.WORLD_HEIGHT * .043),
-        color: Color.fromRGBO(230, 230, 230, 1)
-      )
-    );
-    add(
-      _opponentScoreLabel = ScoreLabel(
-        position: Vector2(Config.WORLD_WIDTH * .953, Config.WORLD_HEIGHT * .962)
-      )
-    );
+        color: Color.fromRGBO(76, 52, 44, 1)));
+    add(_opponentScoreLabel = ScoreLabel(
+        position:
+            Vector2(Config.WORLD_WIDTH * .953, Config.WORLD_HEIGHT * .974),
+        color: Color.fromRGBO(60, 39, 35, 1)));
     _opponentScoreLabel.isVisible = false;
 
-    add(
-      _lobbyNumberLabel = ScoreLabel(
-        position: Vector2(Config.WORLD_WIDTH * .47, Config.WORLD_HEIGHT * .962)
-      )
-    );
+    add(_lobbyNumberLabel = ScoreLabel(
+        position: Vector2(Config.WORLD_WIDTH * .47, Config.WORLD_HEIGHT * .974),
+        color: Color.fromRGBO(60, 39, 35, 1)));
 
     _titleScreen = createTitleScreen();
     _waitingDialog = Connect();
@@ -133,7 +127,8 @@ class FallGameWorld extends Base with HasGameReference<Forge2DGame> {
     _nowFallItemIndex = _getFallItemIndex();
     _nextFallItemIndex = _getFallItemIndex();
     // final nextSpriteImage = game.images.fromCache(_fallList.value[_nextFallItemIndex].image);
-    final nextSpriteImage = await img.load(_fallList.value[_nextFallItemIndex].image);
+    final nextSpriteImage =
+        await img.load(_fallList.value[_nextFallItemIndex].image);
     _nextFallItemSprite = NextSprite(nextSpriteImage);
     add(_nextFallItemSprite);
     add(_tapArea = TapArea(spawn));
@@ -178,10 +173,10 @@ class FallGameWorld extends Base with HasGameReference<Forge2DGame> {
     var rand = Random().nextInt(100);
     var rate = 0;
     for (int index = 0; index < _randomList.length; index++) {
-        rate += _randomList[index];
-        if (rand <= rate) {
-          return index;
-        }
+      rate += _randomList[index];
+      if (rand <= rate) {
+        return index;
+      }
     }
     return 0;
   }
@@ -212,7 +207,8 @@ class FallGameWorld extends Base with HasGameReference<Forge2DGame> {
   }
 
   // 落下アイテム生成
-  FallItem _createFallItem(index, position, {bump = 0.0, fadeInDuration = 0.0}) {
+  FallItem _createFallItem(index, position,
+      {bump = 0.0, fadeInDuration = 0.0}) {
     return FallItem(
       image: game.images.fromCache(_fallList.value[index].image),
       radius: _fallList.value[index].radius,
@@ -229,11 +225,11 @@ class FallGameWorld extends Base with HasGameReference<Forge2DGame> {
   // ボールが他のボールや壁に衝突した場合に呼び出される。
   void _collision(FallItem item, Object other, Contact contact) {
     final selfObject = contact.bodyA.userData == item
-      ? contact.bodyA.userData
-      : contact.bodyB.userData;
+        ? contact.bodyA.userData
+        : contact.bodyB.userData;
     final otherObject = contact.bodyB.userData == item
-      ? contact.bodyA.userData
-      : contact.bodyB.userData;
+        ? contact.bodyA.userData
+        : contact.bodyB.userData;
 
     // ボールの落下が完了した場合[isFalling=false]、ボールとラインを表示する。
     // ボールの表示は本クラスで行うが、ラインの表示はTapAreaクラスで行うため、
@@ -255,12 +251,16 @@ class FallGameWorld extends Base with HasGameReference<Forge2DGame> {
     // [_adjustmentFallItem]
     // 違う番号のボールがぶつかった場合、同じX座標だとボールが重なってしまうので左右どちらかに移動させる。
     if ((selfObject as FallItem).type == (otherObject as FallItem).type) {
-      if (selfObject == contact.bodyA.userData && !selfObject.deleted && !otherObject.deleted) {
+      if (selfObject == contact.bodyA.userData &&
+          !selfObject.deleted &&
+          !otherObject.deleted) {
         var mergeFallItemIndex = selfObject.type + 1;
         if (mergeFallItemIndex < _fallList.value.length) {
           Vector2 _nextFallItemPosition = Vector2.zero();
-          _nextFallItemPosition.x = ((otherObject.body.position.x + selfObject.body.position.x) / 2);
-          _nextFallItemPosition.y = ((otherObject.body.position.y + selfObject.body.position.y) / 2);
+          _nextFallItemPosition.x =
+              ((otherObject.body.position.x + selfObject.body.position.x) / 2);
+          _nextFallItemPosition.y =
+              ((otherObject.body.position.y + selfObject.body.position.y) / 2);
           _scoreLabel.setTotal(_fallList.value[mergeFallItemIndex].score);
 
           // 連鎖
@@ -269,7 +269,8 @@ class FallGameWorld extends Base with HasGameReference<Forge2DGame> {
           }
 
           Future.delayed(Duration(milliseconds: 50), () {
-            this.add(_createFallItem(mergeFallItemIndex, _nextFallItemPosition, fadeInDuration: 0.1));
+            this.add(_createFallItem(mergeFallItemIndex, _nextFallItemPosition,
+                fadeInDuration: 0.1));
           });
         }
         selfObject.removeItem();
@@ -277,8 +278,7 @@ class FallGameWorld extends Base with HasGameReference<Forge2DGame> {
         Audio.play(Audio.AUDIO_COLLISION);
         return;
       }
-    }
-    else {
+    } else {
       if (selfObject == contact.bodyA.userData) {
         _adjustmentFallItem(selfObject, otherObject);
       }
@@ -286,9 +286,10 @@ class FallGameWorld extends Base with HasGameReference<Forge2DGame> {
   }
 
   void _showLine() {
-    _tapArea.showLine(_fallList.value[_nowFallItemIndex].image,
-                  _fallList.value[_nowFallItemIndex].size,
-                  _fallList.value[_nowFallItemIndex].radius);
+    _tapArea.showLine(
+        _fallList.value[_nowFallItemIndex].image,
+        _fallList.value[_nowFallItemIndex].size,
+        _fallList.value[_nowFallItemIndex].radius);
   }
 
   void _hideLine() {
@@ -305,7 +306,8 @@ class FallGameWorld extends Base with HasGameReference<Forge2DGame> {
   }
 
   void _showNextFallItem() {
-    _nextFallItemSprite.setImage(game.images.fromCache(_fallList.value[_nextFallItemIndex].image));
+    _nextFallItemSprite.setImage(
+        game.images.fromCache(_fallList.value[_nextFallItemIndex].image));
   }
 
   bool _isGameOver() {
@@ -340,7 +342,7 @@ class FallGameWorld extends Base with HasGameReference<Forge2DGame> {
   void drawTitleScreen(bool draw) {
     if (draw) {
       addAll(_titleScreen);
-    } else if (!draw){
+    } else if (!draw) {
       removeTitleScreen(_titleScreen);
     }
   }
@@ -349,7 +351,7 @@ class FallGameWorld extends Base with HasGameReference<Forge2DGame> {
     if (draw) {
       // addAll(_waitingDialog);
       add(_waitingDialog);
-    } else if (!draw){
+    } else if (!draw) {
       // removeWaitingDialog(_waitingDialog);
       _waitingDialog.removeFromParent();
     }
@@ -358,16 +360,16 @@ class FallGameWorld extends Base with HasGameReference<Forge2DGame> {
   void drawGameOverScreen(bool draw) {
     if (draw) {
       addAll(_gameOverScreen);
-    } else if (!draw){
+    } else if (!draw) {
       removeGameOverScreen(_gameOverScreen);
     }
   }
 
   void deleteFallItem() {
-    children.where((element) => element is FallItem).forEach((element) =>
-        element.removeFromParent());
+    children
+        .where((element) => element is FallItem)
+        .forEach((element) => element.removeFromParent());
   }
-
 
   @override
   void title() {
@@ -438,7 +440,7 @@ class FallGameWorld extends Base with HasGameReference<Forge2DGame> {
   void gameover() {
     super.gameover();
 
-    // 連鎖 
+    // 連鎖
     if (_isMulti) {
       multiGame.chain.stopChain();
     }
