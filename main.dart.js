@@ -37775,7 +37775,7 @@ p=q.at.d
 p.b9(o)
 p.a0()
 o=new A.h(new Float64Array(2))
-o.a1(18,5.1168000000000005)
+o.a1(18.400000000000002,5.4366)
 q.sJ(0,o)
 q.sdc(70)
 q.ay=B.a1
@@ -37799,7 +37799,7 @@ p=q.at.d
 p.b9(o)
 p.a0()
 o=new A.h(new Float64Array(2))
-o.a1(10.4,5.1168000000000005)
+o.a1(18.400000000000002,5.4366)
 q.sJ(0,o)
 q.sdc(70)
 q.ay=B.a1
@@ -37982,7 +37982,7 @@ n=q.at.d
 n.b9(o)
 n.a0()
 n=new A.h(new Float64Array(2))
-n.a1(16.4,5.1168000000000005)
+n.a1(20,5.4366)
 q.sJ(0,n)
 q.sdc(90)
 q.ay=B.a1
@@ -38128,21 +38128,21 @@ s=7
 return A.t(A.anv(),$async$a7)
 case 7:l=a7
 p=new A.h(new Float64Array(2))
-p.a1(34,2.7502799999999996)
-l=A.ao9(A.YL(76,52,44,1),p,l)
+p.a1(34,2.81424)
+l=A.ao9(A.YL(255,255,255,1),p,l)
 q.ad!==$&&A.bd()
 q.ad=l
 q.bH(l)
 p=new A.h(new Float64Array(2))
 p.a1(38.12,62.29704)
-p=A.ao9(A.YL(60,39,35,1),p,0)
+p=A.ao9(A.YL(255,255,255,1),p,0)
 q.aF!==$&&A.bd()
 q.aF=p
 q.bH(p)
 p.cN$=!1
 p=new A.h(new Float64Array(2))
 p.a1(18.799999999999997,62.29704)
-p=A.ao9(A.YL(60,39,35,1),p,0)
+p=A.ao9(A.YL(255,255,255,1),p,0)
 q.aK!==$&&A.bd()
 q.aK=p
 q.bH(p)
@@ -38270,7 +38270,7 @@ p=new A.h(new Float64Array(2))
 p.a1(3.1980000000000004,3.1980000000000004)
 n.sJ(0,p)
 p=new A.h(new Float64Array(2))
-p.a1(10.8,2.04672)
+p.a1(12.6,2.1106800000000003)
 l=l.d
 l.b9(p)
 l.a0()
