@@ -108,17 +108,17 @@ class FallGameWorld extends Base with HasGameReference<Forge2DGame> {
 
     add(_scoreLabel = ScoreLabel(
         score: await GameBoard.getScore(),
-        position: Vector2(Config.WORLD_WIDTH * .85, Config.WORLD_HEIGHT * .043),
-        color: Color.fromRGBO(76, 52, 44, 1)));
+        position: Vector2(Config.WORLD_WIDTH * .85, Config.WORLD_HEIGHT * .044),
+        color: Color.fromRGBO(255, 255, 255, 1)));
     add(_opponentScoreLabel = ScoreLabel(
         position:
             Vector2(Config.WORLD_WIDTH * .953, Config.WORLD_HEIGHT * .974),
-        color: Color.fromRGBO(60, 39, 35, 1)));
+        color: Color.fromRGBO(255, 255, 255, 1)));
     _opponentScoreLabel.isVisible = false;
 
     add(_lobbyNumberLabel = ScoreLabel(
         position: Vector2(Config.WORLD_WIDTH * .47, Config.WORLD_HEIGHT * .974),
-        color: Color.fromRGBO(60, 39, 35, 1)));
+        color: Color.fromRGBO(255, 255, 255, 1)));
 
     _titleScreen = createTitleScreen();
     _waitingDialog = Connect();

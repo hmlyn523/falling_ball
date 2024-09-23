@@ -36,7 +36,8 @@ class TitleLogo extends SpriteComponent with HasGameReference {
   }
 }
 
-class Menu extends SpriteComponent with TapCallbacks, HasGameReference, HasWorldReference {
+class Menu extends SpriteComponent
+    with TapCallbacks, HasGameReference, HasWorldReference {
   @override
   Future<void> onLoad() async {
     sprite = Sprite((game as FallGame).images.fromCache(Config.IMAGE_MENU));
@@ -47,15 +48,17 @@ class Menu extends SpriteComponent with TapCallbacks, HasGameReference, HasWorld
   }
 }
 
-class StartButton extends SpriteComponent with TapCallbacks, HasGameReference, HasWorldReference {
+class StartButton extends SpriteComponent
+    with TapCallbacks, HasGameReference, HasWorldReference {
   @override
   Future<void> onLoad() async {
     sprite = Sprite((game as FallGame).images.fromCache(Config.IMAGE_START));
     position = Vector2(Config.WORLD_WIDTH * .5, Config.WORLD_HEIGHT * .49);
-    size = Vector2(Config.WORLD_WIDTH * .45, Config.WORLD_HEIGHT * .08);
+    size = Vector2(Config.WORLD_WIDTH * .46, Config.WORLD_HEIGHT * .085);
     priority = Config.PRIORITY_START_BUTTON;
     anchor = Anchor.center;
   }
+
   @override
   bool onTapDown(TapDownEvent info) {
     (world as FallGameWorld).singleStart();
@@ -63,15 +66,17 @@ class StartButton extends SpriteComponent with TapCallbacks, HasGameReference, H
   }
 }
 
-class MultiButton extends SpriteComponent with TapCallbacks, HasGameReference, HasWorldReference {
+class MultiButton extends SpriteComponent
+    with TapCallbacks, HasGameReference, HasWorldReference {
   @override
   Future<void> onLoad() async {
     sprite = Sprite((game as FallGame).images.fromCache(Config.IMAGE_MULTI));
     position = Vector2(Config.WORLD_WIDTH * .5, Config.WORLD_HEIGHT * .58);
-    size = Vector2(Config.WORLD_WIDTH * .26, Config.WORLD_HEIGHT * .08);
+    size = Vector2(Config.WORLD_WIDTH * .46, Config.WORLD_HEIGHT * .085);
     priority = Config.PRIORITY_START_BUTTON;
     anchor = Anchor.center;
   }
+
   @override
   bool onTapDown(TapDownEvent info) {
     (world as FallGameWorld).multiStart();
@@ -79,7 +84,8 @@ class MultiButton extends SpriteComponent with TapCallbacks, HasGameReference, H
   }
 }
 
-class RankingButton extends SpriteComponent with TapCallbacks, HasGameReference {
+class RankingButton extends SpriteComponent
+    with TapCallbacks, HasGameReference {
   @override
   Future<void> onLoad() async {
     sprite = Sprite((game as FallGame).images.fromCache(Config.IMAGE_RANKING));
@@ -101,7 +107,8 @@ class RankingButton extends SpriteComponent with TapCallbacks, HasGameReference 
   }
 }
 
-class PostButton extends SpriteComponent with TapCallbacks, HasGameReference, HasWorldReference {
+class PostButton extends SpriteComponent
+    with TapCallbacks, HasGameReference, HasWorldReference {
   @override
   Future<void> onLoad() async {
     sprite = Sprite((game as FallGame).images.fromCache(Config.IMAGE_POST));
@@ -130,14 +137,14 @@ class PostButton extends SpriteComponent with TapCallbacks, HasGameReference, Ha
     };
 
     final Uri postScheme =
-    Uri(scheme: "twitter", host: "post", queryParameters: postQuery);
+        Uri(scheme: "twitter", host: "post", queryParameters: postQuery);
 
     final Uri postIntentUrl =
-    Uri.https("twitter.com", "/intent/tweet", postQuery);
+        Uri.https("twitter.com", "/intent/tweet", postQuery);
 
     if (await canLaunchUrl(postScheme)) {
       await launchUrl(postScheme);
-    }else if (await canLaunchUrl(postIntentUrl)) {
+    } else if (await canLaunchUrl(postIntentUrl)) {
       await launchUrl(postIntentUrl);
     }
   }
@@ -146,7 +153,8 @@ class PostButton extends SpriteComponent with TapCallbacks, HasGameReference, Ha
 class Copyright extends SpriteComponent with HasGameReference {
   @override
   Future<void> onLoad() async {
-    sprite = Sprite((game as FallGame).images.fromCache(Config.IMAGE_COPYRIGHT));
+    sprite =
+        Sprite((game as FallGame).images.fromCache(Config.IMAGE_COPYRIGHT));
     position = Vector2(Config.WORLD_WIDTH * .5, Config.WORLD_HEIGHT * .85);
     size = Vector2(Config.WORLD_WIDTH * .7, Config.WORLD_HEIGHT * .055);
     priority = Config.PRIORITY_START_BUTTON;
