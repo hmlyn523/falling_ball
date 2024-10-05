@@ -38129,20 +38129,20 @@ return A.t(A.anv(),$async$a7)
 case 7:l=a7
 p=new A.h(new Float64Array(2))
 p.a1(34,2.81424)
-l=A.ao9(A.YL(255,255,255,1),p,l)
+l=A.ao9(A.YL(0,0,0,1),p,l)
 q.ad!==$&&A.bd()
 q.ad=l
 q.bH(l)
 p=new A.h(new Float64Array(2))
 p.a1(38.12,62.29704)
-p=A.ao9(A.YL(255,255,255,1),p,0)
+p=A.ao9(A.YL(0,0,0,1),p,0)
 q.aF!==$&&A.bd()
 q.aF=p
 q.bH(p)
 p.cN$=!1
 p=new A.h(new Float64Array(2))
 p.a1(18.799999999999997,62.29704)
-p=A.ao9(A.YL(255,255,255,1),p,0)
+p=A.ao9(A.YL(0,0,0,1),p,0)
 q.aK!==$&&A.bd()
 q.aK=p
 q.bH(p)
