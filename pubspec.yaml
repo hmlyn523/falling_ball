@@ -36,7 +36,7 @@ dependencies:
   #  flame_splash_screen: ^0.1.0
   flame_audio: ^2.10.3
   async: ^2.11.0
-  flutter_launcher_icons: ^0.13.1
+  flutter_launcher_icons: ^0.14.1
   games_services: ^4.0.2
   games_services_platform_interface: ^4.0.2
   shared_preferences: ^2.3.2
@@ -52,6 +52,7 @@ dependencies:
   # supabase_flutter: ^1.10.25
   uuid: ^4.5.0
   # win32: ^5.5.4
+  archive: ^3.6.1
 
 flutter_icons:
   android: true
