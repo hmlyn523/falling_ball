@@ -6,8 +6,8 @@ class NextSprite extends SpriteComponent with HasVisibility {
       : super(
           sprite: Sprite(_image),
         ) {
-    size = Vector2(Config.WORLD_HEIGHT * .05, Config.WORLD_HEIGHT * .05);
-    position = Vector2(Config.WORLD_WIDTH * .315, Config.WORLD_HEIGHT * .033);
+    size = Vector2(Config.WORLD_HEIGHT * .04, Config.WORLD_HEIGHT * .04);
+    position = Vector2(Config.WORLD_WIDTH * .315, Config.WORLD_HEIGHT * .035);
     priority = Config.PRIORITY_FALL_ITEM_SPRITE;
     anchor = Anchor.center;
     isVisible = false;
