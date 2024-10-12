@@ -92,17 +92,17 @@ class FallList {
     // value.add(new FallInfo(Config.IMAGE_9, Config.WORLD_HEIGHT * .155, Vector2.all(Config.WORLD_HEIGHT * .173 * 2), 0.6, 36));
     // value.add(new FallInfo(Config.IMAGE_10, Config.WORLD_HEIGHT * .170, Vector2.all(Config.WORLD_HEIGHT * .187 * 2), 0.55, 45));
     // value.add(new FallInfo(Config.IMAGE_11, Config.WORLD_HEIGHT * .185, Vector2.all(Config.WORLD_HEIGHT * .203 * 2), 0.5, 55));
-    value.add(new FallInfo(Config.IMAGE_1,  WallPosition.width * .070 / 2, Vector2.all(WallPosition.width * .070 * 1.15), 2.6,  0));
-    value.add(new FallInfo(Config.IMAGE_2,  WallPosition.width * .097 / 2, Vector2.all(WallPosition.width * .097 * 1.15), 2.4,  1));
-    value.add(new FallInfo(Config.IMAGE_3,  WallPosition.width * .129 / 2, Vector2.all(WallPosition.width * .129 * 1.15), 2.25, 3));
-    value.add(new FallInfo(Config.IMAGE_4,  WallPosition.width * .166 / 2, Vector2.all(WallPosition.width * .166 * 1.15), 2.10, 6));
-    value.add(new FallInfo(Config.IMAGE_5,  WallPosition.width * .208 / 2, Vector2.all(WallPosition.width * .208 * 1.15), 1.95, 10));
-    value.add(new FallInfo(Config.IMAGE_6,  WallPosition.width * .250 / 2, Vector2.all(WallPosition.width * .250 * 1.15), 1.85, 15));
-    value.add(new FallInfo(Config.IMAGE_7,  WallPosition.width * .298 / 2, Vector2.all(WallPosition.width * .298 * 1.15), 1.75, 21));
-    value.add(new FallInfo(Config.IMAGE_8,  WallPosition.width * .346 / 2, Vector2.all(WallPosition.width * .346 * 1.15), 1.65, 28));
-    value.add(new FallInfo(Config.IMAGE_9,  WallPosition.width * .399 / 2, Vector2.all(WallPosition.width * .399 * 1.15), 1.6,  36));
-    value.add(new FallInfo(Config.IMAGE_10, WallPosition.width * .462 / 2, Vector2.all(WallPosition.width * .462 * 1.15), 1.55, 45));
-    value.add(new FallInfo(Config.IMAGE_11, WallPosition.width * .530 / 2, Vector2.all(WallPosition.width * .530 * 1.15), 1.5,  55));
+    value.add(new FallInfo(Config.IMAGE_1,  WallPosition.width * .070 / 2, Vector2.all(WallPosition.width * .070), 2.6,  0));
+    value.add(new FallInfo(Config.IMAGE_2,  WallPosition.width * .097 / 2, Vector2.all(WallPosition.width * .097), 2.4,  1));
+    value.add(new FallInfo(Config.IMAGE_3,  WallPosition.width * .129 / 2, Vector2.all(WallPosition.width * .129), 2.25, 3));
+    value.add(new FallInfo(Config.IMAGE_4,  WallPosition.width * .166 / 2, Vector2.all(WallPosition.width * .166), 2.10, 6));
+    value.add(new FallInfo(Config.IMAGE_5,  WallPosition.width * .208 / 2, Vector2.all(WallPosition.width * .208), 1.95, 10));
+    value.add(new FallInfo(Config.IMAGE_6,  WallPosition.width * .250 / 2, Vector2.all(WallPosition.width * .250), 1.85, 15));
+    value.add(new FallInfo(Config.IMAGE_7,  WallPosition.width * .298 / 2, Vector2.all(WallPosition.width * .298), 1.75, 21));
+    value.add(new FallInfo(Config.IMAGE_8,  WallPosition.width * .346 / 2, Vector2.all(WallPosition.width * .346), 1.65, 28));
+    value.add(new FallInfo(Config.IMAGE_9,  WallPosition.width * .399 / 2, Vector2.all(WallPosition.width * .399), 1.6,  36));
+    value.add(new FallInfo(Config.IMAGE_10, WallPosition.width * .444 / 2, Vector2.all(WallPosition.width * .444), 1.55, 45));
+    value.add(new FallInfo(Config.IMAGE_11, WallPosition.width * .513 / 2, Vector2.all(WallPosition.width * .513), 1.5,  55));
     // Set type.
     for ( int index = 0; index < value.length; index++) {
       value[index].type = index;
