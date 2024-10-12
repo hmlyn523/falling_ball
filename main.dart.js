@@ -38013,47 +38013,47 @@ return s}}
 A.en.prototype={}
 A.a0o.prototype={
 Ra(){var s,r=this.a,q=$.hY()*0.07,p=new A.h(new Float64Array(2))
-p.dK(q*1.15)
+p.dK(q)
 r.push(new A.en("1-icon.png",q/2,p,2.6,0))
 p=$.hY()*0.097
 q=new A.h(new Float64Array(2))
-q.dK(p*1.15)
+q.dK(p)
 r.push(new A.en("2-icon.png",p/2,q,2.4,1))
 q=$.hY()*0.129
 p=new A.h(new Float64Array(2))
-p.dK(q*1.15)
+p.dK(q)
 r.push(new A.en("3-icon.png",q/2,p,2.25,3))
 p=$.hY()*0.166
 q=new A.h(new Float64Array(2))
-q.dK(p*1.15)
+q.dK(p)
 r.push(new A.en("4-icon.png",p/2,q,2.1,6))
 q=$.hY()*0.208
 p=new A.h(new Float64Array(2))
-p.dK(q*1.15)
+p.dK(q)
 r.push(new A.en("5-icon.png",q/2,p,1.95,10))
 p=$.hY()*0.25
 q=new A.h(new Float64Array(2))
-q.dK(p*1.15)
+q.dK(p)
 r.push(new A.en("6-icon.png",p/2,q,1.85,15))
 q=$.hY()*0.298
 p=new A.h(new Float64Array(2))
-p.dK(q*1.15)
+p.dK(q)
 r.push(new A.en("7-icon.png",q/2,p,1.75,21))
 p=$.hY()*0.346
 q=new A.h(new Float64Array(2))
-q.dK(p*1.15)
+q.dK(p)
 r.push(new A.en("8-icon.png",p/2,q,1.65,28))
 q=$.hY()*0.399
 p=new A.h(new Float64Array(2))
-p.dK(q*1.15)
+p.dK(q)
 r.push(new A.en("9-icon.png",q/2,p,1.6,36))
-p=$.hY()*0.462
+p=$.hY()*0.444
 q=new A.h(new Float64Array(2))
-q.dK(p*1.15)
+q.dK(p)
 r.push(new A.en("10-icon.png",p/2,q,1.55,45))
-q=$.hY()*0.53
+q=$.hY()*0.513
 p=new A.h(new Float64Array(2))
-p.dK(q*1.15)
+p.dK(q)
 r.push(new A.en("11-icon.png",q/2,p,1.5,55))
 for(s=0;s<r.length;++s)r[s].a=s}}
 A.ho.prototype={}
