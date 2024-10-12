@@ -38315,7 +38315,7 @@ return A.o(null,r)}})
 return A.p($async$ya,r)},
 a4c(){this.ry=B.hy},
 a4a(){this.ry=B.hA},
-wv(){var s,r,q,p=A.a([25,18,22,20,15],t.t)
+wv(){var s,r,q,p=A.a([20,20,20,20,20],t.t)
 B.b.dJ(p,new A.a0e())
 s=B.dB.u6(100)
 for(r=0,q=0;q<5;++q){r+=p[q]
