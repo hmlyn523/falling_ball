@@ -246,7 +246,7 @@ class FallGameWorld extends Base with HasGameReference<Forge2DGame> {
     }
 
     // 同じ番号のボールが衝突した場合、次の番号のボールをぶつかったボールの中間点に表示する。
-    // ただし、すでにボールが削除のタイミングに貼っている[deleted=true]、次の番号が最大ボール番号より大きい場合は、
+    // ただし、すでにボールが削除のタイミングに入っている[deleted=true]、次の番号が最大ボール番号より大きい場合は、
     // ボールを削除するだけ。あとぶつかったボールそれぞれで衝突コールバックが呼ばれるので、contactのbodyAの場合のみ
     // 衝突処理を行い、BodyBの場合はボールの削除のみを行う。
     // [_adjustmentFallItem]
@@ -269,10 +269,28 @@ class FallGameWorld extends Base with HasGameReference<Forge2DGame> {
             multiGame.chain.addChain();
           }
 
+          // 新しいアイテム表示
           Future.delayed(Duration(milliseconds: 50), () {
-            this.add(_createFallItem(mergeFallItemIndex, _nextFallItemPosition,
-                fadeInDuration: 0.1));
+            var fallItem = _createFallItem(mergeFallItemIndex, _nextFallItemPosition,
+                fadeInDuration: 0.1);
+            fallItem.priority = 0;
+            add(fallItem);
           });
+
+          // 爆発
+          add(SpriteAnimationComponent.fromFrameData(
+            game.images.fromCache("explosion.png"),
+            SpriteAnimationData.sequenced(
+              textureSize: Vector2.all(32),
+              amount: 6,
+              stepTime: 0.1,
+              loop: false,
+            ),
+            position: Vector2(_nextFallItemPosition.x, _nextFallItemPosition.y),
+            size: Vector2(8,8),
+            anchor: Anchor.center,
+            priority: 1
+          ));
         }
         selfObject.removeItem();
         otherObject.removeItem();
