@@ -166,7 +166,8 @@ class FallGameWorld extends Base with HasGameReference<Forge2DGame> {
 
   //////////////////////////////////////
   int _getFallItemIndex() {
-    final List<int> _randomList = [25, 18, 22, 20, 15];
+    final List<int> _randomList = [20, 20, 20, 20, 20];
+    // final List<int> _randomList = [22, 18, 20, 21, 19];
     // final List<int> randList = [25, 15, 22, 23, 15];
     // final List<int> randList = [20, 20, 20, 20, 20];
     _randomList.sort((a, b) => a.compareTo(a));
