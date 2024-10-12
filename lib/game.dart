@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:fall_game/components/waiting_dialog.dart';
 import 'package:fall_game/multi_game.dart';
+import 'package:flame/effects.dart';
 import 'package:flame/flame.dart';
 import 'package:flame_forge2d/flame_forge2d.dart';
 import 'package:flame/components.dart';
@@ -276,6 +277,43 @@ class FallGameWorld extends Base with HasGameReference<Forge2DGame> {
             fallItem.priority = 0;
             add(fallItem);
           });
+
+          // 得点表示
+          final scoreText = TextComponent(
+            text: _fallList.value[mergeFallItemIndex].score.toString(),
+            position: Vector2(_nextFallItemPosition.x, _nextFallItemPosition.y),
+            anchor: Anchor.center,
+            textRenderer: TextPaint(
+              style: const TextStyle(
+                color: Colors.white,
+                fontSize: 3,
+              ),
+            ),
+          );
+          add(scoreText);
+
+          scoreText.add(
+            MoveEffect.by(
+              Vector2(0, -10),  // 50ピクセル上に移動
+              EffectController(duration: .8, curve: Curves.easeOut),
+            ),
+          );
+
+          // scoreText.add(
+          //   OpacityEffect.to(
+          //     0.0,
+          //     EffectController(duration: 1.0),
+          //   ),
+          // );
+
+          scoreText.add(
+            RemoveEffect(
+              delay: .8,
+              onComplete: () {
+                scoreText.removeFromParent(); // コンポーネントを削除
+              },
+            ),
+          );
 
           // 爆発
           add(SpriteAnimationComponent.fromFrameData(
