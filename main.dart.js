@@ -39195,10 +39195,11 @@ r.Cb(0,B.dc,A.a7(["event","untrack"],t.N,t.z),B.AZ)
 s.b.uW(0)},
 $S:113}
 A.a7E.prototype={
-$1(a){var s
+$1(a){var s,r="participants"
 if(a.a===0)return
+if(a.i(0,r)==null)return
 s=this.a
-if(B.b.F(A.dK(a.i(0,"participants"),!0,t.N),s.e))s.re(A.ba(a.i(0,"game_id")))},
+if(B.b.F(A.dK(a.i(0,r),!0,t.N),s.e))s.re(A.ba(a.i(0,"game_id")))},
 $S:45}
 A.a7F.prototype={
 $2(a,b){return this.M6(a,b)},
