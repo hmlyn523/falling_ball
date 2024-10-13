@@ -81,7 +81,7 @@ class FallGameWorld extends Base with HasGameReference<Forge2DGame> {
         var rand = Random().nextDouble() * (.8 - .2) + .2;
         var posWidth = Config.WORLD_WIDTH * rand;
         var pos = Vector2(posWidth, Config.WORLD_HEIGHT * .8);
-        this.add(_createFallItem(0, pos));
+        this.add(_createFallItem(11, pos));
       }
       multiGame.opponetBall.value = 0;
     });
@@ -257,7 +257,7 @@ class FallGameWorld extends Base with HasGameReference<Forge2DGame> {
           !selfObject.deleted &&
           !otherObject.deleted) {
         var mergeFallItemIndex = selfObject.type + 1;
-        if (mergeFallItemIndex < _fallList.value.length) {
+        if (mergeFallItemIndex < _fallList.value.length || mergeFallItemIndex != 11) { // TODO
           Vector2 _nextFallItemPosition = Vector2.zero();
           _nextFallItemPosition.x =
               ((otherObject.body.position.x + selfObject.body.position.x) / 2);
@@ -300,13 +300,6 @@ class FallGameWorld extends Base with HasGameReference<Forge2DGame> {
               EffectController(duration: .8, curve: Curves.easeOut),
             ),
           );
-
-          // scoreText.add(
-          //   OpacityEffect.to(
-          //     0.0,
-          //     EffectController(duration: 1.0),
-          //   ),
-          // );
 
           scoreText.add(
             RemoveEffect(
