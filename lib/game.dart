@@ -285,10 +285,12 @@ class FallGameWorld extends Base with HasGameReference<Forge2DGame> {
             anchor: Anchor.center,
             textRenderer: TextPaint(
               style: const TextStyle(
-                color: Colors.white,
-                fontSize: 3,
+                fontFamily: 'Square-L',
+                color: Colors.black54,
+                fontSize: 12,
               ),
             ),
+            priority: 2,
           );
           add(scoreText);
 
