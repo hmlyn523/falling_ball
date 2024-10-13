@@ -38591,7 +38591,7 @@ r=f.x1
 s.a(g)
 if(r===g.x1){if(f===h.fr&&!f.aS&&!g.aS){p=r+1
 h=j.eB.a
-if(p<h.length||p!==11){s=new Float64Array(2)
+if(p<h.length&&p!==11){s=new Float64Array(2)
 o=new A.h(s)
 r=g.at
 r===$&&A.b()
