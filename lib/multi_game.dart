@@ -62,6 +62,7 @@ class MultiGame {
       _waitingChannel.unsubscribe();
     }).onBroadcast(event: 'game_start', callback: (payload) {
       if (payload.length == 0) return;
+      if (payload['participants'] == null) return;
       final participantIds = List<String>.from(payload['participants']);
       if (participantIds.contains(myUserId)) {
         final gameId = payload['game_id'] as String;
