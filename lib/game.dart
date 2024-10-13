@@ -257,7 +257,7 @@ class FallGameWorld extends Base with HasGameReference<Forge2DGame> {
           !selfObject.deleted &&
           !otherObject.deleted) {
         var mergeFallItemIndex = selfObject.type + 1;
-        if (mergeFallItemIndex < _fallList.value.length || mergeFallItemIndex != 11) { // TODO
+        if (mergeFallItemIndex < _fallList.value.length && mergeFallItemIndex != 11) { // TODO
           Vector2 _nextFallItemPosition = Vector2.zero();
           _nextFallItemPosition.x =
               ((otherObject.body.position.x + selfObject.body.position.x) / 2);
