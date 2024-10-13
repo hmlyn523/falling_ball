@@ -38269,10 +38269,10 @@ q=$.h9()*0.513
 p=new A.h(new Float64Array(2))
 p.dl(q)
 r.push(new A.e0("11-icon.png",q/2,p,1.5,55))
-p=$.h9()*0.07
+p=$.h9()*0.129
 q=new A.h(new Float64Array(2))
 q.dl(p)
-r.push(new A.e0("12-icon.png",p/2,q,2.6,0))
+r.push(new A.e0("12-icon.png",p/2,q,2.25,0))
 for(s=0;s<r.length;++s)r[s].a=s}}
 A.ht.prototype={}
 A.id.prototype={
