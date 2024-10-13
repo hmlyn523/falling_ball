@@ -167,6 +167,7 @@ class FallGameWorld extends Base with HasGameReference<Forge2DGame> {
 
   //////////////////////////////////////
   int _getFallItemIndex() {
+    // final List<int> _randomList = [0, 0, 0, 0, 0, 10, 10, 20, 30, 30];
     final List<int> _randomList = [20, 20, 20, 20, 20];
     // final List<int> _randomList = [22, 18, 20, 21, 19];
     // final List<int> randList = [25, 15, 22, 23, 15];
@@ -257,7 +258,7 @@ class FallGameWorld extends Base with HasGameReference<Forge2DGame> {
           !selfObject.deleted &&
           !otherObject.deleted) {
         var mergeFallItemIndex = selfObject.type + 1;
-        if (mergeFallItemIndex < _fallList.value.length && mergeFallItemIndex != 11) { // TODO
+        if (mergeFallItemIndex < _fallList.value.length - 1) {
           Vector2 _nextFallItemPosition = Vector2.zero();
           _nextFallItemPosition.x =
               ((otherObject.body.position.x + selfObject.body.position.x) / 2);
@@ -325,9 +326,13 @@ class FallGameWorld extends Base with HasGameReference<Forge2DGame> {
             priority: 1
           ));
         }
-        selfObject.removeItem();
-        otherObject.removeItem();
-        Audio.play(Audio.AUDIO_COLLISION);
+        
+        if (mergeFallItemIndex < 12) {
+          // アイテム削除
+          selfObject.removeItem();
+          otherObject.removeItem();
+          Audio.play(Audio.AUDIO_COLLISION);
+        }
         return;
       }
     } else {
