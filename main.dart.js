@@ -38591,7 +38591,7 @@ r=f.x1
 s.a(g)
 if(r===g.x1){if(f===h.fr&&!f.aS&&!g.aS){p=r+1
 h=j.eB.a
-if(p<h.length&&p!==11){s=new Float64Array(2)
+if(p<h.length-1){s=new Float64Array(2)
 o=new A.h(s)
 r=g.at
 r===$&&A.b()
@@ -38648,10 +38648,9 @@ l.Y()
 h=new A.pT(new A.Lp(r),!1,!0,!1,$,h,i,q,l,B.U,1,i,new A.az([]),new A.az([]))
 h.cL(B.U,i,i,i,0,n,1,i,s)
 h.D6(B.U,i,r,i,i,i,0,i,!0,n,1,!1,i,s)
-j.bu(h)}f.uK(0)
+j.bu(h)}if(p<12){f.uK(0)
 g.uK(0)
-A.Br("sfx/collision.wav")
-return}}else if(f===h.fr){h=f.at
+A.Br("sfx/collision.wav")}return}}else if(f===h.fr){h=f.at
 h===$&&A.b()
 h=h.d.a.a[0]
 s=g.at
