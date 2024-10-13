@@ -104,7 +104,7 @@ class FallList {
     value.add(new FallInfo(Config.IMAGE_9,  WallPosition.width * .399 / 2, Vector2.all(WallPosition.width * .399), 1.6,  36));
     value.add(new FallInfo(Config.IMAGE_10, WallPosition.width * .444 / 2, Vector2.all(WallPosition.width * .444), 1.55, 45));
     value.add(new FallInfo(Config.IMAGE_11, WallPosition.width * .513 / 2, Vector2.all(WallPosition.width * .513), 1.5,  55));
-    value.add(new FallInfo(Config.IMAGE_12,  WallPosition.width * .070 / 2, Vector2.all(WallPosition.width * .070), 2.6,  0));
+    value.add(new FallInfo(Config.IMAGE_12,  WallPosition.width * .129 / 2, Vector2.all(WallPosition.width * .129), 2.25,  0));
     // Set type.
     for ( int index = 0; index < value.length; index++) {
       value[index].type = index;
