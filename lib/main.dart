@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flame/game.dart';
@@ -13,8 +14,12 @@ import 'package:supabase_flutter/supabase_flutter.dart' as supabase_flutter;
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  final initFuture = MobileAds.instance.initialize();
-  final adState = AdState(initFuture);
+  AdState? adState;
+  Future<InitializationStatus>? initFuture;
+  if (!kIsWeb) {
+    initFuture = MobileAds.instance.initialize();
+    adState = AdState(initFuture);
+  }
 
   await supabase_flutter.Supabase.initialize(
     url: 'https://jooyyxchsczjwljxdpem.supabase.co',
@@ -26,15 +31,17 @@ Future<void> main() async {
   await SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
 
-  runApp(Provider.value(
-    value: adState,
-    builder: (context, child) => MaterialApp(
-      debugShowCheckedModeBanner:false, // 右上のDEBUG消去
-      localizationsDelegates: L10n.localizationsDelegates,
-      supportedLocales: L10n.supportedLocales,
-      home: MyApp(),
-    ),
-  ));
+  runApp(
+    Provider<AdState?>.value(
+      value: adState,
+      builder: (context, child) => MaterialApp(
+        debugShowCheckedModeBanner:false, // 右上のDEBUG消去
+        localizationsDelegates: L10n.localizationsDelegates,
+        supportedLocales: L10n.supportedLocales,
+        home: MyApp(),
+      ),
+    )
+  );
 }
 
 class MyApp extends StatefulWidget {
@@ -54,17 +61,19 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
-    final adState = Provider.of<AdState>(context);
-    adState.initialization.then((status) {
-      setState(() {
-        banner = BannerAd(
-          adUnitId: adState.bannerAdUnitId,
-          size: AdSize.largeBanner,
-          request: AdRequest(),
-          listener: adState.adListener,
-        )..load();
+    final adState = Provider.of<AdState?>(context);
+    if (adState != null) {
+      adState.initialization.then((status) {
+        setState(() {
+          banner = BannerAd(
+            adUnitId: adState.bannerAdUnitId,
+            size: AdSize.largeBanner,
+            request: AdRequest(),
+            listener: adState.adListener,
+          )..load();
+        });
       });
-    });
+    }
   }
 
   // ATT対応
