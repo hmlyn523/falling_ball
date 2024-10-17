@@ -38335,10 +38335,10 @@ q=$.h8()*0.513
 p=new A.h(new Float64Array(2))
 p.dk(q)
 r.push(new A.e3("11-icon.png",q/2,p,1.5,55))
-p=$.h8()*0.129
+p=$.h8()*0.07
 q=new A.h(new Float64Array(2))
 q.dk(p)
-r.push(new A.e3("12-icon.png",p/2,q,2.25,0))
+r.push(new A.e3("12-icon.png",p/2,q,2.6,0))
 for(s=0;s<r.length;++s)r[s].a=s}}
 A.tq.prototype={
 wW(){var s=0,r=A.r(t.H),q=this,p
