@@ -54,6 +54,7 @@ dependencies:
   # win32: ^5.5.4
   archive: ^3.6.1
   universal_platform: ^1.1.0
+  connectivity_plus: ^6.0.5
 
 flutter_icons:
   android: true

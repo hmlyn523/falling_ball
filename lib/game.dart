@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:fall_game/components/waiting_dialog.dart';
+import 'package:fall_game/connectivity_provider.dart';
 import 'package:fall_game/multi_game.dart';
 import 'package:flame/effects.dart';
 import 'package:flame/flame.dart';
@@ -57,13 +58,31 @@ class FallGameWorld extends Base with HasGameReference<Forge2DGame> {
 
   final img = Flame.images;
 
+  late ConnectivityProvider _connectivityProvider;
+
   FallGameWorld() {
     Audio.bgmPlay(Audio.AUDIO_TITLE);
+  }
+
+  void _onConnectivityChanged() {
+    if (!_connectivityProvider.isOnline) {
+      // オフライン時の処理
+      print('----------> オフライン...');
+      multiGame.untrack();
+      multiGame.unsubscribe();
+    } else {
+      // オンライン時の処理
+      print('----------> オンラインになった！！！');
+      multiGame.onGame();
+    }
   }
 
   @override
   Future<void> onLoad() async {
     await super.onLoad();
+
+    _connectivityProvider = ConnectivityProvider();
+    _connectivityProvider.addListener(_onConnectivityChanged);
 
     multiGame = MultiGame(
       multiGameStartCallback,

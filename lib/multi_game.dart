@@ -35,12 +35,16 @@ class MultiGame {
       opts: const RealtimeChannelConfig(self: true),
     );
     _gameChannel.onPresenceSync((payload) {
+      print('[onGame] >>> onPresenceSync');
       final presenceState = _gameChannel.presenceState();
       _userids = presenceState.map((element) => (element.presences.first).payload['user_id'] as String).toList();
       memberCount.value = _userids.length;
     }).onPresenceJoin((payload) {
+      print('[onGame] >>> onPresenceJoin');
     }).onPresenceLeave((payload) {
+      print('[onGame] >>> onPresenceLeave');
     }).subscribe((status, [_]) async {
+      print('[onGame] >>> onSubscrive');
       await _gameChannel.track({'user_id': myUserId});
     });
   }
@@ -73,6 +77,24 @@ class MultiGame {
     });
   }
 
+  void untrack(){
+    try{
+      _waitingChannel.untrack();
+    } catch(e) {
+      // Multiplayer not executed, so nothing to do.
+      ;
+    }
+  }
+
+  void unsubscribe(){
+    try{
+      _waitingChannel.unsubscribe();
+    } catch(e) {
+      // Multiplayer not executed, so nothing to do.
+      ;
+    }
+  }
+  
   ////////////////////////////////////
   // preのupdateで呼ばれる
   ////////////////////////////////////

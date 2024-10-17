@@ -83,5 +83,7 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<false/>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>インターネット接続をチェックするために位置情報を使用します。</string>
 </dict>
 </plist>
