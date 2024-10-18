@@ -67,12 +67,9 @@ class FallGameWorld extends Base with HasGameReference<Forge2DGame> {
   void _onConnectivityChanged() {
     if (!_connectivityProvider.isOnline) {
       // オフライン時の処理
-      print('----------> オフライン...');
-      multiGame.untrack();
-      multiGame.unsubscribe();
+      multiGame.offlineProcess();
     } else {
       // オンライン時の処理
-      print('----------> オンラインになった！！！');
       multiGame.onGame();
     }
   }
@@ -83,6 +80,13 @@ class FallGameWorld extends Base with HasGameReference<Forge2DGame> {
 
     _connectivityProvider = ConnectivityProvider();
     _connectivityProvider.addListener(_onConnectivityChanged);
+    // _connectivityProvider.addListener(() {
+    //   if (!_connectivityProvider.isOnline) {
+    //     multiGame.offlineProcess();
+    //   } else {
+    //     multiGame.onGame();
+    //   };
+    // });
 
     multiGame = MultiGame(
       multiGameStartCallback,

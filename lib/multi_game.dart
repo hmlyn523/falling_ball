@@ -49,6 +49,13 @@ class MultiGame {
     });
   }
 
+  void offlineProcess(){
+    try{
+      _waitingChannel.untrack();
+      _waitingChannel.unsubscribe();
+    } catch(e) {}
+  }
+  
   ////////////////////////////////////
   // MULTIを押したら呼ばれる
   ////////////////////////////////////
@@ -77,24 +84,6 @@ class MultiGame {
     });
   }
 
-  void untrack(){
-    try{
-      _waitingChannel.untrack();
-    } catch(e) {
-      // Multiplayer not executed, so nothing to do.
-      ;
-    }
-  }
-
-  void unsubscribe(){
-    try{
-      _waitingChannel.unsubscribe();
-    } catch(e) {
-      // Multiplayer not executed, so nothing to do.
-      ;
-    }
-  }
-  
   ////////////////////////////////////
   // preのupdateで呼ばれる
   ////////////////////////////////////
