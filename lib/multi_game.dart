@@ -1,9 +1,5 @@
-import 'dart:math';
-
 import 'package:fall_game/chain.dart';
-import 'package:fall_game/config.dart';
 import 'package:fall_game/event_bus.dart';
-import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:uuid/uuid.dart';
