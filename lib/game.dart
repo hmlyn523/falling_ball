@@ -66,6 +66,10 @@ class FallGameWorld extends Base with HasGameReference<Forge2DGame> {
     fallItemFactory = FallItemFactory(eventBus);
     _tapArea = TapArea(fallItemFactory.spawn, eventBus);
     _multiGame = MultiGame(eventBus);
+    _lobbyNumberLabel = ScoreLabel(
+        position: Vector2(Config.WORLD_WIDTH * .47, Config.WORLD_HEIGHT * .974),
+        color: Color.fromRGBO(0, 0, 0, 1));
+
     eventBus.subscribe('scoreLabel', (score) {
       _scoreLabel.setTotal(score);
     });
@@ -74,7 +78,7 @@ class FallGameWorld extends Base with HasGameReference<Forge2DGame> {
         _multiGame.chain.addChain();
       }
     });
-    eventBus.subscribe('addItemEvent', () {
+    eventBus.subscribe('addItemEvent', (_) {
       fallItemFactory.spawnRandomItem();
     });
   }
@@ -112,9 +116,7 @@ class FallGameWorld extends Base with HasGameReference<Forge2DGame> {
         color: Color.fromRGBO(0, 0, 0, 1)));
     _opponentScoreLabel.isVisible = false;
 
-    add(_lobbyNumberLabel = ScoreLabel(
-        position: Vector2(Config.WORLD_WIDTH * .47, Config.WORLD_HEIGHT * .974),
-        color: Color.fromRGBO(0, 0, 0, 1)));
+    add(_lobbyNumberLabel);
 
     _titleScreen = createTitleScreen();
     _waitingDialog = Connect();
