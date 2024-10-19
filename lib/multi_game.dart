@@ -1,4 +1,9 @@
+import 'dart:math';
+
 import 'package:fall_game/chain.dart';
+import 'package:fall_game/config.dart';
+import 'package:fall_game/event_bus.dart';
+import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:uuid/uuid.dart';
@@ -14,22 +19,31 @@ class MultiGame {
   final supabase = Supabase.instance.client;
   String opponent = "";
 
+  final EventBus eventBus;
+
   // 通知
   final ValueNotifier<int> opponentScore = ValueNotifier<int>(0); // 相手のスコア
-  final ValueNotifier<int> opponetBall = ValueNotifier<int>(0); // 連鎖数
+  // final ValueNotifier<int> opponentBall = ValueNotifier<int>(0); // 連鎖数
   final ValueNotifier<int> memberCount = ValueNotifier<int>(0);   // 参加人数
 
-  final void Function() multiGameStartCallback;
-  final void Function() multiGameOverCallback;
+  // スコアを更新する関数を作成
+  void updateOpponentScore(int score) {
+    opponentScore.value = score;
+  }
+
+  void Function()? _multiGameStartCallback;
+  void Function()? _multiGameOverCallback;
 
   final Chain chain = Chain();
 
-  MultiGame(
-    this.multiGameStartCallback,
-    this.multiGameOverCallback,
-  );
+  MultiGame(this.eventBus) {
+    onOnline();
+  }
 
-  void onGame() {
+  void addGameStartCallback(callback) => _multiGameStartCallback = callback;
+  void addGameOverCallback(callback) => _multiGameOverCallback = callback;
+
+  void onOnline() {
     _gameChannel = supabase.channel(
       'game',
       opts: const RealtimeChannelConfig(self: true),
@@ -49,13 +63,23 @@ class MultiGame {
     });
   }
 
-  void offlineProcess(){
+  void onOffline(){
     try{
       _waitingChannel.untrack();
       _waitingChannel.unsubscribe();
     } catch(e) {}
   }
-  
+
+  void _onOpponentChainAttack(chain) {
+    // int chain = opponentBall.value;
+    for (int i = 0; i < chain; i++) {
+      eventBus.publish('addItemEvent', null);
+      // _spawnRandomItem();
+    }
+    // opponentBall.value = 0;
+  }
+
+
   ////////////////////////////////////
   // MULTIを押したら呼ばれる
   ////////////////////////////////////
@@ -178,23 +202,24 @@ class MultiGame {
       final score = payload['score'] as int;
       final sendId = payload['send_id'] as String;
       if (sendId != myUserId) {
-        opponentScore.value = score;
+        updateOpponentScore(score);
       }
     }).onBroadcast(event: 'game_chain', callback: (payload) {
       final sendId = payload['send_id'] as String;
       final chain = payload['chain'] as int;
       if (sendId != myUserId) {
         print('chain(1): $chain');
-        opponetBall.value = chain;
+        // opponentBall.value = chain;
+        _onOpponentChainAttack(chain);
       }
     }).onBroadcast(event: 'game_over', callback: (payload) {
       print('[game] >>> game_over');
       removeGameChannel();
-      multiGameOverCallback();
+      _multiGameOverCallback?.call();
     }).subscribe();
 
     removeWaitingChannel();
 
-    multiGameStartCallback();
+    _multiGameStartCallback?.call();
   }
 }

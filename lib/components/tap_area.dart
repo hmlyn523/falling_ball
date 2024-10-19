@@ -1,3 +1,4 @@
+import 'package:fall_game/event_bus.dart';
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 
@@ -10,17 +11,22 @@ class TapArea extends PositionComponent with TapCallbacks,
                                       //  HasGameReference,
                                        HasWorldReference<FallGameWorld>,
                                        DragCallbacks {
+  final EventBus eventBus;
+
   var _dragging = true;
   // late var _world = (world as FallGameWorld);
   late var _line;
   final void Function(Vector2) spawn;
 
-  TapArea(void this.spawn(Vector2 position)) :
+  TapArea(void this.spawn(Vector2 position), this.eventBus):
     super(
       position: Vector2.all(0),
       size: Vector2(Config.WORLD_WIDTH, Config.WORLD_HEIGHT * 1.1),
-    ) {
+    ){
       priority = Config.PRIORITY_GAME_COMPONENT;
+      eventBus.subscribe('showLine', (ball) {
+        showLine(ball.image, ball.size, ball.radius);
+      });
     }
 
   @override
@@ -79,7 +85,7 @@ class TapArea extends PositionComponent with TapCallbacks,
     if (!_dragging) return;
     if (_isPlaying()) {
       // spawn(Vector2(_line.position.x, Config.WORLD_HEIGHT * .14));
-      world.spawn(Vector2(_line.position.x, Config.WORLD_HEIGHT * .14));
+      world.fallItemFactory.spawn(Vector2(_line.position.x, Config.WORLD_HEIGHT * .14));
       hideLine();
     }
   }

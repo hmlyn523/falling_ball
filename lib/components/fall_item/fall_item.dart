@@ -8,7 +8,7 @@ class FallItem extends BodyComponent with ContactCallbacks {
   final image;
   final size;
   final radius;
-  final positionex;
+  final position;
   final type;
   final density;
   final bump;
@@ -30,7 +30,7 @@ class FallItem extends BodyComponent with ContactCallbacks {
     required this.image,
     required this.size,
     required this.radius,
-    required this.positionex,
+    required this.position,
     required this.type,
     required this.density,
     required this.bump,
@@ -61,7 +61,7 @@ class FallItem extends BodyComponent with ContactCallbacks {
   Body createBody() {
     final shape = CircleShape();
     shape.radius = radius;
-    positionex.y += bump; // 位置調整
+    position.y += bump; // 位置調整
 
     final fixtureDef = FixtureDef(shape)
       ..density = density // 密度
@@ -72,8 +72,8 @@ class FallItem extends BodyComponent with ContactCallbacks {
 
     final bodyDef = BodyDef()
       ..userData = this // To be able to determine object in collision
-      ..position = this.positionex
-      ..angle = (this.positionex.x + this.positionex.y) / 2 * 3.14
+      ..position = this.position
+      ..angle = (this.position.x + this.position.y) / 2 * 3.14
       ..angularDamping = 0.6
       ..type = BodyType.dynamic;
     return world.createBody(bodyDef)..createFixture(fixtureDef);
