@@ -61,8 +61,47 @@ class FallGameWorld extends Base with HasGameReference<Forge2DGame> {
   late FallItemFactory fallItemFactory;
 
   FallGameWorld() {
-    Audio.bgmPlay(Audio.AUDIO_TITLE);
     eventBus = EventBus();
+    Audio.bgmPlay(Audio.AUDIO_TITLE);
+  //   eventBus = EventBus();
+  //   fallItemFactory = FallItemFactory(eventBus);
+  //   _tapArea = TapArea(fallItemFactory.spawn, eventBus);
+    // _multiGame = MultiGame(eventBus);
+  //   _lobbyNumberLabel = ScoreLabel(
+  //       position: Vector2(Config.WORLD_WIDTH * .47, Config.WORLD_HEIGHT * .974),
+  //       color: Color.fromRGBO(0, 0, 0, 1));
+
+  //   eventBus.subscribe('scoreLabel', (score) {
+  //     _scoreLabel.setTotal(score);
+  //   });
+  //   eventBus.subscribe('chain', (score) {
+  //     if (_isMulti) {
+  //       _multiGame.chain.addChain();
+  //     }
+  //   });
+  //   eventBus.subscribe('spawnRandomItem', (_) {
+  //     fallItemFactory.spawnRandomItem();
+  //   });
+  //   eventBus.subscribe('addItem', (item) {
+  //     add(item);
+  //   });
+  }
+
+  @override
+  Future<void> onLoad() async {
+    await super.onLoad();
+
+    // add(fallItemFactory);
+
+    _connectivityProvider = ConnectivityProvider();
+
+
+    // ビューファインダーのアンカーを左上に設定し、左上の座標を (0,0) として扱います。
+    game.camera.viewfinder.anchor = Anchor.topLeft;
+
+    await game.images.loadAllImages();
+    await Audio.load();
+
     fallItemFactory = FallItemFactory(eventBus);
     _tapArea = TapArea(fallItemFactory.spawn, eventBus);
     _multiGame = MultiGame(eventBus);
@@ -78,27 +117,15 @@ class FallGameWorld extends Base with HasGameReference<Forge2DGame> {
         _multiGame.chain.addChain();
       }
     });
-    eventBus.subscribe('addItemEvent', (_) {
+    eventBus.subscribe('spawnRandomItem', (_) {
       fallItemFactory.spawnRandomItem();
     });
-  }
-
-  @override
-  Future<void> onLoad() async {
-    await super.onLoad();
-
-    add(fallItemFactory);
-
-    _connectivityProvider = ConnectivityProvider();
+    eventBus.subscribe('addItem', (item) {
+      add(item);
+    });
 
     _setupListeners();
-
-    // ビューファインダーのアンカーを左上に設定し、左上の座標を (0,0) として扱います。
-    game.camera.viewfinder.anchor = Anchor.topLeft;
-
-    await game.images.loadAllImages();
-    await Audio.load();
-
+ 
     createWall().forEach(add);
     // final backgroundImage = game.images.fromCache(Config.IMAGE_BACKGROUND);
     final foregroundImage = await img.load(Config.IMAGE_FOREGROUND);
@@ -226,7 +253,7 @@ class FallGameWorld extends Base with HasGameReference<Forge2DGame> {
     drawTitleScreen(false);
 
     // 落下アイテム削除
-    fallItemFactory.deleteItem();
+    fallItemFactory.deleteAllItem(this.children);
 
     drawWaitingDialog(false);
     // _multiGame.onWaitingUpdate();
@@ -267,7 +294,7 @@ class FallGameWorld extends Base with HasGameReference<Forge2DGame> {
     }
 
     // 落下アイテム消去
-    fallItemFactory.deleteItem();
+    fallItemFactory.deleteAllItem(this.children);
     drawGameOverScreen(true);
     Audio.bgmStop();
     Audio.bgmPlay(Audio.AUDIO_TITLE);

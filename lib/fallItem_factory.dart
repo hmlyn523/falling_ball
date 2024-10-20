@@ -12,8 +12,9 @@ import 'package:flame/flame.dart';
 import 'package:flame_forge2d/flame_forge2d.dart';
 import 'package:flutter/material.dart';
 
-class FallItemFactory extends Component
-  with HasGameReference
+class FallItemFactory
+// class FallItemFactory extends Component
+//   with HasGameReference
 {
   static FallItemFactory? _instance;
   final EventBus eventBus;
@@ -26,24 +27,35 @@ class FallItemFactory extends Component
   late int _nowItemIndex;
   late int _nextItemIndex;
 
-  FallItemFactory._(this.eventBus);
+  late List<FallItem> _onScreenItems = [];
+
+  FallItemFactory._(this.eventBus) {
+    _nowItemIndex = _getItemIndex();
+    _nextItemIndex = _getItemIndex();
+    final image = img.fromCache(get(_nextItemIndex).image);
+    // final image = await img.load(get(_nextItemIndex).image);
+    _nextItemSprite = NextSprite(image);
+    eventBus.publish('addItem', _nextItemSprite);
+    // add(_nextItemSprite);
+  }
 
   factory FallItemFactory(EventBus eventBus) {
     _instance ??= FallItemFactory._(eventBus);
     return _instance!;
   }
 
-  @override
-  Future<void> onLoad() async {
-    _nowItemIndex = _getItemIndex();
-    _nextItemIndex = _getItemIndex();
-    final image = await img.load(get(_nextItemIndex).image);
-    _nextItemSprite = NextSprite(image);
-    add(_nextItemSprite);
-  }
+  // @override
+  // Future<void> onLoad() async {
+  //   _nowItemIndex = _getItemIndex();
+  //   _nextItemIndex = _getItemIndex();
+  //   final image = await img.load(get(_nextItemIndex).image);
+  //   _nextItemSprite = NextSprite(image);
+  //   eventBus.publish('addItem', _nextItemSprite);
+  //   // add(_nextItemSprite);
+  // }
 
   FallItem create(index, position, {double bump = 0.0, double fadeInDuration = 0.0}) {
-    return FallItem(
+    var item = FallItem(
       image: img.fromCache(_fallList.value[index].image),
       radius: _fallList.value[index].radius,
       size: _fallList.value[index].size,
@@ -54,6 +66,8 @@ class FallItemFactory extends Component
       fadeInDuration: fadeInDuration,
       contactCallback: collision,
     );
+    _onScreenItems.add(item);
+    return item;
   }
 
   void spawn(position) {
@@ -62,7 +76,8 @@ class FallItemFactory extends Component
       // 落下開始位置調整
       position = _adjustFallStartPosition(position);
       // 落下アイテム生成
-      this.add(create(_nowItemIndex, position));
+      eventBus.publish("addItem", create(_nowItemIndex, position));
+      // this.add(create(_nowItemIndex, position));
       Audio.play(Audio.AUDIO_SPAWN);
 
       _nowItemIndex = _nextItemIndex;
@@ -74,7 +89,8 @@ class FallItemFactory extends Component
     var rand = Random().nextDouble() * (.8 - .2) + .2;
     var posWidth = Config.WORLD_WIDTH * rand;
     var pos = Vector2(posWidth, Config.WORLD_HEIGHT * .8);
-    add(create(11, pos));
+    eventBus.publish("addItem", create(11, pos));
+    // add(create(11, pos));
   }
 
   //////////////////////////////////////
@@ -132,8 +148,10 @@ class FallItemFactory extends Component
   
   bool isFalling() {
     var falling = false;
-    this.children.where((element) => element is FallItem).forEach((element) {
-      if ((element as FallItem).falling) {
+    _onScreenItems.forEach((element) {
+    // this.children.where((element) => element is FallItem).forEach((element) {
+      if (element.falling) {
+      // if ((element as FallItem).falling) {
         falling = true;
         return;
       }
@@ -189,7 +207,8 @@ class FallItemFactory extends Component
             var fallItem = create(mergeItemIndex, _nextItemPosition,
                 fadeInDuration: 0.1);
             fallItem.priority = 0;
-            add(fallItem);
+            eventBus.publish("addItem", fallItem);
+            // add(fallItem);
           });
 
           // 得点表示
@@ -206,7 +225,8 @@ class FallItemFactory extends Component
             ),
             priority: 2,
           );
-          add(scoreText);
+          eventBus.publish("addItem", scoreText);
+          // add(scoreText);
 
           scoreText.add(
             MoveEffect.by(
@@ -225,8 +245,9 @@ class FallItemFactory extends Component
           );
 
           // 爆発
-          add(SpriteAnimationComponent.fromFrameData(
-            game.images.fromCache("explosion.png"),
+          eventBus.publish("addItem", SpriteAnimationComponent.fromFrameData(
+          // add(SpriteAnimationComponent.fromFrameData(
+            img.fromCache("explosion.png"),
             SpriteAnimationData.sequenced(
               textureSize: Vector2.all(32),
               amount: 6,
@@ -267,8 +288,10 @@ class FallItemFactory extends Component
   bool isGameOver() {
     bool ret = false;
     // _world.children.where((element) => element is FallItem).forEach((element) {
-    this.children.where((element) => element is FallItem).forEach((element) {
-      FallItem item = element as FallItem;
+    _onScreenItems.forEach((element) {
+    // this.children.where((element) => element is FallItem).forEach((element) {
+      FallItem item = element;
+      // FallItem item = element as FallItem;
       if (item.body.position.y < Config.WORLD_HEIGHT * .2 && !item.falling) {
         ret = true;
       }
@@ -276,15 +299,18 @@ class FallItemFactory extends Component
     return ret;
   }
 
-  void deleteItem() {
+  void deleteAllItem(children) {
     children
         .where((element) => element is FallItem)
-        .forEach((element) => element.removeFromParent());
+        .forEach((element) {
+          element.removeFromParent();
+          _onScreenItems.clear();
+        });
   }
 
   void _showNextItem() {
     _nextItemSprite.setImage(
-        game.images.fromCache(get(_nextItemIndex).image));
+        img.fromCache(get(_nextItemIndex).image));
   }
 
   // void _showLine() {
