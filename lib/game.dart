@@ -102,13 +102,6 @@ class FallGameWorld extends Base with HasGameReference<Forge2DGame> {
     await game.images.loadAllImages();
     await Audio.load();
 
-    fallItemFactory = FallItemFactory(eventBus);
-    _tapArea = TapArea(fallItemFactory.spawn, eventBus);
-    _multiGame = MultiGame(eventBus);
-    _lobbyNumberLabel = ScoreLabel(
-        position: Vector2(Config.WORLD_WIDTH * .47, Config.WORLD_HEIGHT * .974),
-        color: Color.fromRGBO(0, 0, 0, 1));
-
     eventBus.subscribe('scoreLabel', (score) {
       _scoreLabel.setTotal(score);
     });
@@ -123,6 +116,14 @@ class FallGameWorld extends Base with HasGameReference<Forge2DGame> {
     eventBus.subscribe('addItem', (item) {
       add(item);
     });
+
+
+    fallItemFactory = FallItemFactory(eventBus);
+    _tapArea = TapArea(fallItemFactory.spawn, eventBus);
+    _multiGame = MultiGame(eventBus);
+    _lobbyNumberLabel = ScoreLabel(
+        position: Vector2(Config.WORLD_WIDTH * .47, Config.WORLD_HEIGHT * .974),
+        color: Color.fromRGBO(0, 0, 0, 1));
 
     _setupListeners();
  
