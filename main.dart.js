@@ -38519,7 +38519,7 @@ s=o.f
 s===$&&A.b()
 o.e=s
 o.f=o.wG()}},
-wG(){var s,r,q,p=A.a([20,20,20,20,20],t.t)
+wG(){var s,r,q,p=A.a([22,18,20,21,19],t.t)
 B.b.dN(p,new A.a0O())
 s=B.dH.ue(100)
 for(r=0,q=0;q<5;++q){r+=p[q]
