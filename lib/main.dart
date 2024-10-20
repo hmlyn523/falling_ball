@@ -119,12 +119,9 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
 class _MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-//    final Size size = MediaQuery.of(context).size;
     return GameWidget(
       game: FallGame(
           context: context,
-//          viewportResolution: Vector2(Config.WORLD_WIDTH, Config.WORLD_HEIGHT),
-//          screenSize: Vector2(size.width, size.height),
       ),
     );
   }

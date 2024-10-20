@@ -14,7 +14,6 @@ class TapArea extends PositionComponent with TapCallbacks,
   final EventBus eventBus;
 
   var _dragging = true;
-  // late var _world = (world as FallGameWorld);
   late var _line;
   final void Function(Vector2) spawn;
 
@@ -49,7 +48,6 @@ class TapArea extends PositionComponent with TapCallbacks,
   void hideLine() {
     _line.hideLine();
   }
-
 
   // タップすると呼ばれる
   @override

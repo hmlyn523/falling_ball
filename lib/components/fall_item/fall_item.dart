@@ -87,16 +87,6 @@ class FallItem extends BodyComponent with ContactCallbacks {
 
   void removeItem() async {
     _deleted = true;
-    // world.add(
-    //   SpriteComponent(
-    //     sprite: Sprite(this.image),
-    //     size: this.size,
-    //     position: this.position,
-    //     anchor: Anchor.center,
-    //   )
-    //   ..add(OpacityEffect.fadeOut(EffectController(duration: .1)))
-    //   ..add( SizeEffect.to( this.size * 1.3, EffectController(duration: .1))),
-    // );
     this.removeFromParent();
   }
 }

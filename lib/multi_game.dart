@@ -66,18 +66,12 @@ class MultiGame {
   }
 
   void _onOpponentChainAttack(chain) {
-    // int chain = opponentBall.value;
     for (int i = 0; i < chain; i++) {
       eventBus.publish('spawnRandomItem', null);
-      // _spawnRandomItem();
     }
-    // opponentBall.value = 0;
   }
 
-
-  ////////////////////////////////////
   // MULTIを押したら呼ばれる
-  ////////////////////////////////////
   void onWaiting() {
     _waitingChannel = supabase.channel(
       'waiting',
@@ -103,9 +97,7 @@ class MultiGame {
     });
   }
 
-  ////////////////////////////////////
   // preのupdateで呼ばれる
-  ////////////////////////////////////
   Future<void> onWaitingUpdate() async {
     await Future.delayed(Duration.zero);
     if (_userids.length < 2) {
@@ -127,9 +119,7 @@ class MultiGame {
     );
   }
 
-  ////////////////////////////////////
   // play状態中のupdate時に呼ばれる
-  ////////////////////////////////////
   void onPlayUpdate(score, isGameover) async {
     if (isGameover) {
       _sentScores = 0;
@@ -204,7 +194,6 @@ class MultiGame {
       final chain = payload['chain'] as int;
       if (sendId != myUserId) {
         print('chain(1): $chain');
-        // opponentBall.value = chain;
         _onOpponentChainAttack(chain);
       }
     }).onBroadcast(event: 'game_over', callback: (payload) {

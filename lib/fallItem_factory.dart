@@ -13,8 +13,6 @@ import 'package:flame_forge2d/flame_forge2d.dart';
 import 'package:flutter/material.dart';
 
 class FallItemFactory
-// class FallItemFactory extends Component
-//   with HasGameReference
 {
   static FallItemFactory? _instance;
   final EventBus eventBus;
@@ -33,26 +31,14 @@ class FallItemFactory
     _nowItemIndex = _getItemIndex();
     _nextItemIndex = _getItemIndex();
     final image = img.fromCache(get(_nextItemIndex).image);
-    // final image = await img.load(get(_nextItemIndex).image);
     _nextItemSprite = NextSprite(image);
     eventBus.publish('addItem', _nextItemSprite);
-    // add(_nextItemSprite);
   }
 
   factory FallItemFactory(EventBus eventBus) {
     _instance ??= FallItemFactory._(eventBus);
     return _instance!;
   }
-
-  // @override
-  // Future<void> onLoad() async {
-  //   _nowItemIndex = _getItemIndex();
-  //   _nextItemIndex = _getItemIndex();
-  //   final image = await img.load(get(_nextItemIndex).image);
-  //   _nextItemSprite = NextSprite(image);
-  //   eventBus.publish('addItem', _nextItemSprite);
-  //   // add(_nextItemSprite);
-  // }
 
   FallItem create(index, position, {double bump = 0.0, double fadeInDuration = 0.0}) {
     var item = FallItem(
@@ -77,7 +63,6 @@ class FallItemFactory
       position = _adjustFallStartPosition(position);
       // 落下アイテム生成
       eventBus.publish("addItem", create(_nowItemIndex, position));
-      // this.add(create(_nowItemIndex, position));
       Audio.play(Audio.AUDIO_SPAWN);
 
       _nowItemIndex = _nextItemIndex;
@@ -90,14 +75,12 @@ class FallItemFactory
     var posWidth = Config.WORLD_WIDTH * rand;
     var pos = Vector2(posWidth, Config.WORLD_HEIGHT * .8);
     eventBus.publish("addItem", create(11, pos));
-    // add(create(11, pos));
   }
 
   //////////////////////////////////////
   // 落下開始位置の調整
   Vector2 _adjustFallStartPosition(position) {
     var r = get(_nowItemIndex).radius;
-    // var r = _fallList.value[_nowItemIndex].radius;
     var x = position.x;
     var adjustment = Config.WORLD_WIDTH * .01;
     if (x <= WallPosition.topLeft.x + r) {
@@ -111,18 +94,17 @@ class FallItemFactory
     return position;
   }
 
-  //////////////////////////////////////
   int _getItemIndex() {
-    // final List<int> _randomList = [0, 0, 0, 0, 0, 10, 10, 20, 30, 30];
-    final List<int> _randomList = [20, 20, 20, 20, 20];
-    // final List<int> _randomList = [22, 18, 20, 21, 19];
-    // final List<int> randList = [25, 15, 22, 23, 15];
-    // final List<int> randList = [20, 20, 20, 20, 20];
-    _randomList.sort((a, b) => a.compareTo(a));
+    // final List<int> _itemDischargeProbability = [20, 20, 20, 20, 20];
+    final List<int> _itemDischargeProbability = [22, 18, 20, 21, 19];
+    // final List<int> _itemDischargeProbability = [25, 15, 22, 23, 15];
+    // final List<int> _itemDischargeProbability = [20, 20, 20, 20, 20];
+    // final List<int> _itemDischargeProbability = [0, 0, 0, 0, 0, 10, 10, 20, 30, 30];
+    _itemDischargeProbability.sort((a, b) => a.compareTo(a));
     var rand = Random().nextInt(100);
     var rate = 0;
-    for (int index = 0; index < _randomList.length; index++) {
-      rate += _randomList[index];
+    for (int index = 0; index < _itemDischargeProbability.length; index++) {
+      rate += _itemDischargeProbability[index];
       if (rand <= rate) {
         return index;
       }
@@ -149,9 +131,7 @@ class FallItemFactory
   bool isFalling() {
     var falling = false;
     _onScreenItems.forEach((element) {
-    // this.children.where((element) => element is FallItem).forEach((element) {
       if (element.falling) {
-      // if ((element as FallItem).falling) {
         falling = true;
         return;
       }
@@ -173,7 +153,6 @@ class FallItemFactory
     // whereTypeのfirstを利用してTapAreaコンポーネントの取得を行う。
     if (!isFalling()) {
       _showNextItem();
-      // _showLine();
       eventBus.publish('showLine', getNowItem());
     }
 
@@ -208,7 +187,6 @@ class FallItemFactory
                 fadeInDuration: 0.1);
             fallItem.priority = 0;
             eventBus.publish("addItem", fallItem);
-            // add(fallItem);
           });
 
           // 得点表示
@@ -226,7 +204,6 @@ class FallItemFactory
             priority: 2,
           );
           eventBus.publish("addItem", scoreText);
-          // add(scoreText);
 
           scoreText.add(
             MoveEffect.by(
@@ -246,7 +223,6 @@ class FallItemFactory
 
           // 爆発
           eventBus.publish("addItem", SpriteAnimationComponent.fromFrameData(
-          // add(SpriteAnimationComponent.fromFrameData(
             img.fromCache("explosion.png"),
             SpriteAnimationData.sequenced(
               textureSize: Vector2.all(32),
@@ -276,7 +252,6 @@ class FallItemFactory
     }
   }
 
-  //////////////////////////////////////
   void _adjustmentItem(FallItem selfObject, FallItem otherObject) {
     if ((selfObject.body.position.x == otherObject.body.position.x)) {
       var rand = Random().nextInt(2);
@@ -287,11 +262,8 @@ class FallItemFactory
 
   bool isGameOver() {
     bool ret = false;
-    // _world.children.where((element) => element is FallItem).forEach((element) {
     _onScreenItems.forEach((element) {
-    // this.children.where((element) => element is FallItem).forEach((element) {
       FallItem item = element;
-      // FallItem item = element as FallItem;
       if (item.body.position.y < Config.WORLD_HEIGHT * .2 && !item.falling) {
         ret = true;
       }
@@ -312,21 +284,4 @@ class FallItemFactory
     _nextItemSprite.setImage(
         img.fromCache(get(_nextItemIndex).image));
   }
-
-  // void _showLine() {
-  //   _tapArea.showLine(
-  //       get(_nowItemIndex).image,
-  //       get(_nowItemIndex).size,
-  //       get(_nowItemIndex).radius);
-  // }
-
-  // void _hideLine() {
-  //   _tapArea.hideLine();
-  // }
-
-
-
-
-
-
 }

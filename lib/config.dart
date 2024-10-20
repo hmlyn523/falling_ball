@@ -82,17 +82,6 @@ class FallInfo {
 class FallList {
   final List<FallInfo> value = [];
   FallList() {
-    // value.add(new FallInfo(Config.IMAGE_1, Config.WORLD_HEIGHT * .030, Vector2.all(Config.WORLD_HEIGHT * .036 * 2), 1.6, 0));
-    // value.add(new FallInfo(Config.IMAGE_2, Config.WORLD_HEIGHT * .045, Vector2.all(Config.WORLD_HEIGHT * .054 * 2), 1.4, 1));
-    // value.add(new FallInfo(Config.IMAGE_3, Config.WORLD_HEIGHT * .055, Vector2.all(Config.WORLD_HEIGHT * .065 * 2), 1.25, 3));
-    // value.add(new FallInfo(Config.IMAGE_4, Config.WORLD_HEIGHT * .070, Vector2.all(Config.WORLD_HEIGHT * .080 * 2), 1.10, 6));
-    // value.add(new FallInfo(Config.IMAGE_5, Config.WORLD_HEIGHT * .085, Vector2.all(Config.WORLD_HEIGHT * .097 * 2), 0.95, 10));
-    // value.add(new FallInfo(Config.IMAGE_6, Config.WORLD_HEIGHT * .100, Vector2.all(Config.WORLD_HEIGHT * .114 * 2), 0.85, 15));
-    // value.add(new FallInfo(Config.IMAGE_7, Config.WORLD_HEIGHT * .115, Vector2.all(Config.WORLD_HEIGHT * .129 * 2), 0.75, 21));
-    // value.add(new FallInfo(Config.IMAGE_8, Config.WORLD_HEIGHT * .140, Vector2.all(Config.WORLD_HEIGHT * .157 * 2), 0.65, 28));
-    // value.add(new FallInfo(Config.IMAGE_9, Config.WORLD_HEIGHT * .155, Vector2.all(Config.WORLD_HEIGHT * .173 * 2), 0.6, 36));
-    // value.add(new FallInfo(Config.IMAGE_10, Config.WORLD_HEIGHT * .170, Vector2.all(Config.WORLD_HEIGHT * .187 * 2), 0.55, 45));
-    // value.add(new FallInfo(Config.IMAGE_11, Config.WORLD_HEIGHT * .185, Vector2.all(Config.WORLD_HEIGHT * .203 * 2), 0.5, 55));
     value.add(new FallInfo(Config.IMAGE_1,  WallPosition.width * .070 / 2, Vector2.all(WallPosition.width * .070), 2.6,  0));
     value.add(new FallInfo(Config.IMAGE_2,  WallPosition.width * .097 / 2, Vector2.all(WallPosition.width * .097), 2.4,  1));
     value.add(new FallInfo(Config.IMAGE_3,  WallPosition.width * .129 / 2, Vector2.all(WallPosition.width * .129), 2.25, 3));

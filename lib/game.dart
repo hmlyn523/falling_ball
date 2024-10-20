@@ -44,11 +44,7 @@ class FallGameWorld extends Base with HasGameReference<Forge2DGame> {
   late final ScoreLabel _scoreLabel;
   late final ScoreLabel _opponentScoreLabel;
   late final ScoreLabel _lobbyNumberLabel;
-  // late final NextSprite _nextItemSprite;
   late TapArea _tapArea;
-
-  // late int _nowItemIndex;
-  // late int _nextItemIndex;
 
   late final MultiGame _multiGame;
   bool _isMulti = false;
@@ -63,38 +59,13 @@ class FallGameWorld extends Base with HasGameReference<Forge2DGame> {
   FallGameWorld() {
     eventBus = EventBus();
     Audio.bgmPlay(Audio.AUDIO_TITLE);
-  //   eventBus = EventBus();
-  //   fallItemFactory = FallItemFactory(eventBus);
-  //   _tapArea = TapArea(fallItemFactory.spawn, eventBus);
-    // _multiGame = MultiGame(eventBus);
-  //   _lobbyNumberLabel = ScoreLabel(
-  //       position: Vector2(Config.WORLD_WIDTH * .47, Config.WORLD_HEIGHT * .974),
-  //       color: Color.fromRGBO(0, 0, 0, 1));
-
-  //   eventBus.subscribe('scoreLabel', (score) {
-  //     _scoreLabel.setTotal(score);
-  //   });
-  //   eventBus.subscribe('chain', (score) {
-  //     if (_isMulti) {
-  //       _multiGame.chain.addChain();
-  //     }
-  //   });
-  //   eventBus.subscribe('spawnRandomItem', (_) {
-  //     fallItemFactory.spawnRandomItem();
-  //   });
-  //   eventBus.subscribe('addItem', (item) {
-  //     add(item);
-  //   });
   }
 
   @override
   Future<void> onLoad() async {
     await super.onLoad();
 
-    // add(fallItemFactory);
-
     _connectivityProvider = ConnectivityProvider();
-
 
     // ビューファインダーのアンカーを左上に設定し、左上の座標を (0,0) として扱います。
     game.camera.viewfinder.anchor = Anchor.topLeft;
@@ -116,7 +87,6 @@ class FallGameWorld extends Base with HasGameReference<Forge2DGame> {
     eventBus.subscribe('addItem', (item) {
       add(item);
     });
-
 
     fallItemFactory = FallItemFactory(eventBus);
     _tapArea = TapArea(fallItemFactory.spawn, eventBus);
@@ -204,10 +174,8 @@ class FallGameWorld extends Base with HasGameReference<Forge2DGame> {
 
   void drawWaitingDialog(bool draw) {
     if (draw) {
-      // addAll(_waitingDialog);
       add(_waitingDialog);
     } else if (!draw) {
-      // removeWaitingDialog(_waitingDialog);
       _waitingDialog.removeFromParent();
     }
   }
@@ -257,7 +225,6 @@ class FallGameWorld extends Base with HasGameReference<Forge2DGame> {
     fallItemFactory.deleteAllItem(this.children);
 
     drawWaitingDialog(false);
-    // _multiGame.onWaitingUpdate();
     Audio.bgmStop();
     Audio.bgmPlay(Audio.AUDIO_BGM);
     // Playステータスへ繊維
@@ -299,8 +266,6 @@ class FallGameWorld extends Base with HasGameReference<Forge2DGame> {
     drawGameOverScreen(true);
     Audio.bgmStop();
     Audio.bgmPlay(Audio.AUDIO_TITLE);
-    // supabase.removeChannel(_gameChannel!);
-    // _multiGame.removeGameChannel(); aaa
   }
 
   @override
