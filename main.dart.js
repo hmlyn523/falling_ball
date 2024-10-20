@@ -38666,6 +38666,11 @@ case 3:s=4
 return A.t(A.Bl(),$async$a9)
 case 4:o=q.cq
 o===$&&A.b()
+o.nw(0,"scoreLabel",new A.a0K(q))
+q.cq.nw(0,"chain",new A.a0L(q))
+q.cq.nw(0,"spawnRandomItem",new A.a0M(q))
+q.cq.nw(0,"addItem",new A.a0N(q))
+o=q.cq
 n=$.asR
 if(n==null){n=A.a([],t.yG)
 m=new A.a0V(n)
@@ -38725,10 +38730,6 @@ n.a_(18.799999999999997,62.29704)
 n=A.aoQ(A.Za(0,0,0,1),n,0)
 q.aI!==$&&A.bd()
 q.aI=n
-q.cq.nw(0,"scoreLabel",new A.a0K(q))
-q.cq.nw(0,"chain",new A.a0L(q))
-q.cq.nw(0,"spawnRandomItem",new A.a0M(q))
-q.cq.nw(0,"addItem",new A.a0N(q))
 o.Q=q.gXs()
 o.as=q.gXq()
 o.y.aa(0,q.gZR())
