@@ -3,9 +3,12 @@ import 'dart:ui';
 import 'package:fall_game/components/fall_item/now_sprite.dart';
 import 'package:fall_game/config.dart';
 import 'package:flame/components.dart';
+import 'package:flame/flame.dart';
 import 'package:flutter/material.dart';
 
-class Line extends RectangleComponent with HasVisibility, HasGameReference {
+class Line extends RectangleComponent
+  with HasVisibility
+{
   late NowSprite _nowFallItemSprite;
 
   Line()
@@ -19,7 +22,8 @@ class Line extends RectangleComponent with HasVisibility, HasGameReference {
 
   @override
   Future<void> onLoad() async {
-    final _sprite = Sprite(game.images.fromCache(Config.IMAGE_EMPTY));
+    final _sprite = Sprite(Flame.images.fromCache(Config.IMAGE_EMPTY));
+    // final _sprite = Sprite(game.images.fromCache(Config.IMAGE_EMPTY));
     _nowFallItemSprite = NowSprite(sprite:_sprite);
     await addAll([
       _nowFallItemSprite,
@@ -30,7 +34,7 @@ class Line extends RectangleComponent with HasVisibility, HasGameReference {
     this.isVisible = true;
     _nowFallItemSprite.isVisible = true;
 
-    _nowFallItemSprite.sprite = Sprite(game.images.fromCache(image));
+    _nowFallItemSprite.sprite = Sprite(Flame.images.fromCache(image));
     _nowFallItemSprite.size = size;
     _nowFallItemSprite.radius = radius;
     _nowFallItemSprite.position = Vector2.zero();

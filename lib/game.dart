@@ -1,10 +1,12 @@
 import 'dart:math';
 
+import 'package:fall_game/components/line.dart';
 import 'package:fall_game/components/waiting_dialog.dart';
 import 'package:fall_game/connectivity_provider.dart';
 import 'package:fall_game/event_bus.dart';
 import 'package:fall_game/fallItem_factory.dart';
 import 'package:fall_game/multi_game.dart';
+import 'package:flame/events.dart';
 import 'package:flame/flame.dart';
 import 'package:flame_forge2d/flame_forge2d.dart';
 import 'package:flame/components.dart';
@@ -37,35 +39,70 @@ class FallGame extends Forge2DGame {
         );
 }
 
-class FallGameWorld extends Base with HasGameReference<Forge2DGame> {
+class FallGameWorld extends Base
+  with HasGameReference<Forge2DGame>,
+       TapCallbacks,
+       DragCallbacks
+{
+  final img = Flame.images;
+
   late final List<SpriteComponent> _titleScreen;
   late final PositionComponent _waitingDialog;
   late final List<SpriteComponent> _gameOverScreen;
   late final ScoreLabel _scoreLabel;
   late final ScoreLabel _opponentScoreLabel;
   late final ScoreLabel _lobbyNumberLabel;
-  late TapArea _tapArea;
+  late TapArea tapArea;
 
   late final MultiGame _multiGame;
   bool _isMulti = false;
-
-  final img = Flame.images;
 
   late ConnectivityProvider _connectivityProvider;
 
   late EventBus eventBus;
   late FallItemFactory fallItemFactory;
 
+  // late var _line;
+  // var _dragging = true;
+
   FallGameWorld() {
     eventBus = EventBus();
     Audio.bgmPlay(Audio.AUDIO_TITLE);
   }
 
+  // // タップすると呼ばれる
+  // @override
+  // bool containsLocalPoint(Vector2 point) {
+  //   _dragging = true;
+  //   _line.updateLine(point);
+  //   return true;
+  // }
+
+  // // ドラッグ中に呼ばれる
+  // @override
+  // void onDragUpdate(DragUpdateEvent event) {
+  //   _dragging = true;
+  //   if (!_line.updateLine(event.localPosition)) {
+  //     _dragging = false;
+  //   }
+  // }
+
+  // // ドラッグをやめる（タップを離す）と呼ばれる
+  // @override
+  // void onDragEnd(DragEndEvent event) {
+  //   super.onDragEnd(event);
+  //   _spawn();
+  // }
+
+  // // タップを離すと呼ばれる
+  // @override
+  // void onTapUp(TapUpEvent event) {
+  //   _spawn();
+  // }
+
   @override
   Future<void> onLoad() async {
     await super.onLoad();
-
-    _connectivityProvider = ConnectivityProvider();
 
     // ビューファインダーのアンカーを左上に設定し、左上の座標を (0,0) として扱います。
     game.camera.viewfinder.anchor = Anchor.topLeft;
@@ -73,23 +110,43 @@ class FallGameWorld extends Base with HasGameReference<Forge2DGame> {
     await game.images.loadAllImages();
     await Audio.load();
 
-    eventBus.subscribe('scoreLabel', (score) {
-      _scoreLabel.setTotal(score);
-    });
-    eventBus.subscribe('chain', (score) {
-      if (_isMulti) {
-        _multiGame.chain.addChain();
-      }
-    });
-    eventBus.subscribe('spawnRandomItem', (_) {
-      fallItemFactory.spawnRandomItem();
-    });
-    eventBus.subscribe('addItem', (item) {
-      add(item);
-    });
-
     fallItemFactory = FallItemFactory(eventBus);
-    _tapArea = TapArea(fallItemFactory.spawn, eventBus);
+    add(fallItemFactory);
+    tapArea = TapArea(dragAndTapCallback: spawn );
+    add(tapArea);
+
+    // eventBus.subscribe('chain', (score) {
+    //   if (_isMulti) {
+    //     _multiGame.chain.addChain();
+    //   }
+    // });
+    eventBus.subscribe('spawnRandom', (_) {
+      fallItemFactory.spawnRandom();
+    });
+    // eventBus.subscribe('addItem', (item) {
+    //   add(item);
+    // });
+    // eventBus.subscribe('showLine', (ball) {
+    //   _line.showLine(ball.image, ball.size, ball.radius);
+    // });
+ 
+
+    // tapArea = TapArea(tapCallback: spawn, dragCallback: drag );
+    // tapArea = TapArea(eventBus: eventBus, tapCallback: spawn );
+    // tapArea = TapArea(fallItemFactory.spawn, eventBus);
+    // final Line line = Line();
+    // line
+    //   ..position.x = Config.WORLD_WIDTH * .5
+    //   ..position.y = Config.WORLD_HEIGHT * .14;
+
+    // _line = line;
+    // add(_line);
+    // tapArea.add(_line);
+    // await addAll([
+    //   _line = line,
+    // ]);
+    _connectivityProvider = ConnectivityProvider();
+
     _multiGame = MultiGame(eventBus);
     _lobbyNumberLabel = ScoreLabel(
         position: Vector2(Config.WORLD_WIDTH * .47, Config.WORLD_HEIGHT * .974),
@@ -120,10 +177,33 @@ class FallGameWorld extends Base with HasGameReference<Forge2DGame> {
     _waitingDialog = Connect();
     _gameOverScreen = createGameOverScreen();
 
-    add(_tapArea);
 
     // GameCenter
 //    GameBoard.signedIn();
+  }
+
+  void setScore(score) {
+    _scoreLabel.setTotal(score);
+  }
+
+  void chain() {
+    if (_isMulti) {
+      _multiGame.chain.addChain();
+    }
+  }
+
+  void spawn(position) {
+    if (!_isPlaying()) return;
+    if (fallItemFactory.isFalling()) return;
+
+    // spawn(Vector2(_line.position.x, Config.WORLD_HEIGHT * .14));
+    // parent.fallItemFactory.spawn(Vector2(_line.position.x, Config.WORLD_HEIGHT * .14));
+    fallItemFactory.spawn(position);
+    // _line.hideLine();
+  }
+
+  bool _isPlaying() {
+    return isPlayingState();
   }
 
   // Singleボタンが押されたら呼ばれる
@@ -154,15 +234,17 @@ class FallGameWorld extends Base with HasGameReference<Forge2DGame> {
   }
 
   void _showLine() {
-    _tapArea.showLine(
+    tapArea.showLine(
+    // tapArea.showLine(
         fallItemFactory.getNowItem().image,
         fallItemFactory.getNowItem().size,
         fallItemFactory.getNowItem().radius);
   }
 
-  void _hideLine() {
-    _tapArea.hideLine();
-  }
+  // void _hideLine() {
+  // //   _line.hideLine();
+  //   // tapArea.hideLine();
+  // }
 
   void drawTitleScreen(bool draw) {
     if (draw) {
@@ -278,7 +360,7 @@ class FallGameWorld extends Base with HasGameReference<Forge2DGame> {
     // GameBoard.playCountAndAverageScore(_scoreLabel.score);
 
     // 落下アイテム消去
-    _hideLine();
+    tapArea.hideLine();
 
     // Titleステータスへ遷移
     moveToTitleState();
@@ -288,6 +370,7 @@ class FallGameWorld extends Base with HasGameReference<Forge2DGame> {
     _multiGame.addGameStartCallback(_onMultiGameStart);
     _multiGame.addGameOverCallback(_onMultiGameOver);
     _multiGame.opponentScore.addListener(_updateOpponentScore);
+    _multiGame.opponetBall.addListener(_updateOpponentBall);
     _multiGame.memberCount.addListener(_updateLobbyMemberCount);
     _connectivityProvider.addListener(_onConnectivityChanged);
   }
@@ -300,15 +383,20 @@ class FallGameWorld extends Base with HasGameReference<Forge2DGame> {
     }
   }
 
-  void _spawnRandomItem() {
-    var rand = Random().nextDouble() * (.8 - .2) + .2;
-    var posWidth = Config.WORLD_WIDTH * rand;
-    var pos = Vector2(posWidth, Config.WORLD_HEIGHT * .8);
-    add(fallItemFactory.create(11, pos));
-  }
-
   void _updateOpponentScore() {
     _multiGame.opponentScore.addListener(_updateOpponentScoreLabel);
+  }
+
+  void _updateOpponentBall() {
+    var chain = _multiGame.opponetBall.value;
+    for (int i = 0; i < chain; i++) {
+      fallItemFactory.spawnRandom();
+      // var rand = Random().nextDouble() * (.8 - .2) + .2;
+      // var posWidth = Config.WORLD_WIDTH * rand;
+      // var pos = Vector2(posWidth, Config.WORLD_HEIGHT * .8);
+      // this.add(_createFallItem(11, pos));
+    }
+    _multiGame.opponetBall.value = 0;
   }
 
   void  _updateLobbyMemberCount() {

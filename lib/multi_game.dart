@@ -19,6 +19,7 @@ class MultiGame {
 
   // 通知
   final ValueNotifier<int> opponentScore = ValueNotifier<int>(0); // 相手のスコア
+  final ValueNotifier<int> opponetBall = ValueNotifier<int>(0); // 連鎖数
   final ValueNotifier<int> memberCount = ValueNotifier<int>(0);   // 参加人数
 
   // スコアを更新する関数を作成
@@ -67,7 +68,7 @@ class MultiGame {
 
   void _onOpponentChainAttack(chain) {
     for (int i = 0; i < chain; i++) {
-      eventBus.publish('spawnRandomItem', null);
+      eventBus.publish('spawnRandom', null);
     }
   }
 

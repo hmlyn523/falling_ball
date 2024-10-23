@@ -6,13 +6,14 @@ import 'package:fall_game/components/fall_item/next_sprite.dart';
 import 'package:fall_game/components/wall.dart';
 import 'package:fall_game/config.dart';
 import 'package:fall_game/event_bus.dart';
+import 'package:fall_game/game.dart';
 import 'package:flame/components.dart';
 import 'package:flame/effects.dart';
 import 'package:flame/flame.dart';
 import 'package:flame_forge2d/flame_forge2d.dart';
 import 'package:flutter/material.dart';
 
-class FallItemFactory
+class FallItemFactory extends Component with HasWorldReference<FallGameWorld>
 {
   static FallItemFactory? _instance;
   final EventBus eventBus;
@@ -32,15 +33,22 @@ class FallItemFactory
     _nextItemIndex = _getItemIndex();
     final image = img.fromCache(get(_nextItemIndex).image);
     _nextItemSprite = NextSprite(image);
-    eventBus.publish('addItem', _nextItemSprite);
+    // world.game.add(_nextItemSprite);
+    // eventBus.publish('addItem', _nextItemSprite);
   }
 
   factory FallItemFactory(EventBus eventBus) {
     _instance ??= FallItemFactory._(eventBus);
     return _instance!;
   }
+  @override
+  Future<void> onLoad() async {
+    await super.onLoad();
 
-  FallItem create(index, position, {double bump = 0.0, double fadeInDuration = 0.0}) {
+    world.add(_nextItemSprite);
+  }
+
+  FallItem _create(index, position, {double bump = 0.0, double fadeInDuration = 0.0}) {
     var item = FallItem(
       image: img.fromCache(_fallList.value[index].image),
       radius: _fallList.value[index].radius,
@@ -57,27 +65,32 @@ class FallItemFactory
   }
 
   void spawn(position) {
-    // 落下中のアイテムがなければ新しく落下させる
-    if (!isFalling()) {
+    // // 落下中のアイテムがなければ新しく落下させる
+    // if (!isFalling()) {
       // 落下開始位置調整
       position = _adjustFallStartPosition(position);
       // 落下アイテム生成
-      eventBus.publish("addItem", create(_nowItemIndex, position));
+      world.add(_create(_nowItemIndex, position));
+      // eventBus.publish("addItem", _create(_nowItemIndex, position));
+
       Audio.play(Audio.AUDIO_SPAWN);
 
       _nowItemIndex = _nextItemIndex;
       _nextItemIndex = _getItemIndex();
-    }
+    // }
   }
 
-  void spawnRandomItem() {
+  // 下から1/5の位置にランダムにアイテムをスポーンする。
+  void spawnRandom() {
     var rand = Random().nextDouble() * (.8 - .2) + .2;
     var posWidth = Config.WORLD_WIDTH * rand;
-    var pos = Vector2(posWidth, Config.WORLD_HEIGHT * .8);
-    eventBus.publish("addItem", create(11, pos));
+    var posHeight = Config.WORLD_HEIGHT * .8;
+    var position = Vector2(posWidth, posHeight);
+    Audio.play(Audio.AUDIO_SPAWN);
+    world.add(_create(11, position));
+    // eventBus.publish("addItem", _create(11, position));
   }
 
-  //////////////////////////////////////
   // 落下開始位置の調整
   Vector2 _adjustFallStartPosition(position) {
     var r = get(_nowItemIndex).radius;
@@ -94,14 +107,15 @@ class FallItemFactory
     return position;
   }
 
+  // ランダムに次のアイテムを選択する
   int _getItemIndex() {
     // final List<int> _itemDischargeProbability = [20, 20, 20, 20, 20];
     final List<int> _itemDischargeProbability = [22, 18, 20, 21, 19];
     // final List<int> _itemDischargeProbability = [25, 15, 22, 23, 15];
     // final List<int> _itemDischargeProbability = [20, 20, 20, 20, 20];
     // final List<int> _itemDischargeProbability = [0, 0, 0, 0, 0, 10, 10, 20, 30, 30];
-    _itemDischargeProbability.sort((a, b) => a.compareTo(a));
-    var rand = Random().nextInt(100);
+    int sum = _itemDischargeProbability.reduce((a, b) => a + b);
+    var rand = Random().nextInt(sum);
     var rate = 0;
     for (int index = 0; index < _itemDischargeProbability.length; index++) {
       rate += _itemDischargeProbability[index];
@@ -118,6 +132,10 @@ class FallItemFactory
 
   FallInfo getNowItem() {
     return _fallList.value[_nowItemIndex];
+  }
+
+  FallInfo getNextItem() {
+    return _fallList.value[_nextItemIndex];
   }
 
   void setNextItemVisibility(b) {
@@ -153,7 +171,9 @@ class FallItemFactory
     // whereTypeのfirstを利用してTapAreaコンポーネントの取得を行う。
     if (!isFalling()) {
       _showNextItem();
-      eventBus.publish('showLine', getNowItem());
+      world.tapArea.line.showLine(getNowItem().image, getNowItem().size, getNowItem().radius);
+      // eventBus.publish('showLine', getNowItem());
+      // _tapArea.showLine(ball.image, ball.size, ball.radius);
     }
 
     // ボールがぶつかった相手が、壁の場合は何も処理をせずに終了する。
@@ -178,15 +198,18 @@ class FallItemFactory
               ((otherObject.body.position.x + selfObject.body.position.x) / 2);
           _nextItemPosition.y =
               ((otherObject.body.position.y + selfObject.body.position.y) / 2);
-          eventBus.publish('scoreLabel', get(mergeItemIndex).score);
-          eventBus.publish('chain', null);
+          world.setScore(get(mergeItemIndex).score);
+          world.chain();
+          // eventBus.publish('scoreLabel', get(mergeItemIndex).score);
+          // eventBus.publish('chain', null);
 
           // 新しいアイテム表示
           Future.delayed(Duration(milliseconds: 50), () {
-            var fallItem = create(mergeItemIndex, _nextItemPosition,
+            var fallItem = _create(mergeItemIndex, _nextItemPosition,
                 fadeInDuration: 0.1);
             fallItem.priority = 0;
-            eventBus.publish("addItem", fallItem);
+            world.add(fallItem);
+            // eventBus.publish("addItem", fallItem);
           });
 
           // 得点表示
@@ -203,7 +226,8 @@ class FallItemFactory
             ),
             priority: 2,
           );
-          eventBus.publish("addItem", scoreText);
+          world.add(scoreText);
+          // eventBus.publish("addItem", scoreText);
 
           scoreText.add(
             MoveEffect.by(
@@ -222,7 +246,8 @@ class FallItemFactory
           );
 
           // 爆発
-          eventBus.publish("addItem", SpriteAnimationComponent.fromFrameData(
+          world.add(SpriteAnimationComponent.fromFrameData(
+          // eventBus.publish("addItem", SpriteAnimationComponent.fromFrameData(
             img.fromCache("explosion.png"),
             SpriteAnimationData.sequenced(
               textureSize: Vector2.all(32),
@@ -241,6 +266,10 @@ class FallItemFactory
           // アイテム削除
           selfObject.removeItem();
           otherObject.removeItem();
+
+          _onScreenItems.remove(selfObject);
+          _onScreenItems.remove(otherObject);
+
           Audio.play(Audio.AUDIO_COLLISION);
         }
         return;
@@ -276,8 +305,8 @@ class FallItemFactory
         .where((element) => element is FallItem)
         .forEach((element) {
           element.removeFromParent();
-          _onScreenItems.clear();
         });
+    _onScreenItems.clear();
   }
 
   void _showNextItem() {
