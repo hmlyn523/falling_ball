@@ -110,7 +110,7 @@ class FallGameWorld extends Base
     await game.images.loadAllImages();
     await Audio.load();
 
-    fallItemFactory = FallItemFactory(eventBus);
+    fallItemFactory = FallItemFactory();
     add(fallItemFactory);
     tapArea = TapArea(dragAndTapCallback: spawn );
     add(tapArea);
@@ -192,14 +192,13 @@ class FallGameWorld extends Base
     }
   }
 
+  // プレイ中かつ落下中のみアイテムをスポーンし、落下位置確認用ラインを消す。
   void spawn(position) {
     if (!_isPlaying()) return;
     if (fallItemFactory.isFalling()) return;
-
-    // spawn(Vector2(_line.position.x, Config.WORLD_HEIGHT * .14));
-    // parent.fallItemFactory.spawn(Vector2(_line.position.x, Config.WORLD_HEIGHT * .14));
     fallItemFactory.spawn(position);
-    // _line.hideLine();
+    Audio.play(Audio.AUDIO_SPAWN);
+    tapArea.hideLine();
   }
 
   bool _isPlaying() {
@@ -318,7 +317,7 @@ class FallGameWorld extends Base
 
     _showLine();
 
-    fallItemFactory.setNextItemVisibility(true);
+    fallItemFactory.updateNextItemVisibility(isVisible: true);
   }
 
   @override

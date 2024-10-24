@@ -195,7 +195,8 @@ class MultiGame {
       final chain = payload['chain'] as int;
       if (sendId != myUserId) {
         print('chain(1): $chain');
-        _onOpponentChainAttack(chain);
+        opponetBall.value = chain;
+        // _onOpponentChainAttack(chain);
       }
     }).onBroadcast(event: 'game_over', callback: (payload) {
       print('[game] >>> game_over');
