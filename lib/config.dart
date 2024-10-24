@@ -1,6 +1,8 @@
 import 'package:flame/components.dart';
 
 class Config {
+  static const List<int> itemDischargeProbability = [22, 18, 20, 21, 19];
+
   static const CATEGORY_BALL       = 0x0001; // 0000000000000010 in binary ボール
   static const CATEGORY_DOWN_WALL  = 0x0002; // 0000000000000100 in binary 下の壁
   static const CATEGORY_LEFT_WALL  = 0x0003; // 0000000000000100 in binary 左の壁
@@ -82,18 +84,18 @@ class FallInfo {
 class FallList {
   final List<FallInfo> value = [];
   FallList() {
-    value.add(new FallInfo(Config.IMAGE_1,  WallPosition.width * .070 / 2, Vector2.all(WallPosition.width * .070), 2.6,  0));
-    value.add(new FallInfo(Config.IMAGE_2,  WallPosition.width * .097 / 2, Vector2.all(WallPosition.width * .097), 2.4,  1));
-    value.add(new FallInfo(Config.IMAGE_3,  WallPosition.width * .129 / 2, Vector2.all(WallPosition.width * .129), 2.25, 3));
-    value.add(new FallInfo(Config.IMAGE_4,  WallPosition.width * .166 / 2, Vector2.all(WallPosition.width * .166), 2.10, 6));
-    value.add(new FallInfo(Config.IMAGE_5,  WallPosition.width * .208 / 2, Vector2.all(WallPosition.width * .208), 1.95, 10));
-    value.add(new FallInfo(Config.IMAGE_6,  WallPosition.width * .250 / 2, Vector2.all(WallPosition.width * .250), 1.85, 15));
-    value.add(new FallInfo(Config.IMAGE_7,  WallPosition.width * .298 / 2, Vector2.all(WallPosition.width * .298), 1.75, 21));
-    value.add(new FallInfo(Config.IMAGE_8,  WallPosition.width * .346 / 2, Vector2.all(WallPosition.width * .346), 1.65, 28));
-    value.add(new FallInfo(Config.IMAGE_9,  WallPosition.width * .399 / 2, Vector2.all(WallPosition.width * .399), 1.6,  36));
-    value.add(new FallInfo(Config.IMAGE_10, WallPosition.width * .444 / 2, Vector2.all(WallPosition.width * .444), 1.55, 45));
-    value.add(new FallInfo(Config.IMAGE_11, WallPosition.width * .513 / 2, Vector2.all(WallPosition.width * .513), 1.5,  55));
-    value.add(new FallInfo(Config.IMAGE_12,  WallPosition.width * .070 / 2, Vector2.all(WallPosition.width * .070), 2.6,  0));
+    value.add(new FallInfo(Config.IMAGE_1,  WallPosition.width * .070 * .5, Vector2.all(WallPosition.width * .070), 2.6,  0));
+    value.add(new FallInfo(Config.IMAGE_2,  WallPosition.width * .097 * .45, Vector2.all(WallPosition.width * .097), 2.4,  1));
+    value.add(new FallInfo(Config.IMAGE_3,  WallPosition.width * .129 * .45, Vector2.all(WallPosition.width * .129), 2.25, 3));
+    value.add(new FallInfo(Config.IMAGE_4,  WallPosition.width * .166 * .45, Vector2.all(WallPosition.width * .166), 2.10, 6));
+    value.add(new FallInfo(Config.IMAGE_5,  WallPosition.width * .208 * .45, Vector2.all(WallPosition.width * .208), 1.95, 10));
+    value.add(new FallInfo(Config.IMAGE_6,  WallPosition.width * .250 * .45, Vector2.all(WallPosition.width * .250), 1.85, 15));
+    value.add(new FallInfo(Config.IMAGE_7,  WallPosition.width * .298 * .45, Vector2.all(WallPosition.width * .298), 1.75, 21));
+    value.add(new FallInfo(Config.IMAGE_8,  WallPosition.width * .346 * .45, Vector2.all(WallPosition.width * .346), 1.65, 28));
+    value.add(new FallInfo(Config.IMAGE_9,  WallPosition.width * .399 * .45, Vector2.all(WallPosition.width * .399), 1.6,  36));
+    value.add(new FallInfo(Config.IMAGE_10, WallPosition.width * .444 * .45, Vector2.all(WallPosition.width * .444), 1.55, 45));
+    value.add(new FallInfo(Config.IMAGE_11, WallPosition.width * .513 * .45, Vector2.all(WallPosition.width * .513), 1.5,  55));
+    value.add(new FallInfo(Config.IMAGE_12,  WallPosition.width * .070 * .45, Vector2.all(WallPosition.width * .070), 2.6,  0));
     // Set type.
     for ( int index = 0; index < value.length; index++) {
       value[index].type = index;
