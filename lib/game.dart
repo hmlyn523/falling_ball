@@ -49,6 +49,7 @@ class FallGameWorld extends Base
   late final List<SpriteComponent> _titleScreen;
   late final PositionComponent _waitingDialog;
   late final List<SpriteComponent> _gameOverScreen;
+  late final ScoreLabel _nextItemLabel;
   late final ScoreLabel _scoreLabel;
   late final ScoreLabel _opponentScoreLabel;
   late final ScoreLabel _lobbyNumberLabel;
@@ -149,8 +150,8 @@ class FallGameWorld extends Base
 
     _multiGame = MultiGame(eventBus);
     _lobbyNumberLabel = ScoreLabel(
-        position: Vector2(Config.WORLD_WIDTH * .47, Config.WORLD_HEIGHT * .974),
-        color: Color.fromRGBO(0, 0, 0, 1));
+        position: Vector2(Config.WORLD_WIDTH * .47, Config.WORLD_HEIGHT * .962),
+        color: Color.fromRGBO(255, 255, 255, 1));
 
     _setupListeners();
  
@@ -161,14 +162,18 @@ class FallGameWorld extends Base
     final backgroundImage = await img.load(Config.IMAGE_BACKGROUND);
     createBackgound(backgroundImage).forEach(add);
 
+    add(_nextItemLabel = ScoreLabel(
+        score: await GameBoard.getScore(),
+        position: Vector2(Config.WORLD_WIDTH * .33, Config.WORLD_HEIGHT * .058),
+        color: Color.fromRGBO(255, 255, 255, 1)));
     add(_scoreLabel = ScoreLabel(
         score: await GameBoard.getScore(),
-        position: Vector2(Config.WORLD_WIDTH * .85, Config.WORLD_HEIGHT * .044),
-        color: Color.fromRGBO(0, 0, 0, 1)));
+        position: Vector2(Config.WORLD_WIDTH * .93, Config.WORLD_HEIGHT * .058),
+        color: Color.fromRGBO(255, 255, 255, 1)));
     add(_opponentScoreLabel = ScoreLabel(
         position:
-            Vector2(Config.WORLD_WIDTH * .953, Config.WORLD_HEIGHT * .974),
-        color: Color.fromRGBO(0, 0, 0, 1)));
+            Vector2(Config.WORLD_WIDTH * .953, Config.WORLD_HEIGHT * .962),
+        color: Color.fromRGBO(255, 255, 255, 1)));
     _opponentScoreLabel.isVisible = false;
 
     add(_lobbyNumberLabel);
@@ -180,6 +185,10 @@ class FallGameWorld extends Base
 
     // GameCenter
 //    GameBoard.signedIn();
+  }
+
+  void setNextItem(item) {
+    _nextItemLabel.text = item.toString();
   }
 
   void setScore(score) {
@@ -295,7 +304,8 @@ class FallGameWorld extends Base
   void start() {
     super.start();
 
-    // スコア初期化
+    _nextItemLabel.text = (fallItemFactory.getNextItemIndex() + 1).toString();
+
     _scoreLabel.score = 0;
     _opponentScoreLabel.score = 0;
 

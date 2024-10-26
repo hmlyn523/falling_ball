@@ -19,7 +19,7 @@ class FallItemFactory extends Component
   final FallList _fallList = FallList();
   final img = Flame.images;
 
-  late final NextSprite _nextItemSprite;
+  // late final NextSprite _nextItemSprite;
 
   late int _nowItemIndex;
   late int _nextItemIndex;
@@ -29,14 +29,14 @@ class FallItemFactory extends Component
   FallItemFactory() {
     _nowItemIndex = _getSpawnItemRandomIndex();
     _nextItemIndex = _getSpawnItemRandomIndex();
-    final image = img.fromCache(getItem(_nextItemIndex).image);
-    _nextItemSprite = NextSprite(image);
+    // final image = img.fromCache(getItem(_nextItemIndex).image);
+    // _nextItemSprite = NextSprite(image);
   }
 
   @override
   Future<void> onLoad() async {
     await super.onLoad();
-    world.add(_nextItemSprite);
+    // world.add(_nextItemSprite);
   }
 
   FallItem _create(index, position, {double bump = 0.0, double fadeInDuration = 0.0}) {
@@ -116,7 +116,7 @@ class FallItemFactory extends Component
   }
 
   void updateNextItemVisibility({required bool isVisible}) {
-    _nextItemSprite.isVisible = isVisible;
+    // _nextItemSprite.isVisible = isVisible;
   }
 
   int getCount() {
@@ -174,7 +174,7 @@ class FallItemFactory extends Component
   }
 
   void _handleNonFallingState() {
-    _showNextItem();
+    world.setNextItem(_nextItemIndex + 1);
     world.tapArea.line.showLine(
       getNowItem().image,
       getNowItem().size,
@@ -295,8 +295,12 @@ class FallItemFactory extends Component
     _onScreenItems.clear();
   }
 
-  void _showNextItem() {
-    _nextItemSprite.setImage(
-        img.fromCache(getItem(_nextItemIndex).image));
+  int getNextItemIndex() {
+    return _nextItemIndex;
   }
+
+  // void _showNextItem() {
+  //   _nextItemSprite.setImage(
+  //       img.fromCache(getItem(_nextItemIndex).image));
+  // }
 }
