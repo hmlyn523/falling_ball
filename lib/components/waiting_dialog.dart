@@ -2,7 +2,6 @@ import 'package:fall_game/world.dart';
 import 'package:flame/events.dart';
 import 'package:flame/components.dart';
 import 'package:fall_game/config.dart';
-import 'package:fall_game/game.dart';
 import 'package:flame/flame.dart';
 
 class Connect extends SpriteAnimationComponent {
