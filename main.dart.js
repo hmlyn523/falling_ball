@@ -39519,7 +39519,7 @@ r.sc5(0,J.bN(s.x.a))}}
 A.a0y.prototype={
 $1(a){var s=a.at
 s===$&&A.b()
-return s.d.a.a[1]<51.168000000000006&&!a.aq},
+return s.d.a.a[1]<12.792000000000002&&!a.aq},
 $S:101}
 A.Q1.prototype={
 ca(){var s=this.c8$
