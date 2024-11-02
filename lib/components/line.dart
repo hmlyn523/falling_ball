@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:fall_game/components/fall_item/now_sprite.dart';
 import 'package:fall_game/config.dart';
 import 'package:flame/components.dart';
@@ -9,12 +7,13 @@ import 'package:flutter/material.dart';
 class Line extends RectangleComponent
   with HasVisibility
 {
+  final images = Flame.images;
   late NowSprite _nowFallItemSprite;
 
   Line()
     : super(
         size: Vector2(Config.WORLD_WIDTH * .01, Config.WORLD_HEIGHT * .759),
-        paint: Paint()..color = Colors.white38,
+        paint: Paint()..color = Colors.white30
       ){
         priority = Config.PRIORITY_LINE;
         isVisible = false;
@@ -22,8 +21,7 @@ class Line extends RectangleComponent
 
   @override
   Future<void> onLoad() async {
-    final _sprite = Sprite(Flame.images.fromCache(Config.IMAGE_EMPTY));
-    // final _sprite = Sprite(game.images.fromCache(Config.IMAGE_EMPTY));
+    final _sprite = Sprite(images.fromCache(Config.IMAGE_EMPTY));
     _nowFallItemSprite = NowSprite(sprite:_sprite);
     await addAll([
       _nowFallItemSprite,
@@ -34,7 +32,7 @@ class Line extends RectangleComponent
     this.isVisible = true;
     _nowFallItemSprite.isVisible = true;
 
-    _nowFallItemSprite.sprite = Sprite(Flame.images.fromCache(image));
+    _nowFallItemSprite.sprite = Sprite(images.fromCache(image));
     _nowFallItemSprite.size = size;
     _nowFallItemSprite.radius = radius;
     _nowFallItemSprite.position = Vector2.zero();
@@ -43,11 +41,9 @@ class Line extends RectangleComponent
   void hideLine() {
     this.isVisible = false;
     _nowFallItemSprite.isVisible = false;
-    // remove(_nowFallItemSprite);
   }
 
   bool updateLine(Vector2 position) {
-    // _dragging = true;
     if (position.x.isNaN || position.y.isNaN) {
       return false;
     }

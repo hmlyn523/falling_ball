@@ -15,8 +15,6 @@ class MultiGame {
   final supabase = Supabase.instance.client;
   String opponent = "";
 
-  final EventBus eventBus;
-
   // 通知
   final ValueNotifier<int> opponentScore = ValueNotifier<int>(0); // 相手のスコア
   final ValueNotifier<int> opponetBall = ValueNotifier<int>(0); // 連鎖数
@@ -32,7 +30,7 @@ class MultiGame {
 
   final Chain chain = Chain();
 
-  MultiGame(this.eventBus) {
+  MultiGame() {
     onOnline();
   }
 
@@ -64,12 +62,6 @@ class MultiGame {
       _waitingChannel.untrack();
       _waitingChannel.unsubscribe();
     } catch(e) {}
-  }
-
-  void _onOpponentChainAttack(chain) {
-    for (int i = 0; i < chain; i++) {
-      eventBus.publish('spawnRandom', null);
-    }
   }
 
   // MULTIを押したら呼ばれる

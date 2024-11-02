@@ -1,7 +1,5 @@
+import 'package:flame_forge2d/flame_forge2d.dart';
 import 'package:flutter/material.dart';
-import 'package:flame/game.dart';
-import 'package:flame_forge2d/forge2d_world.dart';
-import 'package:flame/components.dart';
 
 enum GameState {
   title,
@@ -13,18 +11,9 @@ enum GameState {
 }
 
 abstract class Base extends Forge2DWorld {
-  Base({Vector2? gravity}) :
-    super(
-      gravity: gravity,
-    );
 
   GameState _state = GameState.title;
   bool debugFps = false;
-
-  @override
-  Future<void> onLoad() async {
-    await super.onLoad(); 
-  }
 
   @override
   void update(double d){

@@ -59,16 +59,17 @@ class TapArea extends PositionComponent with TapCallbacks,
   @override
   void onDragEnd(DragEndEvent event) {
     super.onDragEnd(event);
-    _spawn();
+    _onDragOrTapEnd();
   }
 
   // タップを離すと呼ばれる
   @override
   void onTapUp(TapUpEvent event) {
-    _spawn();
+    super.onTapUp(event);
+    _onDragOrTapEnd();
   }
 
-  void _spawn() {
+  void _onDragOrTapEnd() {
     if (!_dragging) return;
     dragAndTapCallback(Vector2(line.position.x, Config.WORLD_HEIGHT * .14));
   }

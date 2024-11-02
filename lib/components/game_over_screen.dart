@@ -1,3 +1,4 @@
+import 'package:fall_game/world.dart';
 import 'package:flame/components.dart';
 
 import 'package:fall_game/config.dart';

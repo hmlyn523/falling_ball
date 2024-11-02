@@ -1,7 +1,9 @@
+import 'package:fall_game/world.dart';
 import 'package:flame/events.dart';
 import 'package:flame/components.dart';
 import 'package:fall_game/config.dart';
 import 'package:fall_game/game.dart';
+import 'package:flame/flame.dart';
 
 class Connect extends SpriteAnimationComponent {
   @override
@@ -23,11 +25,12 @@ class Connect extends SpriteAnimationComponent {
 class CancelButton extends SpriteComponent
     with
         TapCallbacks,
-        HasGameReference<FallGame>,
         HasWorldReference<FallGameWorld> {
+  final images = Flame.images;
+
   @override
   Future<void> onLoad() async {
-    sprite = Sprite(game.images.fromCache(Config.IMAGE_CANCEL));
+    sprite = Sprite(images.fromCache(Config.IMAGE_CANCEL));
     final parentSize = (parent as Connect).size;
     position = Vector2(parentSize.x * .5, parentSize.y * .65);
     size = Vector2(Config.WORLD_WIDTH * .50, Config.WORLD_HEIGHT * .085);
