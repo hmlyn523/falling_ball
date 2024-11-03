@@ -39497,9 +39497,7 @@ p=B.dI.Ap()
 o=new Float64Array(2)
 o[0]=40*(p*0.6000000000000001+0.2)
 o[1]=51.168000000000006
-p=q.ay
-p===$&&A.b()
-n=q.EO(p,new A.h(o))
+n=q.EO(11,new A.h(o))
 o=q.hb$
 if(o==null){m=q.JP()
 m.toString
