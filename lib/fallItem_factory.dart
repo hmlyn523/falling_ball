@@ -69,7 +69,7 @@ class FallItemFactory extends Component
   // 下から1/5の位置にランダムにアイテムをスポーンする。
   void spawnRandom() {
     var position = _generateRandomPosition();
-    _addItemToWorld(_nowItemIndex, position);
+    _addItemToWorld(11, position);
     Audio.play(Audio.AUDIO_SPAWN);
   }
 
