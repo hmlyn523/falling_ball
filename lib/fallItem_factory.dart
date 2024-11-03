@@ -55,7 +55,6 @@ class FallItemFactory extends Component
     );
     _onScreenItems.add(item);
     var num = _onScreenItems.length;
-    print("---------------> $num");
     return item;
   }
 
