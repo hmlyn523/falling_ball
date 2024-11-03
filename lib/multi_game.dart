@@ -20,7 +20,7 @@ class MultiGame {
   final ValueNotifier<int> memberCount = ValueNotifier<int>(0);   // 参加人数
 
   // スコアを更新する関数を作成
-  void updateOpponentScore(int score) {
+  void _updateOpponentScore(int score) {
     opponentScore.value = score;
   }
 
@@ -179,7 +179,7 @@ class MultiGame {
       final score = payload['score'] as int;
       final sendId = payload['send_id'] as String;
       if (sendId != myUserId) {
-        updateOpponentScore(score);
+        _updateOpponentScore(score);
       }
     }).onBroadcast(event: 'game_chain', callback: (payload) {
       final sendId = payload['send_id'] as String;
