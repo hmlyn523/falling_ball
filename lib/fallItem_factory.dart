@@ -18,7 +18,7 @@ class FallItemFactory extends Component
   final images = Flame.images;
 
   // 落下アイテムリスト
-  final FallList _fallList = FallList();
+  final FallingItemCollection _fallList = FallingItemCollection();
 
   // 現在の落下アイテム
   late int _nowItemIndex;
@@ -33,6 +33,53 @@ class FallItemFactory extends Component
   // コンストラクタ
   FallItemFactory() {
     _initialize();
+  }
+
+  // 落下アイテムのスポーン
+  void spawn(position) {
+      position = _adjustedPosition(position);
+      _addItemToWorld(_nowItemIndex, position);
+      _updateSpawnIndices();
+  }
+
+  // 下から1/5の位置にランダムにアイテムをスポーンする。
+  void randomSpawn([Vector2? position]) {
+    position = position ?? _generateRandomPosition();
+    _addItemToWorld(11, position);
+    Audio.play(Audio.AUDIO_SPAWN);
+  }
+
+  FallingItemAttributes getFallingItemAttributes(index) {
+    return _fallList.value[index];
+  }
+
+  FallingItemAttributes getNowFallingItemAttributes() {
+    return _fallList.value[_nowItemIndex];
+  }
+
+  FallingItemAttributes getNextFallingItemAttributes() {
+    return _fallList.value[_nextItemIndex];
+  }
+
+  void updateNextItemVisibility({required bool isVisible}) {
+    // _nextItemSprite.isVisible = isVisible;
+  }
+
+  int getCount() {
+    return _fallList.value.length;
+  }
+  
+  bool isFalling() {
+    return _onScreenItems.any((element) => element.falling);
+  }
+
+  void deleteAllItem(children) {
+    children
+        .where((element) => element is FallItem)
+        .forEach((element) {
+          element.removeFromParent();
+        });
+    _onScreenItems.clear();
   }
 
   // 初期化処理
@@ -54,22 +101,8 @@ class FallItemFactory extends Component
       contactCallback: _collision,
     );
     _onScreenItems.add(item);
-    var num = _onScreenItems.length;
+    // var num = _onScreenItems.length;
     return item;
-  }
-
-  // 落下アイテムのスポーン
-  void spawn(position) {
-      position = _adjustedPosition(position);
-      _addItemToWorld(_nowItemIndex, position);
-      _updateSpawnIndices();
-  }
-
-  // 下から1/5の位置にランダムにアイテムをスポーンする。
-  void spawnRandom() {
-    var position = _generateRandomPosition();
-    _addItemToWorld(11, position);
-    Audio.play(Audio.AUDIO_SPAWN);
   }
 
   // アイテムを生成してworldに追加する共通メソッド
@@ -95,7 +128,7 @@ class FallItemFactory extends Component
   // 落下開始位置の調整
   Vector2 _adjustedPosition(Vector2 position) {
     var adjustedPosition = Vector2(position.x, position.y);
-    var r = getItem(_nowItemIndex).radius;
+    var r = getFallingItemAttributes(_nowItemIndex).radius;
     var adjustment = Config.WORLD_WIDTH * .01;
 
     // 左右の壁との当たり判定の調整
@@ -120,31 +153,7 @@ class FallItemFactory extends Component
     });
   }
 
-  FallInfo getItem(index) {
-    return _fallList.value[index];
-  }
-
-  FallInfo getNowItem() {
-    return _fallList.value[_nowItemIndex];
-  }
-
-  FallInfo getNextItem() {
-    return _fallList.value[_nextItemIndex];
-  }
-
-  void updateNextItemVisibility({required bool isVisible}) {
-    // _nextItemSprite.isVisible = isVisible;
-  }
-
-  int getCount() {
-    return _fallList.value.length;
-  }
-  
-  bool isFalling() {
-    return _onScreenItems.any((element) => element.falling);
-  }
-
-  // ボールが他のボールや壁に衝突した場合に呼び出される。
+ // ボールが他のボールや壁に衝突した場合に呼び出される。
   void _collision(FallItem item, Object other, Contact contact) {
     final selfObject = _getSelfObject(item, contact);
     final otherObject = _getOtherObject(item, contact);
@@ -193,9 +202,9 @@ class FallItemFactory extends Component
   void _handleNonFallingState() {
     world.setNextItem(_nextItemIndex + 1);
     world.tapArea.line.showLine(
-      getNowItem().image,
-      getNowItem().size,
-      getNowItem().radius,
+      getNowFallingItemAttributes().image,
+      getNowFallingItemAttributes().size,
+      getNowFallingItemAttributes().radius,
     );
   }
 
@@ -227,7 +236,7 @@ class FallItemFactory extends Component
 
   // 新しいアイテム表示
   void _createAndDisplayNextItem(int mergeItemIndex, Vector2 position) {
-    world.setScore(getItem(mergeItemIndex).score);
+    world.setScore(getFallingItemAttributes(mergeItemIndex).score);
     world.chain();
     
     Future.delayed(Duration(milliseconds: 50), () {
@@ -240,7 +249,7 @@ class FallItemFactory extends Component
   // 得点表示
   void _showScore(int mergeItemIndex, Vector2 position) {
     final scoreText = TextComponent(
-      text: getItem(mergeItemIndex).score.toString(),
+      text: getFallingItemAttributes(mergeItemIndex).score.toString(),
       position: position,
       anchor: Anchor.center,
       textRenderer: TextPaint(
@@ -303,12 +312,4 @@ class FallItemFactory extends Component
   //   return ret;
   // }
 
-  void deleteAllItem(children) {
-    children
-        .where((element) => element is FallItem)
-        .forEach((element) {
-          element.removeFromParent();
-        });
-    _onScreenItems.clear();
-  }
 }

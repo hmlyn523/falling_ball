@@ -201,7 +201,7 @@ class FallGameWorld extends Base
   void start() {
     super.start();
 
-    _nextItemLabel.text = (fallItemFactory.getNextItem().type + 1).toString();
+    _nextItemLabel.text = (fallItemFactory.getNextFallingItemAttributes().type + 1).toString();
 
     _scoreLabel.score = 0;
     _opponentScoreLabel.score = 0;
@@ -286,9 +286,9 @@ class FallGameWorld extends Base
 
   void _showLine() {
     tapArea.showLine(
-        fallItemFactory.getNowItem().image,
-        fallItemFactory.getNowItem().size,
-        fallItemFactory.getNowItem().radius);
+        fallItemFactory.getNowFallingItemAttributes().image,
+        fallItemFactory.getNowFallingItemAttributes().size,
+        fallItemFactory.getNowFallingItemAttributes().radius);
   }
 
   bool _isGameOver() {
@@ -320,7 +320,7 @@ class FallGameWorld extends Base
   void _updateOpponentBall() {
     var chain = _multiGame.opponetBall.value;
     for (int i = 0; i < chain; i++) {
-      fallItemFactory.spawnRandom();
+      fallItemFactory.randomSpawn();
     }
     _multiGame.opponetBall.value = 0;
   }

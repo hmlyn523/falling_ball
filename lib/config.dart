@@ -72,31 +72,31 @@ class WallPosition {
   static double width = topRight.x - topLeft.x;
 }
 
-class FallInfo {
+class FallingItemAttributes {
   late int type;
   final String image;
   final double radius;
   final Vector2 size;
   final double density;
   final int score;
-  FallInfo(this.image, this.radius, this.size, this.density, this.score);
+  FallingItemAttributes(this.image, this.radius, this.size, this.density, this.score);
 }
 
-class FallList {
-  final List<FallInfo> value = [];
-  FallList() {
-    value.add(new FallInfo(Config.IMAGE_1,  WallPosition.width * .070 * .5, Vector2.all(WallPosition.width * .070), 2.6,  0));
-    value.add(new FallInfo(Config.IMAGE_2,  WallPosition.width * .097 * .5, Vector2.all(WallPosition.width * .097), 2.4,  1));
-    value.add(new FallInfo(Config.IMAGE_3,  WallPosition.width * .129 * .5, Vector2.all(WallPosition.width * .129), 2.25, 3));
-    value.add(new FallInfo(Config.IMAGE_4,  WallPosition.width * .166 * .5, Vector2.all(WallPosition.width * .166), 2.10, 6));
-    value.add(new FallInfo(Config.IMAGE_5,  WallPosition.width * .208 * .5, Vector2.all(WallPosition.width * .208), 1.95, 10));
-    value.add(new FallInfo(Config.IMAGE_6,  WallPosition.width * .250 * .5, Vector2.all(WallPosition.width * .250), 1.85, 15));
-    value.add(new FallInfo(Config.IMAGE_7,  WallPosition.width * .298 * .5, Vector2.all(WallPosition.width * .298), 1.75, 21));
-    value.add(new FallInfo(Config.IMAGE_8,  WallPosition.width * .346 * .5, Vector2.all(WallPosition.width * .346), 1.65, 28));
-    value.add(new FallInfo(Config.IMAGE_9,  WallPosition.width * .399 * .5, Vector2.all(WallPosition.width * .399), 1.6,  36));
-    value.add(new FallInfo(Config.IMAGE_10, WallPosition.width * .444 * .5, Vector2.all(WallPosition.width * .444), 1.55, 45));
-    value.add(new FallInfo(Config.IMAGE_11, WallPosition.width * .513 * .5, Vector2.all(WallPosition.width * .513), 1.5,  55));
-    value.add(new FallInfo(Config.IMAGE_12,  WallPosition.width * .070 * .5, Vector2.all(WallPosition.width * .070), 2.6,  0));
+class FallingItemCollection {
+  final List<FallingItemAttributes> value = [];
+  FallingItemCollection() {
+    value.add(new FallingItemAttributes(Config.IMAGE_1,  WallPosition.width * .070 * .5, Vector2.all(WallPosition.width * .070), 2.6,  0));
+    value.add(new FallingItemAttributes(Config.IMAGE_2,  WallPosition.width * .097 * .5, Vector2.all(WallPosition.width * .097), 2.4,  1));
+    value.add(new FallingItemAttributes(Config.IMAGE_3,  WallPosition.width * .129 * .5, Vector2.all(WallPosition.width * .129), 2.25, 3));
+    value.add(new FallingItemAttributes(Config.IMAGE_4,  WallPosition.width * .166 * .5, Vector2.all(WallPosition.width * .166), 2.10, 6));
+    value.add(new FallingItemAttributes(Config.IMAGE_5,  WallPosition.width * .208 * .5, Vector2.all(WallPosition.width * .208), 1.95, 10));
+    value.add(new FallingItemAttributes(Config.IMAGE_6,  WallPosition.width * .250 * .5, Vector2.all(WallPosition.width * .250), 1.85, 15));
+    value.add(new FallingItemAttributes(Config.IMAGE_7,  WallPosition.width * .298 * .5, Vector2.all(WallPosition.width * .298), 1.75, 21));
+    value.add(new FallingItemAttributes(Config.IMAGE_8,  WallPosition.width * .346 * .5, Vector2.all(WallPosition.width * .346), 1.65, 28));
+    value.add(new FallingItemAttributes(Config.IMAGE_9,  WallPosition.width * .399 * .5, Vector2.all(WallPosition.width * .399), 1.6,  36));
+    value.add(new FallingItemAttributes(Config.IMAGE_10, WallPosition.width * .444 * .5, Vector2.all(WallPosition.width * .444), 1.55, 45));
+    value.add(new FallingItemAttributes(Config.IMAGE_11, WallPosition.width * .513 * .5, Vector2.all(WallPosition.width * .513), 1.5,  55));
+    value.add(new FallingItemAttributes(Config.IMAGE_12,  WallPosition.width * .070 * .5, Vector2.all(WallPosition.width * .070), 2.6,  0));
     // Set type.
     for ( int index = 0; index < value.length; index++) {
       value[index].type = index;
