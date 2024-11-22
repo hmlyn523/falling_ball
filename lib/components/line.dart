@@ -8,7 +8,7 @@ class Line extends RectangleComponent
   with HasVisibility
 {
   final images = Flame.images;
-  late NowSprite _nowFallItemSprite;
+  late NowSprite _nowFallingItemSprite;
 
   Line()
     : super(
@@ -22,25 +22,25 @@ class Line extends RectangleComponent
   @override
   Future<void> onLoad() async {
     final _sprite = Sprite(images.fromCache(Config.IMAGE_EMPTY));
-    _nowFallItemSprite = NowSprite(sprite:_sprite);
+    _nowFallingItemSprite = NowSprite(sprite:_sprite);
     await addAll([
-      _nowFallItemSprite,
+      _nowFallingItemSprite,
     ]);
   }
 
   void showLine(image, size, radius) {
     this.isVisible = true;
-    _nowFallItemSprite.isVisible = true;
+    _nowFallingItemSprite.isVisible = true;
 
-    _nowFallItemSprite.sprite = Sprite(images.fromCache(image));
-    _nowFallItemSprite.size = size;
-    _nowFallItemSprite.radius = radius;
-    _nowFallItemSprite.position = Vector2.zero();
+    _nowFallingItemSprite.sprite = Sprite(images.fromCache(image));
+    _nowFallingItemSprite.size = size;
+    _nowFallingItemSprite.radius = radius;
+    _nowFallingItemSprite.position = Vector2.zero();
   }
 
   void hideLine() {
     this.isVisible = false;
-    _nowFallItemSprite.isVisible = false;
+    _nowFallingItemSprite.isVisible = false;
   }
 
   bool updateLine(Vector2 position) {
@@ -54,7 +54,7 @@ class Line extends RectangleComponent
   }
 
   double _xDirectionAdjustment(x) {
-    final r = _nowFallItemSprite.radius;
+    final r = _nowFallingItemSprite.radius;
     var adjustment = Config.WORLD_WIDTH * .01;
     if (x <= WallPosition.topLeft.x + r) {
       x = (WallPosition.topLeft.x + r);

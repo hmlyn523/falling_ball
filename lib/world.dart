@@ -1,7 +1,8 @@
 import 'package:fall_game/components/waiting_dialog.dart';
 import 'package:fall_game/connectivity_provider.dart';
-import 'package:fall_game/fallItem_factory.dart';
+import 'package:fall_game/fallingItem_factory.dart';
 import 'package:fall_game/multi_game.dart';
+import 'package:fall_game/ui_manager.dart';
 import 'package:flame/events.dart';
 import 'package:flame/flame.dart';
 import 'package:flame_forge2d/flame_forge2d.dart';
@@ -26,13 +27,15 @@ class FallGameWorld extends Base
 {
   final images = Flame.images;
 
+  late final UIManager uiManager;
+
   late final List<SpriteComponent> _titleScreen;
   late final PositionComponent _waitingDialog;
   late final List<SpriteComponent> _gameOverScreen;
-  late final ScoreLabel _nextItemLabel;
-  late final ScoreLabel _scoreLabel;
-  late final ScoreLabel _opponentScoreLabel;
-  late final ScoreLabel _lobbyNumberLabel;
+  // late final ScoreLabel _nextItemLabel;
+  // late final ScoreLabel _scoreLabel;
+  // late final ScoreLabel _opponentScoreLabel;
+  // late final ScoreLabel _lobbyNumberLabel;
   late final TapArea tapArea;
 
   late final MultiGame _multiGame;
@@ -40,27 +43,11 @@ class FallGameWorld extends Base
 
   late final ConnectivityProvider _connectivityProvider;
 
-  late FallItemFactory fallItemFactory;
+  late FallingItemFactory fallingItemFactory;
 
   FallGameWorld()
   {
     Audio.bgmPlay(Audio.AUDIO_TITLE);
-  }
-
-  // void handleSpawnEvent(dynamic data) {
-  //   add(data);
-  // }
-
-  // void handleSpawnRandomEvent(dynamic data) {
-  //   add(data);
-  // }
-  
-  void setNextItem(item) {
-    _nextItemLabel.text = item.toString();
-  }
-
-  void setScore(score) {
-    _scoreLabel.setTotal(score);
   }
 
   void chain() {
@@ -72,8 +59,8 @@ class FallGameWorld extends Base
   // プレイ中かつ落下中のみアイテムをスポーンし、落下位置確認用ラインを消す。
   void spawn(position) {
     if (!_isPlaying()) return;
-    if (fallItemFactory.isFalling()) return;
-    fallItemFactory.spawn(position);
+    if (fallingItemFactory.isFallingItem()) return;
+    fallingItemFactory.spawn(position);
     Audio.play(Audio.AUDIO_SPAWN);
     tapArea.hideLine();
   }
@@ -125,51 +112,24 @@ class FallGameWorld extends Base
   Future<void> onLoad() async {
     await super.onLoad();
 
-    // ビューファインダーのアンカーを左上に設定し、左上の座標を (0,0) として扱います。
-    game.camera.viewfinder.anchor = Anchor.topLeft;
+    // ビューファインダーの設定(左上の座標を0,0として扱う)
+    await _initializeCamera();
 
-    await game.images.loadAllImages();
-    await Audio.load();
+    uiManager = UIManager();
 
-    fallItemFactory = FallItemFactory();
-    add(fallItemFactory);
-    tapArea = TapArea(dragAndTapCallback: spawn );
-    add(tapArea);
+    await uiManager.initializeLabels();
+    uiManager.addLabelsToGame(this);
 
-    _connectivityProvider = ConnectivityProvider();
+    // 画像やオーディオの読み込み
+    await _loadAssets();
 
-    _multiGame = MultiGame();
-    _lobbyNumberLabel = ScoreLabel(
-        position: Vector2(Config.WORLD_WIDTH * .47, Config.WORLD_HEIGHT * .962),
-        color: Color.fromRGBO(255, 255, 255, 1));
+    // 必要なコンポーネントや依存関係の初期化
+    _setupConnectivityListener();
+    _setupMultiGame();
+    _setupFactories();
 
-    _setupListeners();
- 
-    createWall().forEach(add);
-    final foregroundImage = await images.load(Config.IMAGE_FOREGROUND);
-    createForegound(foregroundImage).forEach(add);
-    final backgroundImage = await images.load(Config.IMAGE_BACKGROUND);
-    createBackgound(backgroundImage).forEach(add);
-
-    add(_nextItemLabel = ScoreLabel(
-        score: await GameBoard.getScore(),
-        position: Vector2(Config.WORLD_WIDTH * .33, Config.WORLD_HEIGHT * .058),
-        color: Color.fromRGBO(255, 255, 255, 1)));
-    add(_scoreLabel = ScoreLabel(
-        score: await GameBoard.getScore(),
-        position: Vector2(Config.WORLD_WIDTH * .93, Config.WORLD_HEIGHT * .058),
-        color: Color.fromRGBO(255, 255, 255, 1)));
-    add(_opponentScoreLabel = ScoreLabel(
-        position:
-            Vector2(Config.WORLD_WIDTH * .953, Config.WORLD_HEIGHT * .962),
-        color: Color.fromRGBO(255, 255, 255, 1)));
-    _opponentScoreLabel.isVisible = false;
-
-    add(_lobbyNumberLabel);
-
-    _titleScreen = createTitleScreen();
-    _waitingDialog = Connect();
-    _gameOverScreen = createGameOverScreen();
+    // 壁や背景などの描画要素を追加
+    _setupUIComponents();
 
     // GameBoard.signedIn();
     // _gameOverScreen = createGameOverScreen();
@@ -201,16 +161,19 @@ class FallGameWorld extends Base
   void start() {
     super.start();
 
-    _nextItemLabel.text = (fallItemFactory.getNextFallingItemAttributes().type + 1).toString();
+    // _nextItemLabel.text = (fallingItemFactory.getNextFallingItemAttributes().type + 1).toString();
+    var nextItemType = (fallingItemFactory.getNextFallingItemAttributes().type + 1);
+    uiManager.updateNextItemLabel(nextItemType);
 
-    _scoreLabel.score = 0;
-    _opponentScoreLabel.score = 0;
+    // _scoreLabel.score = 0;
+    // _opponentScoreLabel.score = 0;
+    uiManager.resetScores();
 
     // タイトル非表示
     drawTitleScreen(false);
 
     // 落下アイテム削除
-    fallItemFactory.deleteAllItem(this.children);
+    fallingItemFactory.deleteAllFallingItem(this.children);
 
     drawWaitingDialog(false);
     Audio.bgmStop();
@@ -219,12 +182,13 @@ class FallGameWorld extends Base
     moveToPlayingState();
 
     if (_isMulti) {
-      _opponentScoreLabel.isVisible = true;
+      // _opponentScoreLabel.isVisible = true;
+      uiManager.showOpponentScoreLabel();
     }
 
     _showLine();
 
-    fallItemFactory.updateNextItemVisibility(isVisible: true);
+    //fallingItemFactory.updateNextItemVisibility(isVisible: true);
   }
 
   @override
@@ -232,7 +196,8 @@ class FallGameWorld extends Base
     super.play();
 
     if (_isMulti) {
-      _multiGame.onPlayUpdate(_scoreLabel.score, _isGameOver());
+      // _multiGame.onPlayUpdate(_scoreLabel.score, _isGameOver());
+      _multiGame.onPlayUpdate(uiManager.nextItemLabelScore, _isGameOver());
     }
 
     if (_isGameOver()) {
@@ -250,7 +215,7 @@ class FallGameWorld extends Base
     }
 
     // 落下アイテム消去
-    fallItemFactory.deleteAllItem(this.children);
+    fallingItemFactory.deleteAllFallingItem(this.children);
     drawGameOverScreen(true);
     Audio.bgmStop();
     Audio.bgmPlay(Audio.AUDIO_TITLE);
@@ -272,6 +237,81 @@ class FallGameWorld extends Base
     moveToTitleState();
   }
 
+  Future<void> _initializeCamera() async {
+    game.camera.viewfinder.anchor = Anchor.topLeft;
+  }
+
+  Future<void> _loadAssets() async {
+    await game.images.loadAllImages();
+    await Audio.load();
+  }
+
+  void _setupFactories() {
+    fallingItemFactory = FallingItemFactory();
+    add(fallingItemFactory);
+    fallingItemFactory.eventBus.subscribe(fallingItemFactory.ON_FALL_COMPLETE, (_) {
+      // アイテムの落下が完了したら呼ばれ、次のアイテムの番号をNEXTに表示
+      var item = fallingItemFactory.nextFallingItemIndex + 1;
+      // _nextItemLabel.text = item.toString();
+      uiManager.updateNextItemLabel(item);
+    });
+    fallingItemFactory.eventBus.subscribe(fallingItemFactory.ON_MERGE_ITEM, (score) {
+      // アイテムがマージされたら呼ばれ、アイテムのスコア更新
+      // _scoreLabel.setTotal(score);
+      uiManager.updateScore(score);
+    });
+  }
+
+  void _setupUIComponents() {
+    tapArea = TapArea(dragAndTapCallback: spawn );
+    add(tapArea);
+
+    // _lobbyNumberLabel = ScoreLabel(
+    // position: Vector2(Config.WORLD_WIDTH * .47, Config.WORLD_HEIGHT * .962),
+    // color: Color.fromRGBO(255, 255, 255, 1));
+
+    createWall().forEach(add);
+    _addForegroundAndBackground();
+    // _addScoreLabels();
+    _titleScreen = createTitleScreen();
+    _waitingDialog = Connect();
+    _gameOverScreen = createGameOverScreen();
+  }
+
+  Future<void> _addForegroundAndBackground() async {
+    final foregroundImage = await images.load(Config.IMAGE_FOREGROUND);
+    createForegound(foregroundImage).forEach(add);
+    final backgroundImage = await images.load(Config.IMAGE_BACKGROUND);
+    createBackgound(backgroundImage).forEach(add);
+  }
+
+  // void _addScoreLabels() async {
+    // add(_nextItemLabel = ScoreLabel(
+    //     score: await GameBoard.getScore(),
+    //     position: Vector2(Config.WORLD_WIDTH * .33, Config.WORLD_HEIGHT * .058),
+    //     color: Color.fromRGBO(255, 255, 255, 1)));
+    // add(uiManager.nextItemLabel);
+    // // add(_scoreLabel = ScoreLabel(
+    //     score: await GameBoard.getScore(),
+    //     position: Vector2(Config.WORLD_WIDTH * .93, Config.WORLD_HEIGHT * .058),
+    //     color: Color.fromRGBO(255, 255, 255, 1)));
+    // add(uiManager.scoreLabel);
+    // add(_opponentScoreLabel = ScoreLabel(
+    //     position:
+    //         Vector2(Config.WORLD_WIDTH * .953, Config.WORLD_HEIGHT * .962),
+    //     color: Color.fromRGBO(255, 255, 255, 1)));
+    // _opponentScoreLabel.isVisible = false;
+    // add(uiManager.opponentScoreLabel);
+
+    // add(_lobbyNumberLabel);
+    // add(uiManager.lobbyNumberLabel);
+  // }
+
+  void _setupConnectivityListener() {
+    _connectivityProvider = ConnectivityProvider();
+    _connectivityProvider.addListener(_onConnectivityChanged);
+  }
+
   bool _isPlaying() {
     return isPlayingState();
   }
@@ -286,23 +326,23 @@ class FallGameWorld extends Base
 
   void _showLine() {
     tapArea.showLine(
-        fallItemFactory.getNowFallingItemAttributes().image,
-        fallItemFactory.getNowFallingItemAttributes().size,
-        fallItemFactory.getNowFallingItemAttributes().radius);
+        fallingItemFactory.getNowFallingItemAttributes().image,
+        fallingItemFactory.getNowFallingItemAttributes().size,
+        fallingItemFactory.getNowFallingItemAttributes().radius);
   }
 
   bool _isGameOver() {
-    return fallItemFactory.onScreenItems.any((item) =>
+    return fallingItemFactory.onScreenFallingItems.any((item) =>
         item.body.position.y < Config.WORLD_HEIGHT * 0.2 && !item.falling);
   }
 
-  void _setupListeners() {
+  void _setupMultiGame() {
+    _multiGame = MultiGame();
     _multiGame.addGameStartCallback(_onMultiGameStart);
     _multiGame.addGameOverCallback(_onMultiGameOver);
     _multiGame.opponentScore.addListener(_updateOpponentScore);
     _multiGame.opponetBall.addListener(_updateOpponentBall);
     _multiGame.memberCount.addListener(_updateLobbyMemberCount);
-    _connectivityProvider.addListener(_onConnectivityChanged);
   }
 
   void _onConnectivityChanged() {
@@ -320,16 +360,20 @@ class FallGameWorld extends Base
   void _updateOpponentBall() {
     var chain = _multiGame.opponetBall.value;
     for (int i = 0; i < chain; i++) {
-      fallItemFactory.randomSpawn();
+      fallingItemFactory.randomSpawn();
     }
     _multiGame.opponetBall.value = 0;
   }
 
   void  _updateLobbyMemberCount() {
-    _lobbyNumberLabel.text = _multiGame.memberCount.value.toString();
+    // _lobbyNumberLabel.text = _multiGame.memberCount.value.toString();
+    var count = _multiGame.memberCount.value;
+    uiManager.updateLobbyNumber(count);
   }
 
   void _updateOpponentScoreLabel() {
-    _opponentScoreLabel.text = _multiGame.opponentScore.value.toString();
+    // _opponentScoreLabel.text = _multiGame.opponentScore.value.toString();
+    var score = _multiGame.opponentScore.value;
+    uiManager.updateOpponentScore(score);
   }
 }

@@ -3,7 +3,7 @@ import 'package:flame/effects.dart';
 import 'package:flame_forge2d/flame_forge2d.dart';
 import 'package:fall_game/config.dart';
 
-class FallItem extends BodyComponent with ContactCallbacks {
+class FallingItem extends BodyComponent with ContactCallbacks {
 
   final image;
   final size;
@@ -13,7 +13,7 @@ class FallItem extends BodyComponent with ContactCallbacks {
   final density;
   final bump;
   final fadeInDuration;
-  final void Function(FallItem, Object, Contact) contactCallback;
+  final void Function(FallingItem, Object, Contact) contactCallback;
 
   // 落下情報
   var _falling;
@@ -26,7 +26,7 @@ class FallItem extends BodyComponent with ContactCallbacks {
     _deleted = b;
   }
 
-  FallItem({
+  FallingItem({
     required this.image,
     required this.size,
     required this.radius,
@@ -35,7 +35,7 @@ class FallItem extends BodyComponent with ContactCallbacks {
     required this.density,
     required this.bump,
     required this.fadeInDuration,
-    required void this.contactCallback(FallItem item, Object other, Contact contact),
+    required void this.contactCallback(FallingItem item, Object other, Contact contact),
   }){
     _falling = true;
     _deleted = false;

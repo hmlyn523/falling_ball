@@ -72,6 +72,7 @@ class WallPosition {
   static double width = topRight.x - topLeft.x;
 }
 
+// 落下ボールの属性定義
 class FallingItemAttributes {
   late int type;
   final String image;
@@ -82,9 +83,10 @@ class FallingItemAttributes {
   FallingItemAttributes(this.image, this.radius, this.size, this.density, this.score);
 }
 
-class FallingItemCollection {
+// 全ての落下ボールの属性情報
+class FallingItemAttributesCollection {
   final List<FallingItemAttributes> value = [];
-  FallingItemCollection() {
+  FallingItemAttributesCollection() {
     value.add(new FallingItemAttributes(Config.IMAGE_1,  WallPosition.width * .070 * .5, Vector2.all(WallPosition.width * .070), 2.6,  0));
     value.add(new FallingItemAttributes(Config.IMAGE_2,  WallPosition.width * .097 * .5, Vector2.all(WallPosition.width * .097), 2.4,  1));
     value.add(new FallingItemAttributes(Config.IMAGE_3,  WallPosition.width * .129 * .5, Vector2.all(WallPosition.width * .129), 2.25, 3));
