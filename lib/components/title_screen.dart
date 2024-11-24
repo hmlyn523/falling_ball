@@ -18,14 +18,6 @@ List<SpriteComponent> createTitleScreen() {
   ];
 }
 
-void removeTitleScreen(List<SpriteComponent> connect) {
-  connect.forEach((element) {
-    if (!element.isRemoved) {
-      element.removeFromParent();
-    }
-  });
-}
-
 class TitleLogo extends SpriteComponent with HasGameReference {
   @override
   Future<void> onLoad() async {

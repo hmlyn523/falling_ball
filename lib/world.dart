@@ -13,7 +13,6 @@ import 'package:fall_game/components/tap_area.dart';
 import 'package:fall_game/base/base.dart';
 import 'package:fall_game/components/background.dart';
 import 'package:fall_game/components/wall.dart';
-import 'package:fall_game/components/title_screen.dart';
 import 'package:fall_game/components/audio.dart';
 import 'package:fall_game/config.dart';
 
@@ -26,7 +25,6 @@ class FallGameWorld extends Base
 
   late final UIManager uiManager;
 
-  late final List<SpriteComponent> _titleScreen;
   late final PositionComponent _waitingDialog;
   late final List<SpriteComponent> _gameOverScreen;
   late final TapArea tapArea;
@@ -75,14 +73,6 @@ class FallGameWorld extends Base
   void cancelWaiting() async {
     _multiGame.removeWaitingChannel();
     moveToTitleState();
-  }
-
-  void drawTitleScreen(bool draw) {
-    if (draw) {
-      addAll(_titleScreen);
-    } else if (!draw) {
-      removeTitleScreen(_titleScreen);
-    }
   }
 
   void drawWaitingDialog(bool draw) {
@@ -139,7 +129,7 @@ class FallGameWorld extends Base
     drawGameOverScreen(false);
 
     // タイトル表示
-    drawTitleScreen(true);
+    uiManager.showTitle(this);
   }
 
   @override
@@ -160,7 +150,7 @@ class FallGameWorld extends Base
     uiManager.resetScores();
 
     // タイトル非表示
-    drawTitleScreen(false);
+    uiManager.hideTitle(this);
 
     // 落下アイテム削除
     fallingItemFactory.deleteAllFallingItem(this.children);
@@ -252,7 +242,6 @@ class FallGameWorld extends Base
 
     createWall().forEach(add);
     _addForegroundAndBackground();
-    _titleScreen = createTitleScreen();
     _waitingDialog = Connect();
     _gameOverScreen = createGameOverScreen();
   }

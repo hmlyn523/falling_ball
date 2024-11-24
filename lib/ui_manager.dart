@@ -2,18 +2,23 @@ import 'dart:ui';
 
 import 'package:fall_game/components/game_board.dart';
 import 'package:fall_game/components/score_label.dart';
+import 'package:fall_game/components/title_screen.dart';
 import 'package:fall_game/config.dart';
+import 'package:flame/components.dart';
 import 'package:flame_forge2d/flame_forge2d.dart';
 
 class UIManager {
+  late final List<SpriteComponent> _titleScreen;
   late final ScoreLabel _nextItemLabel;
   late final ScoreLabel _scoreLabel;
   late final ScoreLabel _opponentScoreLabel;
   late final ScoreLabel _lobbyNumberLabel;
 
   int get scoreLabel => _scoreLabel.score;
+  List<SpriteComponent> get titleScreen => _titleScreen;
 
   Future<void> initializeLabels() async {
+    _titleScreen = await createTitleScreen();
     _nextItemLabel = await _createLabel(
       position: Vector2(Config.WORLD_WIDTH * .33, Config.WORLD_HEIGHT * .058),
     );
@@ -40,6 +45,14 @@ class UIManager {
     );
     label.isVisible = isVisible;
     return label;
+  }
+
+  void showTitle(game) {
+    game.addAll(_titleScreen);
+  }
+
+  void hideTitle(game) {
+    game.removeAll(_titleScreen);
   }
 
   // UIManager の内部で add を行う
