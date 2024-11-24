@@ -9,16 +9,13 @@ import 'package:flame_forge2d/flame_forge2d.dart';
 import 'package:flame/components.dart';
 
 import 'package:fall_game/components/game_over_screen.dart';
-import 'package:fall_game/components/score_label.dart';
 import 'package:fall_game/components/tap_area.dart';
 import 'package:fall_game/base/base.dart';
 import 'package:fall_game/components/background.dart';
 import 'package:fall_game/components/wall.dart';
 import 'package:fall_game/components/title_screen.dart';
 import 'package:fall_game/components/audio.dart';
-import 'package:fall_game/components/game_board.dart';
 import 'package:fall_game/config.dart';
-import 'package:flutter/material.dart';
 
 class FallGameWorld extends Base
   with HasGameReference<Forge2DGame>,
@@ -32,10 +29,6 @@ class FallGameWorld extends Base
   late final List<SpriteComponent> _titleScreen;
   late final PositionComponent _waitingDialog;
   late final List<SpriteComponent> _gameOverScreen;
-  // late final ScoreLabel _nextItemLabel;
-  // late final ScoreLabel _scoreLabel;
-  // late final ScoreLabel _opponentScoreLabel;
-  // late final ScoreLabel _lobbyNumberLabel;
   late final TapArea tapArea;
 
   late final MultiGame _multiGame;
@@ -161,12 +154,9 @@ class FallGameWorld extends Base
   void start() {
     super.start();
 
-    // _nextItemLabel.text = (fallingItemFactory.getNextFallingItemAttributes().type + 1).toString();
     var nextItemType = (fallingItemFactory.getNextFallingItemAttributes().type + 1);
     uiManager.updateNextItemLabel(nextItemType);
 
-    // _scoreLabel.score = 0;
-    // _opponentScoreLabel.score = 0;
     uiManager.resetScores();
 
     // タイトル非表示
@@ -182,13 +172,10 @@ class FallGameWorld extends Base
     moveToPlayingState();
 
     if (_isMulti) {
-      // _opponentScoreLabel.isVisible = true;
       uiManager.showOpponentScoreLabel();
     }
 
     _showLine();
-
-    //fallingItemFactory.updateNextItemVisibility(isVisible: true);
   }
 
   @override
@@ -196,8 +183,7 @@ class FallGameWorld extends Base
     super.play();
 
     if (_isMulti) {
-      // _multiGame.onPlayUpdate(_scoreLabel.score, _isGameOver());
-      _multiGame.onPlayUpdate(uiManager.nextItemLabelScore, _isGameOver());
+      _multiGame.onPlayUpdate(uiManager.scoreLabel, _isGameOver());
     }
 
     if (_isGameOver()) {
@@ -252,12 +238,10 @@ class FallGameWorld extends Base
     fallingItemFactory.eventBus.subscribe(fallingItemFactory.ON_FALL_COMPLETE, (_) {
       // アイテムの落下が完了したら呼ばれ、次のアイテムの番号をNEXTに表示
       var item = fallingItemFactory.nextFallingItemIndex + 1;
-      // _nextItemLabel.text = item.toString();
       uiManager.updateNextItemLabel(item);
     });
     fallingItemFactory.eventBus.subscribe(fallingItemFactory.ON_MERGE_ITEM, (score) {
       // アイテムがマージされたら呼ばれ、アイテムのスコア更新
-      // _scoreLabel.setTotal(score);
       uiManager.updateScore(score);
     });
   }
@@ -266,13 +250,8 @@ class FallGameWorld extends Base
     tapArea = TapArea(dragAndTapCallback: spawn );
     add(tapArea);
 
-    // _lobbyNumberLabel = ScoreLabel(
-    // position: Vector2(Config.WORLD_WIDTH * .47, Config.WORLD_HEIGHT * .962),
-    // color: Color.fromRGBO(255, 255, 255, 1));
-
     createWall().forEach(add);
     _addForegroundAndBackground();
-    // _addScoreLabels();
     _titleScreen = createTitleScreen();
     _waitingDialog = Connect();
     _gameOverScreen = createGameOverScreen();
@@ -284,28 +263,6 @@ class FallGameWorld extends Base
     final backgroundImage = await images.load(Config.IMAGE_BACKGROUND);
     createBackgound(backgroundImage).forEach(add);
   }
-
-  // void _addScoreLabels() async {
-    // add(_nextItemLabel = ScoreLabel(
-    //     score: await GameBoard.getScore(),
-    //     position: Vector2(Config.WORLD_WIDTH * .33, Config.WORLD_HEIGHT * .058),
-    //     color: Color.fromRGBO(255, 255, 255, 1)));
-    // add(uiManager.nextItemLabel);
-    // // add(_scoreLabel = ScoreLabel(
-    //     score: await GameBoard.getScore(),
-    //     position: Vector2(Config.WORLD_WIDTH * .93, Config.WORLD_HEIGHT * .058),
-    //     color: Color.fromRGBO(255, 255, 255, 1)));
-    // add(uiManager.scoreLabel);
-    // add(_opponentScoreLabel = ScoreLabel(
-    //     position:
-    //         Vector2(Config.WORLD_WIDTH * .953, Config.WORLD_HEIGHT * .962),
-    //     color: Color.fromRGBO(255, 255, 255, 1)));
-    // _opponentScoreLabel.isVisible = false;
-    // add(uiManager.opponentScoreLabel);
-
-    // add(_lobbyNumberLabel);
-    // add(uiManager.lobbyNumberLabel);
-  // }
 
   void _setupConnectivityListener() {
     _connectivityProvider = ConnectivityProvider();
@@ -340,7 +297,7 @@ class FallGameWorld extends Base
     _multiGame = MultiGame();
     _multiGame.addGameStartCallback(_onMultiGameStart);
     _multiGame.addGameOverCallback(_onMultiGameOver);
-    _multiGame.opponentScore.addListener(_updateOpponentScore);
+    _multiGame.opponentScore.addListener(_updateOpponentScoreLabel);
     _multiGame.opponetBall.addListener(_updateOpponentBall);
     _multiGame.memberCount.addListener(_updateLobbyMemberCount);
   }
@@ -353,10 +310,6 @@ class FallGameWorld extends Base
     }
   }
 
-  void _updateOpponentScore() {
-    _multiGame.opponentScore.addListener(_updateOpponentScoreLabel);
-  }
-
   void _updateOpponentBall() {
     var chain = _multiGame.opponetBall.value;
     for (int i = 0; i < chain; i++) {
@@ -366,13 +319,11 @@ class FallGameWorld extends Base
   }
 
   void  _updateLobbyMemberCount() {
-    // _lobbyNumberLabel.text = _multiGame.memberCount.value.toString();
     var count = _multiGame.memberCount.value;
     uiManager.updateLobbyNumber(count);
   }
 
   void _updateOpponentScoreLabel() {
-    // _opponentScoreLabel.text = _multiGame.opponentScore.value.toString();
     var score = _multiGame.opponentScore.value;
     uiManager.updateOpponentScore(score);
   }

@@ -3,7 +3,6 @@ import 'dart:ui';
 import 'package:fall_game/components/game_board.dart';
 import 'package:fall_game/components/score_label.dart';
 import 'package:fall_game/config.dart';
-import 'package:fall_game/world.dart';
 import 'package:flame_forge2d/flame_forge2d.dart';
 
 class UIManager {
@@ -12,7 +11,7 @@ class UIManager {
   late final ScoreLabel _opponentScoreLabel;
   late final ScoreLabel _lobbyNumberLabel;
 
-  int get nextItemLabelScore => _nextItemLabel.score;
+  int get scoreLabel => _scoreLabel.score;
 
   Future<void> initializeLabels() async {
     _nextItemLabel = await _createLabel(
@@ -65,7 +64,7 @@ class UIManager {
   }
 
   void updateOpponentScore(int score) {
-    _opponentScoreLabel.setTotal(score);
+    _opponentScoreLabel.text = score.toString();
   }
 
   void showOpponentScoreLabel() {
