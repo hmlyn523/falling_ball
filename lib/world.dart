@@ -2,7 +2,8 @@ import 'package:fall_game/components/waiting_dialog.dart';
 import 'package:fall_game/connectivity_provider.dart';
 import 'package:fall_game/fallingItem_factory.dart';
 import 'package:fall_game/multi_game.dart';
-import 'package:fall_game/ui_manager.dart';
+import 'package:fall_game/ui/components/player_score.dart';
+import 'package:fall_game/ui_controler.dart';
 import 'package:flame/events.dart';
 import 'package:flame/flame.dart';
 import 'package:flame_forge2d/flame_forge2d.dart';
@@ -23,7 +24,8 @@ class FallGameWorld extends Base
 {
   final images = Flame.images;
 
-  late final UIManager uiManager;
+  late final UIControler uiControler;
+  late final PlayerScore playerScore;
 
   late final PositionComponent _waitingDialog;
   late final List<SpriteComponent> _gameOverScreen;
@@ -98,10 +100,12 @@ class FallGameWorld extends Base
     // ビューファインダーの設定(左上の座標を0,0として扱う)
     await _initializeCamera();
 
-    uiManager = UIManager();
+    uiControler = UIControler();
+    playerScore = await PlayerScore.create();
 
-    await uiManager.initializeLabels();
-    uiManager.addLabelsToGame(this);
+    await uiControler.initializeLabels();
+    uiControler.addLabelsToGame(this);
+    add(playerScore.label);
 
     // 画像やオーディオの読み込み
     await _loadAssets();
@@ -129,7 +133,7 @@ class FallGameWorld extends Base
     drawGameOverScreen(false);
 
     // タイトル表示
-    uiManager.showTitle(this);
+    uiControler.showTitle(this);
   }
 
   @override
@@ -145,12 +149,13 @@ class FallGameWorld extends Base
     super.start();
 
     var nextItemType = (fallingItemFactory.getNextFallingItemAttributes().type + 1);
-    uiManager.updateNextItemLabel(nextItemType);
+    uiControler.updateNextItemLabel(nextItemType);
 
-    uiManager.resetScores();
+    uiControler.resetScores();
+    playerScore.reset();
 
     // タイトル非表示
-    uiManager.hideTitle(this);
+    uiControler.hideTitle(this);
 
     // 落下アイテム削除
     fallingItemFactory.deleteAllFallingItem(this.children);
@@ -162,7 +167,7 @@ class FallGameWorld extends Base
     moveToPlayingState();
 
     if (_isMulti) {
-      uiManager.showOpponentScoreLabel();
+      uiControler.showOpponentScoreLabel();
     }
 
     _showLine();
@@ -173,7 +178,7 @@ class FallGameWorld extends Base
     super.play();
 
     if (_isMulti) {
-      _multiGame.onPlayUpdate(uiManager.scoreLabel, _isGameOver());
+      _multiGame.onPlayUpdate(playerScore.score, _isGameOver());
     }
 
     if (_isGameOver()) {
@@ -228,11 +233,11 @@ class FallGameWorld extends Base
     fallingItemFactory.eventBus.subscribe(fallingItemFactory.ON_FALL_COMPLETE, (_) {
       // アイテムの落下が完了したら呼ばれ、次のアイテムの番号をNEXTに表示
       var item = fallingItemFactory.nextFallingItemIndex + 1;
-      uiManager.updateNextItemLabel(item);
+      uiControler.updateNextItemLabel(item);
     });
     fallingItemFactory.eventBus.subscribe(fallingItemFactory.ON_MERGE_ITEM, (score) {
       // アイテムがマージされたら呼ばれ、アイテムのスコア更新
-      uiManager.updateScore(score);
+      playerScore.update(score);
     });
   }
 
@@ -309,11 +314,11 @@ class FallGameWorld extends Base
 
   void  _updateLobbyMemberCount() {
     var count = _multiGame.memberCount.value;
-    uiManager.updateLobbyNumber(count);
+    uiControler.updateLobbyNumber(count);
   }
 
   void _updateOpponentScoreLabel() {
     var score = _multiGame.opponentScore.value;
-    uiManager.updateOpponentScore(score);
+    uiControler.updateOpponentScore(score);
   }
 }
