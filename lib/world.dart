@@ -2,14 +2,16 @@ import 'package:fall_game/components/waiting_dialog.dart';
 import 'package:fall_game/connectivity_provider.dart';
 import 'package:fall_game/fallingItem_factory.dart';
 import 'package:fall_game/multi_game.dart';
-import 'package:fall_game/ui/components/player_score.dart';
-import 'package:fall_game/ui_controler.dart';
+import 'package:fall_game/ui/label/lobby_number.dart';
+import 'package:fall_game/ui/label/next_item.dart';
+import 'package:fall_game/ui/label/opponent_score.dart';
+import 'package:fall_game/ui/label/player_score.dart';
+import 'package:fall_game/ui/controllers/ui_controler.dart';
 import 'package:flame/events.dart';
 import 'package:flame/flame.dart';
 import 'package:flame_forge2d/flame_forge2d.dart';
 import 'package:flame/components.dart';
 
-import 'package:fall_game/components/game_over_screen.dart';
 import 'package:fall_game/components/tap_area.dart';
 import 'package:fall_game/base/base.dart';
 import 'package:fall_game/components/background.dart';
@@ -26,9 +28,11 @@ class FallGameWorld extends Base
 
   late final UIControler uiControler;
   late final PlayerScore playerScore;
+  late final OpponentScore opponentScore;
+  late final NextItem nextItem;
+  late final LobbyNumber lobbyNumber;
 
   late final PositionComponent _waitingDialog;
-  late final List<SpriteComponent> _gameOverScreen;
   late final TapArea tapArea;
 
   late final MultiGame _multiGame;
@@ -85,14 +89,6 @@ class FallGameWorld extends Base
     }
   }
 
-  void drawGameOverScreen(bool draw) {
-    if (draw) {
-      addAll(_gameOverScreen);
-    } else if (!draw) {
-      removeGameOverScreen(_gameOverScreen);
-    }
-  }
-
   @override
   Future<void> onLoad() async {
     await super.onLoad();
@@ -100,12 +96,18 @@ class FallGameWorld extends Base
     // ビューファインダーの設定(左上の座標を0,0として扱う)
     await _initializeCamera();
 
+    // UI
     uiControler = UIControler();
     playerScore = await PlayerScore.create();
+    opponentScore = await OpponentScore.create();
+    nextItem = await NextItem.create();
+    lobbyNumber = await LobbyNumber.create();
 
     await uiControler.initializeLabels();
-    uiControler.addLabelsToGame(this);
     add(playerScore.label);
+    add(opponentScore.label);
+    add(nextItem.label);
+    add(lobbyNumber.label);
 
     // 画像やオーディオの読み込み
     await _loadAssets();
@@ -130,7 +132,7 @@ class FallGameWorld extends Base
     drawWaitingDialog(false);
 
     // ゲームオーバ非表示
-    drawGameOverScreen(false);
+    uiControler.hideGameOver(this);
 
     // タイトル表示
     uiControler.showTitle(this);
@@ -149,9 +151,9 @@ class FallGameWorld extends Base
     super.start();
 
     var nextItemType = (fallingItemFactory.getNextFallingItemAttributes().type + 1);
-    uiControler.updateNextItemLabel(nextItemType);
+    nextItem.update(nextItemType);
 
-    uiControler.resetScores();
+    opponentScore.reset();
     playerScore.reset();
 
     // タイトル非表示
@@ -167,7 +169,7 @@ class FallGameWorld extends Base
     moveToPlayingState();
 
     if (_isMulti) {
-      uiControler.showOpponentScoreLabel();
+      opponentScore.show();
     }
 
     _showLine();
@@ -197,7 +199,8 @@ class FallGameWorld extends Base
 
     // 落下アイテム消去
     fallingItemFactory.deleteAllFallingItem(this.children);
-    drawGameOverScreen(true);
+    // drawGameOverScreen(true);
+    uiControler.showGameOver(this);
     Audio.bgmStop();
     Audio.bgmPlay(Audio.AUDIO_TITLE);
   }
@@ -233,7 +236,7 @@ class FallGameWorld extends Base
     fallingItemFactory.eventBus.subscribe(fallingItemFactory.ON_FALL_COMPLETE, (_) {
       // アイテムの落下が完了したら呼ばれ、次のアイテムの番号をNEXTに表示
       var item = fallingItemFactory.nextFallingItemIndex + 1;
-      uiControler.updateNextItemLabel(item);
+      nextItem.update(item);
     });
     fallingItemFactory.eventBus.subscribe(fallingItemFactory.ON_MERGE_ITEM, (score) {
       // アイテムがマージされたら呼ばれ、アイテムのスコア更新
@@ -248,7 +251,7 @@ class FallGameWorld extends Base
     createWall().forEach(add);
     _addForegroundAndBackground();
     _waitingDialog = Connect();
-    _gameOverScreen = createGameOverScreen();
+    // _gameOverScreen = createGameOverScreen();
   }
 
   Future<void> _addForegroundAndBackground() async {
@@ -314,11 +317,11 @@ class FallGameWorld extends Base
 
   void  _updateLobbyMemberCount() {
     var count = _multiGame.memberCount.value;
-    uiControler.updateLobbyNumber(count);
+    lobbyNumber.update(count);
   }
 
   void _updateOpponentScoreLabel() {
     var score = _multiGame.opponentScore.value;
-    uiControler.updateOpponentScore(score);
+    opponentScore.update(score);
   }
 }
