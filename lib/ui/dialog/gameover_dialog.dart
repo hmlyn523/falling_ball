@@ -5,14 +5,28 @@ import 'package:fall_game/config.dart';
 import 'package:fall_game/game.dart';
 import 'package:flame/events.dart';
 
-List<SpriteComponent> createGameOverScreen() {
-  return [
-    GameOverLogo(),
-    TapTitleButton(),
-  ];
+class GameoverDialog {
+  late final List<SpriteComponent> _gameOverDialog;
+
+  List<SpriteComponent> get gameOverDialog => _gameOverDialog;
+
+  Future<void> initialize() async {
+    _gameOverDialog = [
+      GameOverLogo(),
+      TapTitleButton(),
+    ];
+  }
+
+  void show(game){
+    game.addAll(_gameOverDialog);
+  }
+
+  void hide(game) {
+  _gameOverDialog.forEach((element) {element.removeFromParent();});
+  }
 }
 
-void removeGameOverScreen(List<SpriteComponent> gameOver) {
+void removeGameOverDialog(List<SpriteComponent> gameOver) {
   gameOver.forEach((element) {element.removeFromParent();});
 }
 

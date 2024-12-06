@@ -6,16 +6,30 @@ import 'package:fall_game/game.dart';
 
 import 'package:url_launcher/url_launcher.dart';
 
-List<SpriteComponent> createTitleScreen() {
-  return [
-    Menu(),
-    TitleLogo(),
-    StartButton(),
-    MultiButton(),
-    RankingButton(),
-    PostButton(),
-    Copyright(),
-  ];
+class TitleDialog {
+  late final List<SpriteComponent> _titleDialog;
+
+  List<SpriteComponent> get titleDialog => _titleDialog;
+
+  Future<void> initialize() async {
+    _titleDialog = [
+      Menu(),
+      TitleLogo(),
+      StartButton(),
+      MultiButton(),
+      RankingButton(),
+      PostButton(),
+      Copyright(),
+    ];
+  }
+
+  void show(game) {
+    game.addAll(_titleDialog);
+  }
+
+  void hide(game) {
+    _titleDialog.forEach((element) {element.removeFromParent();});
+  }
 }
 
 class TitleLogo extends SpriteComponent with HasGameReference {

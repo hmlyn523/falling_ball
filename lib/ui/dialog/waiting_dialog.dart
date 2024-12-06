@@ -4,7 +4,28 @@ import 'package:flame/components.dart';
 import 'package:fall_game/config.dart';
 import 'package:flame/flame.dart';
 
-class Connect extends SpriteAnimationComponent {
+class WaitingDialog {
+  late final List<Component> _waitingDialog;
+
+  List<Component> get waitingDialog => _waitingDialog;
+
+  Future<void> initialize() async {
+    _waitingDialog = [
+      WaitingPanel(),
+      CancelButton(),
+    ];
+  }
+
+  void show(game) {
+    game.addAll(_waitingDialog);
+  }
+
+  void hide(game) {
+    _waitingDialog.forEach((element) {element.removeFromParent();});
+  }
+}
+
+class WaitingPanel extends SpriteAnimationComponent {
   @override
   Future<void> onLoad() async {
     final sprites = [0, 1, 2].map((i) => Sprite.load('connect_$i.png'));
@@ -16,8 +37,6 @@ class Connect extends SpriteAnimationComponent {
     size = Vector2(Config.WORLD_WIDTH * .7, Config.WORLD_HEIGHT * .3);
     priority = Config.PRIORITY_CONNECT;
     anchor = Anchor.center;
-
-    add(CancelButton());
   }
 }
 
@@ -30,8 +49,7 @@ class CancelButton extends SpriteComponent
   @override
   Future<void> onLoad() async {
     sprite = Sprite(images.fromCache(Config.IMAGE_CANCEL));
-    final parentSize = (parent as Connect).size;
-    position = Vector2(parentSize.x * .5, parentSize.y * .65);
+    position = Vector2(Config.WORLD_WIDTH * .5, Config.WORLD_HEIGHT * .65);
     size = Vector2(Config.WORLD_WIDTH * .50, Config.WORLD_HEIGHT * .085);
     priority = Config.PRIORITY_CANCEL;
     anchor = Anchor.center;

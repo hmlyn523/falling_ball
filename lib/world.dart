@@ -1,4 +1,6 @@
-import 'package:fall_game/components/waiting_dialog.dart';
+import 'package:fall_game/ui/dialog/gameover_dialog.dart';
+import 'package:fall_game/ui/dialog/title_dialog.dart';
+import 'package:fall_game/ui/dialog/waiting_dialog.dart';
 import 'package:fall_game/connectivity_provider.dart';
 import 'package:fall_game/fallingItem_factory.dart';
 import 'package:fall_game/multi_game.dart';
@@ -6,7 +8,6 @@ import 'package:fall_game/ui/label/lobby_number.dart';
 import 'package:fall_game/ui/label/next_item.dart';
 import 'package:fall_game/ui/label/opponent_score.dart';
 import 'package:fall_game/ui/label/player_score.dart';
-import 'package:fall_game/ui/controllers/ui_controler.dart';
 import 'package:flame/events.dart';
 import 'package:flame/flame.dart';
 import 'package:flame_forge2d/flame_forge2d.dart';
@@ -26,13 +27,16 @@ class FallGameWorld extends Base
 {
   final images = Flame.images;
 
-  late final UIControler uiControler;
   late final PlayerScore playerScore;
   late final OpponentScore opponentScore;
   late final NextItem nextItem;
   late final LobbyNumber lobbyNumber;
 
-  late final PositionComponent _waitingDialog;
+  late final TitleDialog titleDialog;
+  late final GameoverDialog gameoverDialog;
+  late final WaitingDialog waitingDialog;
+  // late final PositionComponent _waitingDialog;
+
   late final TapArea tapArea;
 
   late final MultiGame _multiGame;
@@ -81,14 +85,6 @@ class FallGameWorld extends Base
     moveToTitleState();
   }
 
-  void drawWaitingDialog(bool draw) {
-    if (draw) {
-      add(_waitingDialog);
-    } else if (!draw) {
-      _waitingDialog.removeFromParent();
-    }
-  }
-
   @override
   Future<void> onLoad() async {
     await super.onLoad();
@@ -97,17 +93,23 @@ class FallGameWorld extends Base
     await _initializeCamera();
 
     // UI
-    uiControler = UIControler();
     playerScore = await PlayerScore.create();
     opponentScore = await OpponentScore.create();
     nextItem = await NextItem.create();
     lobbyNumber = await LobbyNumber.create();
 
-    await uiControler.initializeLabels();
+    titleDialog = await TitleDialog();
+    gameoverDialog = await GameoverDialog();
+    waitingDialog = await WaitingDialog();
+
     add(playerScore.label);
     add(opponentScore.label);
     add(nextItem.label);
     add(lobbyNumber.label);
+
+    await titleDialog.initialize();
+    await gameoverDialog.initialize();
+    await waitingDialog.initialize();
 
     // 画像やオーディオの読み込み
     await _loadAssets();
@@ -129,20 +131,21 @@ class FallGameWorld extends Base
     super.title();
 
     // 接続中画面非表示
-    drawWaitingDialog(false);
+    waitingDialog.hide(this);
+    // drawWaitingDialog(false);
 
     // ゲームオーバ非表示
-    uiControler.hideGameOver(this);
+    gameoverDialog.hide(this);
 
     // タイトル表示
-    uiControler.showTitle(this);
+    titleDialog.show(this);  
   }
 
   @override
   void preparation() {
     super.preparation();
 
-    drawWaitingDialog(true);
+    waitingDialog.show(this);
     _multiGame.onWaitingUpdate();
   }
 
@@ -157,12 +160,12 @@ class FallGameWorld extends Base
     playerScore.reset();
 
     // タイトル非表示
-    uiControler.hideTitle(this);
+    titleDialog.hide(this);
 
     // 落下アイテム削除
     fallingItemFactory.deleteAllFallingItem(this.children);
 
-    drawWaitingDialog(false);
+    waitingDialog.hide(this);
     Audio.bgmStop();
     Audio.bgmPlay(Audio.AUDIO_BGM);
     // Playステータスへ繊維
@@ -200,7 +203,7 @@ class FallGameWorld extends Base
     // 落下アイテム消去
     fallingItemFactory.deleteAllFallingItem(this.children);
     // drawGameOverScreen(true);
-    uiControler.showGameOver(this);
+    gameoverDialog.show(this);
     Audio.bgmStop();
     Audio.bgmPlay(Audio.AUDIO_TITLE);
   }
@@ -250,8 +253,6 @@ class FallGameWorld extends Base
 
     createWall().forEach(add);
     _addForegroundAndBackground();
-    _waitingDialog = Connect();
-    // _gameOverScreen = createGameOverScreen();
   }
 
   Future<void> _addForegroundAndBackground() async {
@@ -287,7 +288,7 @@ class FallGameWorld extends Base
 
   bool _isGameOver() {
     return fallingItemFactory.onScreenFallingItems.any((item) =>
-        item.body.position.y < Config.WORLD_HEIGHT * 0.2 && !item.falling);
+        item.body.position.y < Config.WORLD_HEIGHT * 0.8 && !item.falling);
   }
 
   void _setupMultiGame() {
