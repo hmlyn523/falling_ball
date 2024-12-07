@@ -1,4 +1,4 @@
-import 'package:fall_game/config.dart';
+import 'package:fall_game/app/config.dart';
 import 'package:flame/components.dart';
 
 class NextSprite extends SpriteComponent with HasVisibility {

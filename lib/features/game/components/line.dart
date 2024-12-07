@@ -1,5 +1,5 @@
-import 'package:fall_game/components/fall_item/now_sprite.dart';
-import 'package:fall_game/config.dart';
+import 'package:fall_game/features/game/components/fall_item/now_sprite.dart';
+import 'package:fall_game/app/config.dart';
 import 'package:flame/components.dart';
 import 'package:flame/flame.dart';
 import 'package:flutter/material.dart';

@@ -1,7 +1,7 @@
-import 'package:fall_game/world.dart';
+import 'package:fall_game/features/game/world.dart';
 import 'package:flame/events.dart';
 import 'package:flame/components.dart';
-import 'package:fall_game/config.dart';
+import 'package:fall_game/app/config.dart';
 import 'package:flame/flame.dart';
 
 class WaitingDialog {

@@ -3,7 +3,7 @@ import 'dart:ui';
 import 'package:flame/components.dart';
 import 'package:flame_forge2d/flame_forge2d.dart';
 
-import 'package:fall_game/config.dart';
+import 'package:fall_game/app/config.dart';
 
 List<Background> createBackgound(Image image) {
   return [

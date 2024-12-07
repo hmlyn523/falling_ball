@@ -1,6 +1,6 @@
 import 'dart:async';
 
-import 'package:fall_game/config.dart';
+import 'package:fall_game/app/config.dart';
 
 class Chain {
   Chain() {

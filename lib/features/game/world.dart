@@ -1,24 +1,24 @@
-import 'package:fall_game/ui/dialog/gameover_dialog.dart';
-import 'package:fall_game/ui/dialog/title_dialog.dart';
-import 'package:fall_game/ui/dialog/waiting_dialog.dart';
-import 'package:fall_game/connectivity_provider.dart';
-import 'package:fall_game/fallingItem_factory.dart';
-import 'package:fall_game/multi_game.dart';
-import 'package:fall_game/ui/label/lobby_number.dart';
-import 'package:fall_game/ui/label/next_item.dart';
-import 'package:fall_game/ui/label/opponent_score.dart';
-import 'package:fall_game/ui/label/player_score.dart';
+import 'package:fall_game/features/ui/dialogs/gameover_dialog.dart';
+import 'package:fall_game/features/ui/dialogs/title_dialog.dart';
+import 'package:fall_game/features/ui/dialogs/waiting_dialog.dart';
+import 'package:fall_game/core/services/connectivity_provider.dart';
+import 'package:fall_game/features/game/factories/fallingItem_factory.dart';
+import 'package:fall_game/features/game/multi_game.dart';
+import 'package:fall_game/features/ui/labels/lobby_number.dart';
+import 'package:fall_game/features/ui/labels/next_item.dart';
+import 'package:fall_game/features/ui/labels/opponent_score.dart';
+import 'package:fall_game/features/ui/labels/player_score.dart';
 import 'package:flame/events.dart';
 import 'package:flame/flame.dart';
 import 'package:flame_forge2d/flame_forge2d.dart';
 import 'package:flame/components.dart';
 
-import 'package:fall_game/components/tap_area.dart';
+import 'package:fall_game/features/game/components/tap_area.dart';
 import 'package:fall_game/base/base.dart';
-import 'package:fall_game/components/background.dart';
-import 'package:fall_game/components/wall.dart';
-import 'package:fall_game/components/audio.dart';
-import 'package:fall_game/config.dart';
+import 'package:fall_game/features/game/components/background.dart';
+import 'package:fall_game/features/game/components/wall.dart';
+import 'package:fall_game/features/game/components/audio.dart';
+import 'package:fall_game/app/config.dart';
 
 class FallGameWorld extends Base
   with HasGameReference<Forge2DGame>,
@@ -288,7 +288,7 @@ class FallGameWorld extends Base
 
   bool _isGameOver() {
     return fallingItemFactory.onScreenFallingItems.any((item) =>
-        item.body.position.y < Config.WORLD_HEIGHT * 0.8 && !item.falling);
+        item.body.position.y < Config.WORLD_HEIGHT * 0.2 && !item.falling);
   }
 
   void _setupMultiGame() {

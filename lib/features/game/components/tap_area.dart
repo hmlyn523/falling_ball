@@ -1,8 +1,8 @@
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 
-import 'package:fall_game/components/line.dart';
-import 'package:fall_game/config.dart';
+import 'package:fall_game/features/game/components/line.dart';
+import 'package:fall_game/app/config.dart';
 
 class TapArea extends PositionComponent with TapCallbacks,
                                        DragCallbacks {
