@@ -37952,10 +37952,10 @@ default:return B.hA}},
 $S:408}
 A.e2.prototype={}
 A.a0I.prototype={
-RK(){var s,r=this.a,q=$.h9()*0.07,p=new A.h(new Float64Array(2))
+RK(){var s,r=this.a,q=$.h9()*0.08,p=new A.h(new Float64Array(2))
 p.de(q)
 r.push(new A.e2("1-icon.png",q*0.5,p,2.6,0))
-p=$.h9()*0.097
+p=$.h9()*0.099
 q=new A.h(new Float64Array(2))
 q.de(p)
 r.push(new A.e2("2-icon.png",p*0.5,q,2.4,1))
@@ -39172,12 +39172,12 @@ o.toString
 q.ok=A.eK(o,null,null)
 q.fZ()
 o=new A.h(new Float64Array(2))
-o.a0(20,31.3404)
+o.a0(20,31.020599999999998)
 p=q.at.d
 p.b3(o)
 p.a_()
 o=new A.h(new Float64Array(2))
-o.a0(18.400000000000002,5.4366)
+o.a0(20,6.396000000000001)
 q.sK(0,o)
 q.sd6(70)
 q.ay=B.U
@@ -39196,12 +39196,12 @@ o.toString
 q.ok=A.eK(o,null,null)
 q.fZ()
 o=new A.h(new Float64Array(2))
-o.a0(20,37.096799999999995)
+o.a0(20,38.0562)
 p=q.at.d
 p.b3(o)
 p.a_()
 o=new A.h(new Float64Array(2))
-o.a0(18.400000000000002,5.4366)
+o.a0(20,6.396000000000001)
 q.sK(0,o)
 q.sd6(70)
 q.ay=B.U
@@ -39218,7 +39218,7 @@ o.toString
 q.ok=A.eK(o,null,null)
 q.fZ()
 o=new A.h(new Float64Array(2))
-o.a0(16,46.0512)
+o.a0(16,47.3304)
 p=q.at.d
 p.b3(o)
 p.a_()
@@ -39239,7 +39239,7 @@ o.toString
 q.ok=A.eK(o,null,null)
 q.fZ()
 o=new A.h(new Float64Array(2))
-o.a0(24,46.0512)
+o.a0(24,47.3304)
 p=q.at.d
 p.b3(o)
 p.a_()
