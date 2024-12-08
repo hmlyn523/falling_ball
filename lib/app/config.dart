@@ -87,8 +87,8 @@ class FallingItemAttributes {
 class FallingItemAttributesCollection {
   final List<FallingItemAttributes> value = [];
   FallingItemAttributesCollection() {
-    value.add(new FallingItemAttributes(Config.IMAGE_1,  WallPosition.width * .070 * .5, Vector2.all(WallPosition.width * .070), 2.6,  0));
-    value.add(new FallingItemAttributes(Config.IMAGE_2,  WallPosition.width * .097 * .5, Vector2.all(WallPosition.width * .097), 2.4,  1));
+    value.add(new FallingItemAttributes(Config.IMAGE_1,  WallPosition.width * .08 * .5, Vector2.all(WallPosition.width * .08), 2.6,  0));
+    value.add(new FallingItemAttributes(Config.IMAGE_2,  WallPosition.width * .099 * .5, Vector2.all(WallPosition.width * .099), 2.4,  1));
     value.add(new FallingItemAttributes(Config.IMAGE_3,  WallPosition.width * .129 * .5, Vector2.all(WallPosition.width * .129), 2.25, 3));
     value.add(new FallingItemAttributes(Config.IMAGE_4,  WallPosition.width * .166 * .5, Vector2.all(WallPosition.width * .166), 2.10, 6));
     value.add(new FallingItemAttributes(Config.IMAGE_5,  WallPosition.width * .208 * .5, Vector2.all(WallPosition.width * .208), 1.95, 10));

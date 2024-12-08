@@ -60,8 +60,8 @@ class StartButton extends SpriteComponent
   @override
   Future<void> onLoad() async {
     sprite = Sprite((game as FallGame).images.fromCache(Config.IMAGE_START));
-    position = Vector2(Config.WORLD_WIDTH * .5, Config.WORLD_HEIGHT * .49);
-    size = Vector2(Config.WORLD_WIDTH * .46, Config.WORLD_HEIGHT * .085);
+    position = Vector2(Config.WORLD_WIDTH * .5, Config.WORLD_HEIGHT * .485);
+    size = Vector2(Config.WORLD_WIDTH * .5, Config.WORLD_HEIGHT * .1);
     priority = Config.PRIORITY_START_BUTTON;
     anchor = Anchor.center;
   }
@@ -78,8 +78,8 @@ class MultiButton extends SpriteComponent
   @override
   Future<void> onLoad() async {
     sprite = Sprite((game as FallGame).images.fromCache(Config.IMAGE_MULTI));
-    position = Vector2(Config.WORLD_WIDTH * .5, Config.WORLD_HEIGHT * .58);
-    size = Vector2(Config.WORLD_WIDTH * .46, Config.WORLD_HEIGHT * .085);
+    position = Vector2(Config.WORLD_WIDTH * .5, Config.WORLD_HEIGHT * .595);
+    size = Vector2(Config.WORLD_WIDTH * .5, Config.WORLD_HEIGHT * .1);
     priority = Config.PRIORITY_START_BUTTON;
     anchor = Anchor.center;
   }
@@ -96,7 +96,7 @@ class RankingButton extends SpriteComponent
   @override
   Future<void> onLoad() async {
     sprite = Sprite((game as FallGame).images.fromCache(Config.IMAGE_RANKING));
-    position = Vector2(Config.WORLD_WIDTH * .4, Config.WORLD_HEIGHT * .72);
+    position = Vector2(Config.WORLD_WIDTH * .4, Config.WORLD_HEIGHT * .74);
     size = Vector2(Config.WORLD_WIDTH * .18, Config.WORLD_HEIGHT * .10);
     priority = Config.PRIORITY_START_BUTTON;
     anchor = Anchor.center;
@@ -119,7 +119,7 @@ class PostButton extends SpriteComponent
   @override
   Future<void> onLoad() async {
     sprite = Sprite((game as FallGame).images.fromCache(Config.IMAGE_POST));
-    position = Vector2(Config.WORLD_WIDTH * .6, Config.WORLD_HEIGHT * .72);
+    position = Vector2(Config.WORLD_WIDTH * .6, Config.WORLD_HEIGHT * .74);
     size = Vector2(Config.WORLD_WIDTH * .15, Config.WORLD_HEIGHT * .09);
     priority = Config.PRIORITY_START_BUTTON;
     anchor = Anchor.center;
