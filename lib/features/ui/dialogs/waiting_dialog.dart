@@ -28,7 +28,7 @@ class WaitingDialog {
 class WaitingPanel extends SpriteAnimationComponent {
   @override
   Future<void> onLoad() async {
-    final sprites = [0, 1, 2].map((i) => Sprite.load('connect_$i.png'));
+    final sprites = [0, 1, 2, 3, 4].map((i) => Sprite.load('connect_$i.png'));
     this.animation = SpriteAnimation.spriteList(
       await Future.wait(sprites),
       stepTime: .5,
@@ -50,7 +50,7 @@ class CancelButton extends SpriteComponent
   Future<void> onLoad() async {
     sprite = Sprite(images.fromCache(Config.IMAGE_CANCEL));
     position = Vector2(Config.WORLD_WIDTH * .5, Config.WORLD_HEIGHT * .65);
-    size = Vector2(Config.WORLD_WIDTH * .50, Config.WORLD_HEIGHT * .085);
+    size = Vector2(Config.WORLD_WIDTH * .5, Config.WORLD_HEIGHT * .1);
     priority = Config.PRIORITY_CANCEL;
     anchor = Anchor.center;
   }

@@ -110,6 +110,8 @@ flutter:
     - assets/images/connect_0.png
     - assets/images/connect_1.png
     - assets/images/connect_2.png
+    - assets/images/connect_3.png
+    - assets/images/connect_4.png
     - assets/images/cancel.png
     - assets/images/explosion.png
     - assets/audio/title.wav
