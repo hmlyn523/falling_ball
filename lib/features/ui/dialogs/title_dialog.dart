@@ -163,7 +163,7 @@ class Copyright extends SpriteComponent with HasGameReference {
     sprite =
         Sprite((game as FallGame).images.fromCache(Config.IMAGE_COPYRIGHT));
     position = Vector2(Config.WORLD_WIDTH * .5, Config.WORLD_HEIGHT * .85);
-    size = Vector2(Config.WORLD_WIDTH * .6, Config.WORLD_HEIGHT * .048);
+    size = Vector2(Config.WORLD_WIDTH * .6, Config.WORLD_HEIGHT * .055);
     priority = Config.PRIORITY_START_BUTTON;
     anchor = Anchor.center;
   }
