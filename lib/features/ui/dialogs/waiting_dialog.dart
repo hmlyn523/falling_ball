@@ -50,7 +50,7 @@ class CancelButton extends SpriteComponent
   Future<void> onLoad() async {
     sprite = Sprite(images.fromCache(Config.IMAGE_CANCEL));
     position = Vector2(Config.WORLD_WIDTH * .5, Config.WORLD_HEIGHT * .65);
-    size = Vector2(Config.WORLD_WIDTH * .5, Config.WORLD_HEIGHT * .1);
+    size = Vector2(Config.WORLD_WIDTH * .53, Config.WORLD_HEIGHT * .1);
     priority = Config.PRIORITY_CANCEL;
     anchor = Anchor.center;
   }
