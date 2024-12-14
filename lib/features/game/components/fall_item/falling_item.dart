@@ -16,8 +16,8 @@ class FallingItem extends BodyComponent with ContactCallbacks {
   final void Function(FallingItem, Object, Contact) contactCallback;
 
   // 落下情報
-  var _falling;
-  bool get falling => _falling;
+  bool? _falling;
+  bool? get falling => _falling;
 
   // 削除状態
   var _deleted;
@@ -37,7 +37,7 @@ class FallingItem extends BodyComponent with ContactCallbacks {
     required this.fadeInDuration,
     required void this.contactCallback(FallingItem item, Object other, Contact contact),
   }){
-    _falling = true;
+    _falling = null;
     _deleted = false;
     priority = Config.PRIORITY_FALL_ITEM;
   }
@@ -46,6 +46,7 @@ class FallingItem extends BodyComponent with ContactCallbacks {
   Future<void> onLoad() async {
     await super.onLoad();
     renderBody = false;
+    _falling = true; // 読み込みが完了したら落下中とする
     this.add(
       SpriteComponent(
         sprite: Sprite(image),

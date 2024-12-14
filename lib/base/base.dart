@@ -19,37 +19,37 @@ abstract class Base extends Forge2DWorld {
   void update(double d){
     super.update(d);
     if (isTitleState()) {
-      title();
+      title(d);
     } else if (isPreparationState()) {
-      preparation();
+      preparation(d);
     } else if (isStartState()) {
-      start();
+      start(d);
     } else if (isPlayingState()) {
-      play();
+      play(d);
     } else if (isGameOverState()) {
-      gameover();
+      gameover(d);
     } else if (isEndState()) {
-      end();
+      end(d);
     }
   }
 
   @mustCallSuper
-  void title() {}
+  void title(d) {}
 
   @mustCallSuper
-  void preparation(){}
+  void preparation(d){}
 
   @mustCallSuper
-  void start(){}
+  void start(d){}
 
   @mustCallSuper
-  void play() {}
+  void play(d) {}
 
   @mustCallSuper
-  void gameover() {}
+  void gameover(d) {}
 
   @mustCallSuper
-  void end(){}
+  void end(d){}
 
   bool isTitleState() => _state == GameState.title;
   bool isPreparationState() => _state == GameState.preparation;

@@ -127,8 +127,8 @@ class FallGameWorld extends Base
   }
 
   @override
-  void title() {
-    super.title();
+  void title(d) {
+    super.title(d);
 
     // 接続中画面非表示
     waitingDialog.hide(this);
@@ -142,16 +142,16 @@ class FallGameWorld extends Base
   }
 
   @override
-  void preparation() {
-    super.preparation();
+  void preparation(d) {
+    super.preparation(d);
 
     waitingDialog.show(this);
     _multiGame.onWaitingUpdate();
   }
 
   @override
-  void start() {
-    super.start();
+  void start(d) {
+    super.start(d);
 
     var nextItemType = (fallingItemFactory.getNextFallingItemAttributes().type + 1);
     nextItem.update(nextItemType);
@@ -178,12 +178,18 @@ class FallGameWorld extends Base
     _showLine();
   }
 
+  double elapsedTime = 0.0;
   @override
-  void play() {
-    super.play();
+  void play(d) {
+    super.play(d);
 
     if (_isMulti) {
-      _multiGame.onPlayUpdate(playerScore.score, _isGameOver());
+      elapsedTime += d;
+      if (elapsedTime >= 0.5) { // 0.5秒間隔で実行
+        var height = double.parse(fallingItemFactory.getFallingItemHeight().toStringAsFixed(1));
+        _multiGame.onPlayUpdate(playerScore.score, height, _isGameOver());
+        elapsedTime = 0.0;
+      }
     }
 
     if (_isGameOver()) {
@@ -192,8 +198,8 @@ class FallGameWorld extends Base
   }
 
   @override
-  void gameover() {
-    super.gameover();
+  void gameover(d) {
+    super.gameover(d);
 
     // 連鎖
     if (_isMulti) {
@@ -209,8 +215,8 @@ class FallGameWorld extends Base
   }
 
   @override
-  void end() {
-    super.end();
+  void end(d) {
+    super.end(d);
 
     // 得点（リーダーボード）
     // GameBoard.leaderboardScore(_scoreLabel.score);
@@ -288,7 +294,7 @@ class FallGameWorld extends Base
 
   bool _isGameOver() {
     return fallingItemFactory.onScreenFallingItems.any((item) =>
-        item.body.position.y < Config.WORLD_HEIGHT * 0.2 && !item.falling);
+        item.body.position.y < Config.WORLD_HEIGHT * 0.2 && (item.falling == false));
   }
 
   void _setupMultiGame() {

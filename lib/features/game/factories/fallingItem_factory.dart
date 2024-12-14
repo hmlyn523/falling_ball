@@ -71,6 +71,21 @@ class FallingItemFactory extends Component
     return _fallCollection.value[_nextFallingItemIndex];
   }
 
+  double getFallingItemHeight() {
+    if (_onScreenFallingItems.isEmpty) return 0.0;
+    if (_onScreenFallingItems.length == 0) return 0.0;
+
+    var filteredYs = _onScreenFallingItems
+      .where((item) => item.falling == false)
+      .map((item) => item.center.y);
+
+    if (filteredYs.isNotEmpty) {
+      return filteredYs.reduce((current, next) => current < next ? current : next);
+    }
+
+    return 0.0;
+  }
+
   //void updateNextItemVisibility({required bool isVisible}) {
     // _nextItemSprite.isVisible = isVisible;
   //}
@@ -82,7 +97,7 @@ class FallingItemFactory extends Component
   
   // 落下中のアイテムが存在するか
   bool isFallingItem() {
-    return _onScreenFallingItems.any((element) => element.falling);
+    return _onScreenFallingItems.any((element) => element.falling == true);
   }
 
   // 全ての落下アイテムを削除

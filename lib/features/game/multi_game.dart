@@ -6,11 +6,13 @@ import 'package:uuid/uuid.dart';
 class MultiGame {
   late RealtimeChannel _gameChannel;
   late RealtimeChannel _waitingChannel;
-  late RealtimeChannel? _matchChannel;
+  // late RealtimeChannel? _matchChannel;
+  late RealtimeChannel _matchChannel;
 
   List<String> _userids = [];
   final myUserId = const Uuid().v4();
   late var _sentScores = 0;
+  late var _sentEnemyBallHeight= 0.0;
   final supabase = Supabase.instance.client;
   String opponent = "";
 
@@ -42,16 +44,16 @@ class MultiGame {
       opts: const RealtimeChannelConfig(self: true),
     );
     _gameChannel.onPresenceSync((payload) {
-      print('[onGame] >>> onPresenceSync');
+      print('[onOnline] >>> onPresenceSync');
       final presenceState = _gameChannel.presenceState();
       _userids = presenceState.map((element) => (element.presences.first).payload['user_id'] as String).toList();
       memberCount.value = _userids.length;
     }).onPresenceJoin((payload) {
-      print('[onGame] >>> onPresenceJoin');
+      print('[onOnline] >>> onPresenceJoin');
     }).onPresenceLeave((payload) {
-      print('[onGame] >>> onPresenceLeave');
+      print('[onOnline] >>> onPresenceLeave');
     }).subscribe((status, [_]) async {
-      print('[onGame] >>> onSubscrive');
+      print('[onOnline] >>> onSubscrive');
       await _gameChannel.track({'user_id': myUserId});
     });
   }
@@ -85,6 +87,7 @@ class MultiGame {
         _onGameStarted(gameId);
       }
     }).subscribe((status, [_]) async {
+      print('[onWaiting] >>> onSubscrive');
       await _waitingChannel.track({'user_id': myUserId});
     });
   }
@@ -112,13 +115,19 @@ class MultiGame {
   }
 
   // play状態中のupdate時に呼ばれる
-  void onPlayUpdate(score, isGameover) async {
+  void onPlayUpdate(score, height, isGameover) async {
     if (isGameover) {
       _sentScores = 0;
+      _sentEnemyBallHeight = 0.0;
       _sendGameOverMessage();
     }
 
     _sendChainMessage();
+
+    if (_sentEnemyBallHeight != height) {
+      _sendEnemyBallHeight(height);
+      _sentEnemyBallHeight = height;
+    }
 
     if (_sentScores != score) {
       _sendScoreMessage(score);
@@ -146,6 +155,18 @@ class MultiGame {
     }
   }
 
+  Future<void> _sendEnemyBallHeight(height) async {
+    if (height > 0.0) {
+      await _matchChannel!.sendBroadcastMessage(
+        event: 'game_enemy_ball_height',
+        payload: {
+          'enemy_ball_height': height.toDouble(),
+          'send_id' : myUserId,
+        },
+      );
+    }
+  }
+
   Future<void> _sendScoreMessage(score) async {
     await _matchChannel!.sendBroadcastMessage(
       event: 'game_score',
@@ -170,6 +191,7 @@ class MultiGame {
     await Future.delayed(Duration.zero);
     
     _sentScores = 0;
+    _sentEnemyBallHeight = 0.0;
 
     _matchChannel = supabase.channel(
       gameId,
@@ -180,6 +202,13 @@ class MultiGame {
       final sendId = payload['send_id'] as String;
       if (sendId != myUserId) {
         _updateOpponentScore(score);
+      }
+    }).onBroadcast(event: 'game_enemy_ball_height', callback: (payload) {
+      // final enemy_ball_height = payload['enemy_ball_height'] as double;
+      final enemy_ball_height = (payload['enemy_ball_height'] as num).toDouble();
+      final sendId = payload['send_id'] as String;
+      if (sendId != myUserId) {
+        print('enemy_ball_height: $enemy_ball_height');
       }
     }).onBroadcast(event: 'game_chain', callback: (payload) {
       final sendId = payload['send_id'] as String;
@@ -194,6 +223,10 @@ class MultiGame {
       removeGameChannel();
       _multiGameOverCallback?.call();
     }).subscribe();
+    // }).subscribe((status, [_]) async {
+    //   print('[_onGameStarted] >>> onSubscrive');
+    //   await _matchChannel.track({'user_id': myUserId});
+    // });
 
     removeWaitingChannel();
 
