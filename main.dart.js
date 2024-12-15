@@ -38313,7 +38313,7 @@ q=$.hb()*0.513
 p=new A.i(new Float64Array(2))
 p.dk(q)
 r.push(new A.e5("11-icon.png",q*0.5,p,1.5,55))
-p=$.hb()*0.07
+p=$.hb()*0.08
 q=new A.i(new Float64Array(2))
 q.dk(p)
 r.push(new A.e5("12-icon.png",p*0.5,q,2.6,0))
