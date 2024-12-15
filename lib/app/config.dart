@@ -99,7 +99,7 @@ class FallingItemAttributesCollection {
     value.add(new FallingItemAttributes(Config.IMAGE_9,  WallPosition.width * .399 * .5, Vector2.all(WallPosition.width * .399), 1.6,  36));
     value.add(new FallingItemAttributes(Config.IMAGE_10, WallPosition.width * .444 * .5, Vector2.all(WallPosition.width * .444), 1.55, 45));
     value.add(new FallingItemAttributes(Config.IMAGE_11, WallPosition.width * .513 * .5, Vector2.all(WallPosition.width * .513), 1.5,  55));
-    value.add(new FallingItemAttributes(Config.IMAGE_12,  WallPosition.width * .070 * .5, Vector2.all(WallPosition.width * .070), 2.6,  0));
+    value.add(new FallingItemAttributes(Config.IMAGE_12,  WallPosition.width * .08 * .5, Vector2.all(WallPosition.width * .08), 2.6,  0));
     // Set type.
     for ( int index = 0; index < value.length; index++) {
       value[index].type = index;
