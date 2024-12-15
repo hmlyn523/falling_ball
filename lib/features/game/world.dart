@@ -1,3 +1,4 @@
+import 'package:fall_game/features/game/components/enemyBallHeight.dart';
 import 'package:fall_game/features/ui/dialogs/gameover_dialog.dart';
 import 'package:fall_game/features/ui/dialogs/title_dialog.dart';
 import 'package:fall_game/features/ui/dialogs/waiting_dialog.dart';
@@ -38,6 +39,7 @@ class FallGameWorld extends Base
   // late final PositionComponent _waitingDialog;
 
   late final TapArea tapArea;
+  late final EnemyBallHeight enemyBallHeight;
 
   late final MultiGame _multiGame;
   bool _isMulti = false;
@@ -173,6 +175,7 @@ class FallGameWorld extends Base
 
     if (_isMulti) {
       opponentScore.show();
+      // enemyBallHeight.showMark();
     }
 
     _showLine();
@@ -185,10 +188,13 @@ class FallGameWorld extends Base
 
     if (_isMulti) {
       elapsedTime += d;
-      if (elapsedTime >= 0.5) { // 0.5秒間隔で実行
+      // 0.5秒間隔で実行
+      if (elapsedTime >= 0.5) {
         var height = double.parse(fallingItemFactory.getFallingItemHeight().toStringAsFixed(1));
         _multiGame.onPlayUpdate(playerScore.score, height, _isGameOver());
         elapsedTime = 0.0;
+        // enemyBallHeight.setHeight(_multiGame.enemyBallHeight);
+        enemyBallHeight.setMark(_multiGame.enemyBallState);
       }
     }
 
@@ -228,6 +234,11 @@ class FallGameWorld extends Base
 
     // Titleステータスへ遷移
     moveToTitleState();
+
+    if (_isMulti) {
+      // enemyBallHeight.hideMark();
+      enemyBallHeight.setMark(null);
+    }
   }
 
   Future<void> _initializeCamera() async {
@@ -253,12 +264,16 @@ class FallGameWorld extends Base
     });
   }
 
-  void _setupUIComponents() {
+  Future<void> _setupUIComponents() async {
     tapArea = TapArea(dragAndTapCallback: spawn );
     add(tapArea);
 
     createWall().forEach(add);
     _addForegroundAndBackground();
+
+    final loadImage = await images.load(Config.IMAGE_ENEMY_BALL_HEIGHT);
+    enemyBallHeight = EnemyBallHeight(loadImage);
+    add(enemyBallHeight);
   }
 
   Future<void> _addForegroundAndBackground() async {

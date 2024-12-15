@@ -6,7 +6,6 @@ import 'package:uuid/uuid.dart';
 class MultiGame {
   late RealtimeChannel _gameChannel;
   late RealtimeChannel _waitingChannel;
-  // late RealtimeChannel? _matchChannel;
   late RealtimeChannel _matchChannel;
 
   List<String> _userids = [];
@@ -15,6 +14,7 @@ class MultiGame {
   late var _sentEnemyBallHeight= 0.0;
   final supabase = Supabase.instance.client;
   String opponent = "";
+  late double? enemyBallState = null;
 
   // 通知
   final ValueNotifier<int> opponentScore = ValueNotifier<int>(0); // 相手のスコア
@@ -197,7 +197,10 @@ class MultiGame {
       gameId,
       opts: const RealtimeChannelConfig(self: true)
     );
-    _matchChannel!.onBroadcast(event: 'game_score', callback: (payload) {
+    _matchChannel.onPresenceLeave((payload) {
+      _matchChannel.untrack();
+      _matchChannel.unsubscribe();
+    }).onBroadcast(event: 'game_score', callback: (payload) {
       final score = payload['score'] as int;
       final sendId = payload['send_id'] as String;
       if (sendId != myUserId) {
@@ -209,6 +212,7 @@ class MultiGame {
       final sendId = payload['send_id'] as String;
       if (sendId != myUserId) {
         print('enemy_ball_height: $enemy_ball_height');
+        enemyBallState = enemy_ball_height;
       }
     }).onBroadcast(event: 'game_chain', callback: (payload) {
       final sendId = payload['send_id'] as String;

@@ -27,6 +27,7 @@ class Config {
   static const PRIORITY_START_BUTTON = 70;
   static const PRIORITY_MENU = 60;
   static const PRIORITY_BACK_F = 55;
+  static const PRIORITY_ENEMY_BALL_HEIGHT = 52;
   static const PRIORITY_FALL_ITEM = 50;
   static const PRIORITY_GAME_COMPONENT = 40;
   static const PRIORITY_FALL_ITEM_SPRITE = 30;
@@ -60,8 +61,8 @@ class Config {
   static const IMAGE_GAME_OVER = "game_over.png";
   static const IMAGE_TAP_TITLE = "tap_title.png";
   static const IMAGE_EMPTY = "empty.png";
-  static const IMAGE_CONNECT = "connect.gif";
-  static const IMAGE_CANCEL = "cancel.png";
+  static const IMAGE_CONNECT = "connect.gif"; static const IMAGE_CANCEL = "cancel.png";
+  static const IMAGE_ENEMY_BALL_HEIGHT = "enemy_ball_height.png";
 }
 
 class WallPosition {
