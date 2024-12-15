@@ -46,7 +46,7 @@ class TapTitleButton extends SpriteComponent with TapCallbacks, HasGameReference
   Future<void> onLoad() async {
     sprite = Sprite((game as FallGame).images.fromCache(Config.IMAGE_TAP_TITLE));
     position = Vector2(Config.WORLD_WIDTH * .5, Config.WORLD_HEIGHT * .65);
-    size = Vector2(Config.WORLD_WIDTH * .54, Config.WORLD_HEIGHT * .084);
+    size = Vector2(Config.WORLD_WIDTH * .53, Config.WORLD_HEIGHT * .095);
     priority = Config.PRIORITY_TAP_TITLE;
     anchor = Anchor.center;
   }

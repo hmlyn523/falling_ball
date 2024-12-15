@@ -61,7 +61,7 @@ class StartButton extends SpriteComponent
   Future<void> onLoad() async {
     sprite = Sprite((game as FallGame).images.fromCache(Config.IMAGE_START));
     position = Vector2(Config.WORLD_WIDTH * .5, Config.WORLD_HEIGHT * .485);
-    size = Vector2(Config.WORLD_WIDTH * .53, Config.WORLD_HEIGHT * .1);
+    size = Vector2(Config.WORLD_WIDTH * .53, Config.WORLD_HEIGHT * .095);
     priority = Config.PRIORITY_START_BUTTON;
     anchor = Anchor.center;
   }
@@ -79,7 +79,7 @@ class MultiButton extends SpriteComponent
   Future<void> onLoad() async {
     sprite = Sprite((game as FallGame).images.fromCache(Config.IMAGE_MULTI));
     position = Vector2(Config.WORLD_WIDTH * .5, Config.WORLD_HEIGHT * .595);
-    size = Vector2(Config.WORLD_WIDTH * .53, Config.WORLD_HEIGHT * .1);
+    size = Vector2(Config.WORLD_WIDTH * .53, Config.WORLD_HEIGHT * .095);
     priority = Config.PRIORITY_START_BUTTON;
     anchor = Anchor.center;
   }
