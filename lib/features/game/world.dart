@@ -186,13 +186,14 @@ class FallGameWorld extends Base
   void play(d) {
     super.play(d);
 
-    _multiGame.onPlayUpdateIsGameOver(_isGameOver());
-    _multiGame.onPlayUpdateScore(playerScore.score);
-    _multiGame.onPlayUpdateChain();
-
     if (_isMulti) {
-      elapsedTime += d;
+      // フレーム単位で処理
+      _multiGame.onPlayUpdateIsGameOver(_isGameOver());
+      _multiGame.onPlayUpdateScore(playerScore.score);
+      _multiGame.onPlayUpdateChain();
+
       // 0.5秒間隔で実行
+      elapsedTime += d;
       if (elapsedTime >= 0.5) {
         var height = double.parse(fallingItemFactory.getFallingItemHeight().toStringAsFixed(1));
         // _multiGame.onPlayUpdate(playerScore.score, height, _isGameOver());
