@@ -115,28 +115,58 @@ class MultiGame {
   }
 
   // play状態中のupdate時に呼ばれる
-  void onPlayUpdate(score, height, isGameover) async {
-    if (isGameover) {
-      _sentScores = 0;
-      _sentEnemyBallHeight = 0.0;
-      _sendGameOverMessage();
-    }
-
-    _sendChainMessage();
-
-    if (_sentEnemyBallHeight != height) {
-      _sendEnemyBallHeight(height);
-      _sentEnemyBallHeight = height;
-    }
-
+  void onPlayUpdateScore(score) async {
     if (_sentScores != score) {
       _sendScoreMessage(score);
       _sentScores = score;
     }
   }
 
+  // play状態中のupdate時に呼ばれる
+  void onPlayUpdateHeight(height) {
+    if (_sentEnemyBallHeight != height) {
+      _sendEnemyBallHeight(height);
+      _sentEnemyBallHeight = height;
+    }
+  }
+
+  // play状態中のupdate時に呼ばれる
+  void onPlayUpdateIsGameOver(isGameover) async {
+    if (isGameover) {
+      _sentScores = 0;
+      _sentEnemyBallHeight = 0.0;
+      _sendGameOverMessage();
+    }
+  }
+
+  // play状態中のupdate時に呼ばれる
+  void onPlayUpdateChain() async {
+    _sendChainMessage();
+  }
+
+  // // play状態中のupdate時に呼ばれる
+  // void onPlayUpdate(score, height, isGameover) async {
+    // if (isGameover) {
+    //   _sentScores = 0;
+    //   _sentEnemyBallHeight = 0.0;
+    //   _sendGameOverMessage();
+    // }
+
+    // _sendChainMessage();
+
+    // if (_sentEnemyBallHeight != height) {
+    //   _sendEnemyBallHeight(height);
+    //   _sentEnemyBallHeight = height;
+    // }
+
+    // if (_sentScores != score) {
+    //   _sendScoreMessage(score);
+    //   _sentScores = score;
+    // }
+  // }
+
   Future<void> _sendGameOverMessage() async {
-    await _matchChannel!.sendBroadcastMessage(
+    await _matchChannel.sendBroadcastMessage(
       event: 'game_over',
       payload: {},
     );
@@ -144,7 +174,7 @@ class MultiGame {
 
   Future<void> _sendChainMessage() async {
     if (chain.sendChains > 0) {
-      await _matchChannel!.sendBroadcastMessage(
+      await _matchChannel.sendBroadcastMessage(
         event: 'game_chain',
         payload: {
           'chain' : chain.sendChains,
@@ -157,7 +187,7 @@ class MultiGame {
 
   Future<void> _sendEnemyBallHeight(height) async {
     if (height > 0.0) {
-      await _matchChannel!.sendBroadcastMessage(
+      await _matchChannel.sendBroadcastMessage(
         event: 'game_enemy_ball_height',
         payload: {
           'enemy_ball_height': height.toDouble(),
@@ -168,7 +198,7 @@ class MultiGame {
   }
 
   Future<void> _sendScoreMessage(score) async {
-    await _matchChannel!.sendBroadcastMessage(
+    await _matchChannel.sendBroadcastMessage(
       event: 'game_score',
       payload: {
         'score': score,
@@ -184,7 +214,7 @@ class MultiGame {
 
   void removeGameChannel() async {
     print('[match] >>> remove _matchChannel');
-    await supabase.removeChannel(_matchChannel!);
+    await supabase.removeChannel(_matchChannel);
   }
 
   void _onGameStarted(gameId) async {
