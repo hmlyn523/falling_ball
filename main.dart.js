@@ -38386,7 +38386,7 @@ q=r.CW.a[q]
 s=s.ok
 s===$&&A.b()
 s.D2(q.b,q.d,q.c)}else if(s===B.hL){n.P1(0,b)
-s=n.W
+if(n.cK){s=n.W
 s===$&&A.b()
 s.B8(n.G9())
 r=n.aA
@@ -38395,7 +38395,7 @@ r=r.a
 r===$&&A.b()
 s.B9(r.aH)
 s.B7()
-if(n.cK){r=n.br+=b
+r=n.br+=b
 if(r>=0.5){r=n.cz
 r===$&&A.b()
 p=A.aqb(B.c.a6(r.N6(),1))
