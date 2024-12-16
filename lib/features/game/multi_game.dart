@@ -115,7 +115,7 @@ class MultiGame {
   }
 
   // play状態中のupdate時に呼ばれる
-  void onPlayUpdateScore(score) async {
+  void sendScore(score) async {
     if (_sentScores != score) {
       _sendScoreMessage(score);
       _sentScores = score;
@@ -123,7 +123,7 @@ class MultiGame {
   }
 
   // play状態中のupdate時に呼ばれる
-  void onPlayUpdateHeight(height) {
+  void sendEnemyBallHeight(height) {
     if (_sentEnemyBallHeight != height) {
       _sendEnemyBallHeight(height);
       _sentEnemyBallHeight = height;
@@ -131,16 +131,14 @@ class MultiGame {
   }
 
   // play状態中のupdate時に呼ばれる
-  void onPlayUpdateIsGameOver(isGameover) async {
-    if (isGameover) {
-      _sentScores = 0;
-      _sentEnemyBallHeight = 0.0;
-      _sendGameOverMessage();
-    }
+  void resetAndSendGameOver() async {
+    _sentScores = 0;
+    _sentEnemyBallHeight = 0.0;
+    _sendGameOverMessage();
   }
 
   // play状態中のupdate時に呼ばれる
-  void onPlayUpdateChain() async {
+  void sendChain() async {
     _sendChainMessage();
   }
 
