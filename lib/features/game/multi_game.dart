@@ -46,15 +46,17 @@ class MultiGame {
     _gameChannel.onPresenceSync((payload) {
       print('[onOnline] >>> onPresenceSync');
       final presenceState = _gameChannel.presenceState();
-      _userids = presenceState.map((element) => (element.presences.first).payload['user_id'] as String).toList();
-      memberCount.value = _userids.length;
+      final onlineUsers = presenceState.map((element) => (element.presences.first).payload['user_id'] as String).toList();
+      memberCount.value = onlineUsers.length;
     }).onPresenceJoin((payload) {
       print('[onOnline] >>> onPresenceJoin');
     }).onPresenceLeave((payload) {
       print('[onOnline] >>> onPresenceLeave');
     }).subscribe((status, [_]) async {
-      print('[onOnline] >>> onSubscrive');
-      await _gameChannel.track({'user_id': myUserId});
+      if (status == RealtimeSubscribeStatus.subscribed) {
+        print('[onOnline] >>> onSubscrive');
+        await _gameChannel.track({'user_id': myUserId});
+      }
     });
   }
 
@@ -87,8 +89,10 @@ class MultiGame {
         _onGameStarted(gameId);
       }
     }).subscribe((status, [_]) async {
-      print('[onWaiting] >>> onSubscrive');
-      await _waitingChannel.track({'user_id': myUserId});
+      if (status == RealtimeSubscribeStatus.subscribed) {
+        print('[onWaiting] >>> onSubscrive / ${myUserId} / ${status}');
+        await _waitingChannel.track({'user_id': myUserId});
+      }
     });
   }
 
@@ -99,16 +103,15 @@ class MultiGame {
       return;
     }
 
-    final opponentId = _userids.firstWhere((userId) => userId != myUserId);
+    var playUserId = _userids.where((userId) => userId != myUserId).take(2).toList();
+    playUserId.add(myUserId);
     var gameId = const Uuid().v4();
-    print('[waiting] >>> send game_start');
+    print('[waiting] >>> send game_start / gameId:${gameId} / _userids:${_userids} / playUserId:${playUserId}');
+    _userids.clear();
     await _waitingChannel.sendBroadcastMessage(
       event: 'game_start',
       payload: {
-        'participants': [
-          opponentId,
-          myUserId,
-        ],
+        'participants': playUserId,
         'game_id': gameId,
       },
     );

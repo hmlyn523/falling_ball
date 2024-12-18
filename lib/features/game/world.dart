@@ -329,9 +329,11 @@ class FallGameWorld extends Base
 
   void _onConnectivityChanged() {
     if (_connectivityProvider.isOnline) {
-      _multiGame.onOnline();
+      // _multiGame.onOnline();
+      print('Connectivity change -------------------------------------------> online');
     } else {
-      _multiGame.onOffline();
+      // _multiGame.onOffline();
+      print('Connectivity change -------------------------------------------> offline');
     }
   }
 
