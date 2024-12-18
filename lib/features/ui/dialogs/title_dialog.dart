@@ -37,7 +37,7 @@ class TitleLogo extends SpriteComponent with HasGameReference {
   Future<void> onLoad() async {
     sprite = Sprite((game as FallGame).images.fromCache(Config.IMAGE_TITLE));
     position = Vector2(Config.WORLD_WIDTH * .5, Config.WORLD_HEIGHT * .25);
-    size = Vector2(Config.WORLD_WIDTH * .77, Config.WORLD_HEIGHT * .2);
+    size = Vector2(Config.WORLD_WIDTH * .83, Config.WORLD_HEIGHT * .22);
     priority = Config.PRIORITY_TITLE_LOGO;
     anchor = Anchor.center;
   }
