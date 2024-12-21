@@ -17,7 +17,7 @@ class OpponentScore {
       position: Vector2(Config.WORLD_WIDTH * .953, Config.WORLD_HEIGHT * .962),
       color: const Color.fromRGBO(255, 255, 255, 1),
     );
-    scoreLabel.isVisible = true;
+    scoreLabel.isVisible = false;
     return OpponentScore._(scoreLabel);
   }
 
@@ -30,7 +30,7 @@ class OpponentScore {
   }
 
   void show() {
-    _scoreLabel.isVisible = true;
+    _scoreLabel.isVisible = false;
   }
 
   void hide() {
