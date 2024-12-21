@@ -1,7 +1,13 @@
+import 'package:fall_game/app/config.dart';
 import 'package:fall_game/core/modules/chain.dart';
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:uuid/uuid.dart';
+
+class EnemyBallStatus {
+  late String userid;
+  late double height;
+}
 
 class MultiGame {
   late RealtimeChannel _gameChannel;
@@ -15,6 +21,7 @@ class MultiGame {
   final supabase = Supabase.instance.client;
   String opponent = "";
   late double? enemyBallState = null;
+  late List<EnemyBallStatus> enemyBallState2 = [];
 
   // 通知
   final ValueNotifier<int> opponentScore = ValueNotifier<int>(0); // 相手のスコア
@@ -99,7 +106,7 @@ class MultiGame {
   // preのupdateで呼ばれる
   Future<void> onWaitingUpdate() async {
     await Future.delayed(Duration.zero);
-    if (_userids.length < 2) {
+    if (_userids.length < Config.PLAYERS) {
       return;
     }
 
@@ -244,6 +251,48 @@ class MultiGame {
       if (sendId != myUserId) {
         print('enemy_ball_height: $enemy_ball_height');
         enemyBallState = enemy_ball_height;
+        ///////////////////////////////////////////////////
+        print('----- BEFORE --------------------');
+        for (var status in enemyBallState2) {
+          print('UserID: ${status.userid}, Height: ${status.height}');
+        }
+        ///////////////////////////////////////////////////
+        // bool bbb = false;
+        // for (int i=0; i < enemyBallState2.length; i++) {
+        //   if (enemyBallState2[i].userid == sendId) {
+        //     enemyBallState2[i].height = enemy_ball_height;
+        //     bbb = true;
+        //     break;
+        //   }
+        // }
+        // if (!bbb) {
+        //   // 新しい状態を追加
+        //   var newStatus = EnemyBallStatus();
+        //   newStatus.userid = sendId;
+        //   newStatus.height = enemy_ball_height;
+        //   enemyBallState2.add(newStatus);
+        // }
+        ///////////////////////////////////////////////////
+        // 既存のユーザーIDを持つ状態を探す
+        var existingStatus = enemyBallState2.firstWhere(
+          (e) => e.userid == sendId,
+          orElse: () => EnemyBallStatus()..userid = '',
+        );
+
+        if (existingStatus.userid == sendId) {
+          // 見つかった場合は高さを更新
+          existingStatus.height = enemy_ball_height;
+        } else {
+          // 見つからない場合は新しい状態を追加
+          enemyBallState2.add(EnemyBallStatus()
+            ..userid = sendId
+            ..height = enemy_ball_height);
+        }
+        print('----- AFTER --------------------');
+        for (var status in enemyBallState2) {
+          print('UserID: ${status.userid}, Height: ${status.height}');
+        }
+        ///////////////////////////////////////////////////
       }
     }).onBroadcast(event: 'game_chain', callback: (payload) {
       final sendId = payload['send_id'] as String;

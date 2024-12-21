@@ -39,7 +39,7 @@ class FallGameWorld extends Base
   // late final PositionComponent _waitingDialog;
 
   late final TapArea tapArea;
-  late final EnemyBallHeight enemyBallHeight;
+  late List<EnemyBallHeight> enemyBallHeight = [];
 
   late final MultiGame _multiGame;
   bool _isMulti = false;
@@ -200,7 +200,14 @@ class FallGameWorld extends Base
         _multiGame.sendEnemyBallHeight(height);
         elapsedTime = 0.0;
         // enemyBallHeight.setHeight(_multiGame.enemyBallHeight);
-        enemyBallHeight.setMark(_multiGame.enemyBallState);
+        for (var i = 0; i < _multiGame.enemyBallState2.length; i++) {
+          enemyBallHeight[i].setMark(_multiGame.enemyBallState2[i].height);
+        }
+        // int i=0;
+        // _multiGame.enemyBallState2.forEach((state) {
+        //   enemyBallHeight[i].setMark(state.height);
+        //   i++;
+        // });
       }
     }
 
@@ -243,7 +250,12 @@ class FallGameWorld extends Base
 
     if (_isMulti) {
       // enemyBallHeight.hideMark();
-      enemyBallHeight.setMark(null);
+      // for (int i=0; i<_multiGame.enemyBallState2.length; i++) {
+      //   enemyBallHeight.setMark(_multiGame.enemyBallState2[i].height);
+      // }
+      for(int i=0; i< enemyBallHeight.length; i++) {
+        enemyBallHeight[i].setMark(null);
+      }
     }
   }
 
@@ -277,9 +289,15 @@ class FallGameWorld extends Base
     createWall().forEach(add);
     _addForegroundAndBackground();
 
-    final loadImage = await images.load(Config.IMAGE_ENEMY_BALL_HEIGHT);
-    enemyBallHeight = EnemyBallHeight(loadImage);
-    add(enemyBallHeight);
+    // final loadImage = await images.load(Config.IMAGE_ENEMY_BALL_HEIGHT);
+    // var height = EnemyBallHeight(loadImage);
+    // for(int i=0; i<Config.PLAYERS-1; i++) {
+    //   var height = EnemyBallHeight();
+    //   enemyBallHeight.add(height);
+    // }
+    // addAll(enemyBallHeight);
+    enemyBallHeight = List.generate(Config.PLAYERS - 1, (_) => EnemyBallHeight());
+    addAll(enemyBallHeight);
   }
 
   Future<void> _addForegroundAndBackground() async {
