@@ -106,7 +106,7 @@ class MultiGame {
   // preのupdateで呼ばれる
   Future<void> onWaitingUpdate() async {
     await Future.delayed(Duration.zero);
-    if (_userids.length < Config.PLAYERS) {
+    if (_userids.length <= Config.OTHER_PLAYER_COUNT) {
       return;
     }
 

@@ -115,6 +115,7 @@ flutter:
     - assets/images/cancel.png
     - assets/images/explosion.png
     - assets/images/enemy_ball_height.png
+    - assets/images/enemy_ball_height2.png
     - assets/audio/title.wav
     - assets/audio/bgm.wav
     - assets/audio/sfx/collision.wav

@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:fall_game/features/game/components/enemyBallHeight.dart';
 import 'package:fall_game/features/ui/dialogs/gameover_dialog.dart';
 import 'package:fall_game/features/ui/dialogs/title_dialog.dart';
@@ -28,6 +30,9 @@ class FallGameWorld extends Base
 {
   final images = Flame.images;
 
+  late final Background background;
+  late final Background foreground;
+
   late final PlayerScore playerScore;
   late final OpponentScore opponentScore;
   late final NextItem nextItem;
@@ -39,7 +44,7 @@ class FallGameWorld extends Base
   // late final PositionComponent _waitingDialog;
 
   late final TapArea tapArea;
-  late List<EnemyBallHeight> enemyBallHeight = [];
+  late List<EnemyBallHeightImage> enemyBallHeight = [];
 
   late final MultiGame _multiGame;
   bool _isMulti = false;
@@ -161,6 +166,9 @@ class FallGameWorld extends Base
     opponentScore.reset();
     playerScore.reset();
 
+    // ゲームオーバーラインの表示
+    foreground.setVisibility(true);
+
     // タイトル非表示
     titleDialog.hide(this);
 
@@ -194,7 +202,7 @@ class FallGameWorld extends Base
 
       // 0.5秒間隔で実行
       elapsedTime += d;
-      if (elapsedTime >= 0.5) {
+      if (elapsedTime >= Config.ENEMY_BALL_HEIGHT_INTERVAL) {
         var height = double.parse(fallingItemFactory.getFallingItemHeight().toStringAsFixed(1));
         // _multiGame.onPlayUpdate(playerScore.score, height, _isGameOver());
         _multiGame.sendEnemyBallHeight(height);
@@ -219,6 +227,9 @@ class FallGameWorld extends Base
   @override
   void gameover(d) {
     super.gameover(d);
+
+    // ゲームオーバーラインの非表示
+    foreground.setVisibility(false);
 
     // 連鎖
     if (_isMulti) {
@@ -287,24 +298,35 @@ class FallGameWorld extends Base
     add(tapArea);
 
     createWall().forEach(add);
-    _addForegroundAndBackground();
+    _addBackground();
 
     // final loadImage = await images.load(Config.IMAGE_ENEMY_BALL_HEIGHT);
     // var height = EnemyBallHeight(loadImage);
-    // for(int i=0; i<Config.PLAYERS-1; i++) {
-    //   var height = EnemyBallHeight();
-    //   enemyBallHeight.add(height);
-    // }
-    // addAll(enemyBallHeight);
-    enemyBallHeight = List.generate(Config.PLAYERS - 1, (_) => EnemyBallHeight());
+
+    List<int> values = List.generate(Config.OTHER_PLAYER_COUNT, (index) => index);
+    values.shuffle(Random());
+
+    for(int i = 0; i < values.length; i++) {
+      final imageName = Config.ENEMY_BALL_HEIGHT_IMAGES[values[i]];
+      final loadImage = await images.load(imageName);
+      var height = EnemyBallHeightImage(loadImage);
+      enemyBallHeight.add(height);
+    }
     addAll(enemyBallHeight);
+    // enemyBallHeight = List.generate(Config.PLAYERS - 1, (_) => EnemyBallHeightLine());
+    // addAll(enemyBallHeight);
   }
 
-  Future<void> _addForegroundAndBackground() async {
+  Future<void> _addBackground() async {
     final foregroundImage = await images.load(Config.IMAGE_FOREGROUND);
-    createForegound(foregroundImage).forEach(add);
     final backgroundImage = await images.load(Config.IMAGE_BACKGROUND);
-    createBackgound(backgroundImage).forEach(add);
+    foreground = Background(image: foregroundImage, priority: Config.PRIORITY_BACK_F);
+    background = Background(image: backgroundImage, priority: Config.PRIORITY_BACK_B);
+    add(foreground);
+    add(background);
+    background.setVisibility(true);
+    // createBackgound(foregroundImage, Config.PRIORITY_BACK_F).forEach(add);
+    // createBackgound(backgroundImage, Config.PRIORITY_BACK_B).forEach(add);
   }
 
   void _setupConnectivityListener() {

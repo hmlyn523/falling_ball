@@ -1,7 +1,13 @@
 import 'package:flame/components.dart';
 
 class Config {
-  static const PLAYERS = 3;
+  static const OTHER_PLAYER_COUNT = 2;
+  static const List<String> ENEMY_BALL_HEIGHT_IMAGES = [
+    "enemy_ball_height.png",
+    "enemy_ball_height2.png",
+  ];
+
+  static const ENEMY_BALL_HEIGHT_INTERVAL = 0.5;
 
   // static const List<int> itemDischargeProbability = [15, 10, 10, 10, 10, 10, 10, 10, 10, 5];
   static const List<int> itemDischargeProbability = [22, 18, 20, 21, 19];
@@ -64,7 +70,6 @@ class Config {
   static const IMAGE_TAP_TITLE = "tap_title.png";
   static const IMAGE_EMPTY = "empty.png";
   static const IMAGE_CONNECT = "connect.gif"; static const IMAGE_CANCEL = "cancel.png";
-  static const IMAGE_ENEMY_BALL_HEIGHT = "enemy_ball_height.png";
 }
 
 class WallPosition {
