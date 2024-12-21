@@ -8359,7 +8359,7 @@ o=A.cD(A.acE(B.k,o),t.Ai)
 s=3
 return A.m(o,$async$a8J)
 case 3:p=b
-p.bE$=!0
+p.bE$=!1
 q=new A.Ji(p)
 s=1
 break
@@ -38409,7 +38409,7 @@ A.og("bgm.wav")
 p.ry=B.hM
 if(p.dY){s=r.a
 s===$&&A.b()
-s.bE$=!0}s=p.X
+s.bE$=!1}s=p.X
 s===$&&A.b()
 r=p.by
 q=r.cx
