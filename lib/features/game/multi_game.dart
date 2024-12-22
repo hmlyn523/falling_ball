@@ -1,4 +1,3 @@
-import 'package:falling_ball/app/config.dart';
 import 'package:falling_ball/core/modules/chain.dart';
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
