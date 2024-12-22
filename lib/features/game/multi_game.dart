@@ -1,5 +1,5 @@
-import 'package:fall_game/app/config.dart';
-import 'package:fall_game/core/modules/chain.dart';
+import 'package:falling_ball/app/config.dart';
+import 'package:falling_ball/core/modules/chain.dart';
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:uuid/uuid.dart';

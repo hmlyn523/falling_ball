@@ -1,7 +1,7 @@
 import 'dart:ui';
 
-import 'package:fall_game/features/game/components/score_label.dart';
-import 'package:fall_game/app/config.dart';
+import 'package:falling_ball/features/game/components/score_label.dart';
+import 'package:falling_ball/app/config.dart';
 import 'package:flame/components.dart';
 
 class OpponentScore {

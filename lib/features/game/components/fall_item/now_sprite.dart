@@ -1,4 +1,4 @@
-import 'package:fall_game/app/config.dart';
+import 'package:falling_ball/app/config.dart';
 import 'package:flame/components.dart';
 
 class NowSprite extends SpriteComponent with HasVisibility {

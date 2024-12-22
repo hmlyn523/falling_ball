@@ -1,7 +1,7 @@
 import 'dart:ui';
 
 import 'package:flame/components.dart';
-import 'package:fall_game/app/config.dart';
+import 'package:falling_ball/app/config.dart';
 
 // List<Background> createBackgound(Image image, priority) {
 //   return [

@@ -1,7 +1,7 @@
-import 'package:fall_game/features/game/world.dart';
+import 'package:falling_ball/features/game/world.dart';
 import 'package:flame_forge2d/flame_forge2d.dart';
 import 'package:flame/components.dart';
-import 'package:fall_game/app/config.dart';
+import 'package:falling_ball/app/config.dart';
 
 class FallGame extends Forge2DGame {
   final context;

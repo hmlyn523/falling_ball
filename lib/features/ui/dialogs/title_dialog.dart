@@ -1,8 +1,8 @@
-import 'package:fall_game/features/game/world.dart';
+import 'package:falling_ball/features/game/world.dart';
 import 'package:flame/events.dart';
 import 'package:flame/components.dart';
-import 'package:fall_game/app/config.dart';
-import 'package:fall_game/features/game/game.dart';
+import 'package:falling_ball/app/config.dart';
+import 'package:falling_ball/features/game/game.dart';
 
 import 'package:url_launcher/url_launcher.dart';
 

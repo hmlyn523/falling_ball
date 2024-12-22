@@ -1,7 +1,7 @@
 import 'package:flame/components.dart';
 import 'package:flame/effects.dart';
 import 'package:flame_forge2d/flame_forge2d.dart';
-import 'package:fall_game/app/config.dart';
+import 'package:falling_ball/app/config.dart';
 
 class FallingItem extends BodyComponent with ContactCallbacks {
 

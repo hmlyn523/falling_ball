@@ -5,19 +5,19 @@
     "version": "0.2.0",
     "configurations": [
         {
-            "name": "fall_game (debug mode)",
+            "name": "falling_ball (debug mode)",
             "request": "launch",
             "type": "dart",
             "flutterMode": "debug",
         },
         {
-            "name": "fall_game (profile mode)",
+            "name": "falling_ball (profile mode)",
             "request": "launch",
             "type": "dart",
             "flutterMode": "profile"
         },
         {
-            "name": "fall_game (release mode)",
+            "name": "falling_ball (release mode)",
             "request": "launch",
             "type": "dart",
             "flutterMode": "release"

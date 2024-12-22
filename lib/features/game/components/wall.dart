@@ -1,7 +1,7 @@
 import 'package:flame_forge2d/body_component.dart';
 import 'package:forge2d/forge2d.dart';
-import 'package:fall_game/app/config.dart';
-import 'package:fall_game/features/game/game.dart';
+import 'package:falling_ball/app/config.dart';
+import 'package:falling_ball/features/game/game.dart';
 
 List<Wall> createWall() {
 

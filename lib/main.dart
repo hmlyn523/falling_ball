@@ -7,8 +7,8 @@ import 'package:app_tracking_transparency/app_tracking_transparency.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:provider/provider.dart';
 
-import 'package:fall_game/features/game/game.dart';
-import 'package:fall_game/core/services/ad_state.dart';
+import 'package:falling_ball/features/game/game.dart';
+import 'package:falling_ball/core/services/ad_state.dart';
 
 import 'package:supabase_flutter/supabase_flutter.dart' as supabase_flutter;
 

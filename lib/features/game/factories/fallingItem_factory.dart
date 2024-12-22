@@ -1,12 +1,12 @@
 import 'dart:async';
 import 'dart:math';
 
-import 'package:fall_game/features/game/components/audio.dart';
-import 'package:fall_game/features/game/components/fall_item/falling_item.dart';
-import 'package:fall_game/features/game/components/wall.dart';
-import 'package:fall_game/app/config.dart';
-import 'package:fall_game/core/services/event_bus.dart';
-import 'package:fall_game/features/game/world.dart';
+import 'package:falling_ball/features/game/components/audio.dart';
+import 'package:falling_ball/features/game/components/fall_item/falling_item.dart';
+import 'package:falling_ball/features/game/components/wall.dart';
+import 'package:falling_ball/app/config.dart';
+import 'package:falling_ball/core/services/event_bus.dart';
+import 'package:falling_ball/features/game/world.dart';
 import 'package:flame/components.dart';
 import 'package:flame/effects.dart';
 import 'package:flame/flame.dart';

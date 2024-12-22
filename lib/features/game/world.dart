@@ -1,27 +1,27 @@
 import 'dart:math';
 
-import 'package:fall_game/features/game/components/enemyBallHeight.dart';
-import 'package:fall_game/features/ui/dialogs/gameover_dialog.dart';
-import 'package:fall_game/features/ui/dialogs/title_dialog.dart';
-import 'package:fall_game/features/ui/dialogs/waiting_dialog.dart';
-import 'package:fall_game/core/services/connectivity_provider.dart';
-import 'package:fall_game/features/game/factories/fallingItem_factory.dart';
-import 'package:fall_game/features/game/multi_game.dart';
-import 'package:fall_game/features/ui/labels/lobby_number.dart';
-import 'package:fall_game/features/ui/labels/next_item.dart';
-import 'package:fall_game/features/ui/labels/opponent_score.dart';
-import 'package:fall_game/features/ui/labels/player_score.dart';
+import 'package:falling_ball/features/game/components/enemyBallHeight.dart';
+import 'package:falling_ball/features/ui/dialogs/gameover_dialog.dart';
+import 'package:falling_ball/features/ui/dialogs/title_dialog.dart';
+import 'package:falling_ball/features/ui/dialogs/waiting_dialog.dart';
+import 'package:falling_ball/core/services/connectivity_provider.dart';
+import 'package:falling_ball/features/game/factories/fallingItem_factory.dart';
+import 'package:falling_ball/features/game/multi_game.dart';
+import 'package:falling_ball/features/ui/labels/lobby_number.dart';
+import 'package:falling_ball/features/ui/labels/next_item.dart';
+import 'package:falling_ball/features/ui/labels/opponent_score.dart';
+import 'package:falling_ball/features/ui/labels/player_score.dart';
 import 'package:flame/events.dart';
 import 'package:flame/flame.dart';
 import 'package:flame_forge2d/flame_forge2d.dart';
 import 'package:flame/components.dart';
 
-import 'package:fall_game/features/game/components/tap_area.dart';
-import 'package:fall_game/base/base.dart';
-import 'package:fall_game/features/game/components/background.dart';
-import 'package:fall_game/features/game/components/wall.dart';
-import 'package:fall_game/features/game/components/audio.dart';
-import 'package:fall_game/app/config.dart';
+import 'package:falling_ball/features/game/components/tap_area.dart';
+import 'package:falling_ball/base/base.dart';
+import 'package:falling_ball/features/game/components/background.dart';
+import 'package:falling_ball/features/game/components/wall.dart';
+import 'package:falling_ball/features/game/components/audio.dart';
+import 'package:falling_ball/app/config.dart';
 
 class FallGameWorld extends Base
   with HasGameReference<Forge2DGame>,
