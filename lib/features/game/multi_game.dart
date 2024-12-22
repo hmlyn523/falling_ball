@@ -22,6 +22,7 @@ class MultiGame {
   String opponent = "";
   late double? enemyBallState = null;
   late List<EnemyBallStatus> enemyBallState2 = [];
+  int _other_players = 0;
 
   // 通知
   final ValueNotifier<int> opponentScore = ValueNotifier<int>(0); // 相手のスコア
@@ -75,7 +76,8 @@ class MultiGame {
   }
 
   // MULTIを押したら呼ばれる
-  void onWaiting() {
+  void onWaiting(players) {
+    _other_players = players;
     _waitingChannel = supabase.channel(
       'waiting',
       opts: const RealtimeChannelConfig(self: true),
@@ -106,7 +108,7 @@ class MultiGame {
   // preのupdateで呼ばれる
   Future<void> onWaitingUpdate() async {
     await Future.delayed(Duration.zero);
-    if (_userids.length <= Config.OTHER_PLAYER_COUNT) {
+    if (_userids.length <= _other_players/*Config.OTHER_PLAYER_COUNT*/) {
       return;
     }
 

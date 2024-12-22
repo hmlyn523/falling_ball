@@ -1,7 +1,7 @@
 import 'package:flame/components.dart';
 
 class Config {
-  static const OTHER_PLAYER_COUNT = 2;
+  static const MAX_OTHER_PLAYER_COUNT = 2;
   static const List<String> ENEMY_BALL_HEIGHT_IMAGES = [
     "enemy_ball_height.png",
     "enemy_ball_height2.png",
@@ -61,7 +61,8 @@ class Config {
   static const IMAGE_FOREGROUND = "back_foreground.png";
   static const IMAGE_TITLE = "title.png";
   static const IMAGE_START = "start.png";
-  static const IMAGE_MULTI = "multi.png";
+  static const IMAGE_MULTI2 = "multi2.png";
+  static const IMAGE_MULTI3 = "multi3.png";
   static const IMAGE_POST = "post.png";
   static const IMAGE_COPYRIGHT = "copyright.png";
   static const IMAGE_MENU = "menu.png";

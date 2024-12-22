@@ -16,9 +16,10 @@ class TitleDialog {
       Menu(),
       TitleLogo(),
       StartButton(),
-      MultiButton(),
-      RankingButton(),
-      PostButton(),
+      Multi2Button(),
+      Multi3Button(),
+      // RankingButton(),
+      // PostButton(),
       Copyright(),
     ];
   }
@@ -73,11 +74,11 @@ class StartButton extends SpriteComponent
   }
 }
 
-class MultiButton extends SpriteComponent
+class Multi2Button extends SpriteComponent
     with TapCallbacks, HasGameReference, HasWorldReference {
   @override
   Future<void> onLoad() async {
-    sprite = Sprite((game as FallGame).images.fromCache(Config.IMAGE_MULTI));
+    sprite = Sprite((game as FallGame).images.fromCache(Config.IMAGE_MULTI2));
     position = Vector2(Config.WORLD_WIDTH * .5, Config.WORLD_HEIGHT * .595);
     size = Vector2(Config.WORLD_WIDTH * .53, Config.WORLD_HEIGHT * .095);
     priority = Config.PRIORITY_START_BUTTON;
@@ -86,7 +87,25 @@ class MultiButton extends SpriteComponent
 
   @override
   bool onTapDown(TapDownEvent info) {
-    (world as FallGameWorld).multiStart();
+    (world as FallGameWorld).multiStart(other_players: 1);
+    return false;
+  }
+}
+
+class Multi3Button extends SpriteComponent
+    with TapCallbacks, HasGameReference, HasWorldReference {
+  @override
+  Future<void> onLoad() async {
+    sprite = Sprite((game as FallGame).images.fromCache(Config.IMAGE_MULTI3));
+    position = Vector2(Config.WORLD_WIDTH * .5, Config.WORLD_HEIGHT * .705);
+    size = Vector2(Config.WORLD_WIDTH * .53, Config.WORLD_HEIGHT * .095);
+    priority = Config.PRIORITY_START_BUTTON;
+    anchor = Anchor.center;
+  }
+
+  @override
+  bool onTapDown(TapDownEvent info) {
+    (world as FallGameWorld).multiStart(other_players: 2);
     return false;
   }
 }

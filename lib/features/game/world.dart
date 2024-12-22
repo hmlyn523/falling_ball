@@ -80,9 +80,9 @@ class FallGameWorld extends Base
   }
 
   // Multiボタンが押されたら呼ばれる
-  void multiStart() async {
+  void multiStart({other_players}) async {
     _isMulti = true;
-    _multiGame.onWaiting();
+    _multiGame.onWaiting(other_players);
     moveToPreparationState();
   }
 
@@ -303,7 +303,10 @@ class FallGameWorld extends Base
     // final loadImage = await images.load(Config.IMAGE_ENEMY_BALL_HEIGHT);
     // var height = EnemyBallHeight(loadImage);
 
-    List<int> values = List.generate(Config.OTHER_PLAYER_COUNT, (index) => index);
+    // 対戦相手の最大数分の情報を用意しておく
+    // 例えば対戦相手が1人だったとしても、2人分用意しておく。
+    // なぜならばこのonLoadの時点では対戦相手はわかっていないので
+    List<int> values = List.generate(Config.MAX_OTHER_PLAYER_COUNT, (index) => index);
     values.shuffle(Random());
 
     for(int i = 0; i < values.length; i++) {
