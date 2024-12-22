@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flame/components.dart';
 import 'package:falling_ball/app/config.dart';
 
