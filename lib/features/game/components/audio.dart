@@ -2,7 +2,8 @@ import 'package:flame_audio/flame_audio.dart';
 
 class Audio {
   static late Map<String, AudioPool> _audioPools;
-  static const AUDIO_BGM = 'bgm.wav';
+  // static const AUDIO_BGM = 'bgm.wav';
+  static const AUDIO_BGM = 'bgm.mp3';
   static const AUDIO_TITLE = 'title.wav';
   static const AUDIO_COLLISION = 'sfx/collision.wav';
   static const AUDIO_SPAWN = 'sfx/spawn.wav';

@@ -119,6 +119,7 @@ flutter:
     - assets/images/enemy_ball_height2.png
     - assets/audio/title.wav
     - assets/audio/bgm.wav
+    - assets/audio/bgm.mp3
     - assets/audio/sfx/collision.wav
     - assets/audio/sfx/spawn.wav
 
