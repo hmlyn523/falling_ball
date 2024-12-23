@@ -53,8 +53,16 @@ class MultiGame {
     _gameChannel.onPresenceSync((payload) {
       print('[onOnline] >>> onPresenceSync');
       final presenceState = _gameChannel.presenceState();
-      final onlineUsers = presenceState.map((element) => (element.presences.first).payload['user_id'] as String).toList();
+      // final onlineUsers = presenceState.map((element) => (element.presences.first).payload['online_user_id'] as String).toList();
+      final onlineUsers = presenceState
+        .map((element) => element.presences.isNotEmpty
+          ? element.presences.first.payload['online_user_id'] as String?
+          : null)
+        .where((userId) => userId != null) // null を取り除く
+        .cast<String>() // 型を String に確定
+        .toList();
       memberCount.value = onlineUsers.length;
+      print('[onOnline] >>> memberCount.value = ${memberCount.value}');
     }).onPresenceJoin((payload) {
       print('[onOnline] >>> onPresenceJoin');
     }).onPresenceLeave((payload) {
@@ -62,7 +70,15 @@ class MultiGame {
     }).subscribe((status, [_]) async {
       if (status == RealtimeSubscribeStatus.subscribed) {
         print('[onOnline] >>> onSubscrive');
-        await _gameChannel.track({'user_id': myUserId});
+        await _gameChannel.track({'online_user_id': myUserId});
+
+        // track完了後にpresenceStateを取得
+        final presenceState = _gameChannel.presenceState();
+        final onlineUsers = presenceState.map((element) => 
+          (element.presences.first).payload['online_user_id'] as String
+        ).toList();
+        memberCount.value = onlineUsers.length; // 自分自身を反映
+        print('[onOnline] >>> memberCount.value = ${memberCount.value}');
       }
     });
   }
@@ -83,7 +99,7 @@ class MultiGame {
     );
     _waitingChannel.onPresenceSync((payload) {
       final presenceState = _waitingChannel.presenceState();
-      _userids = presenceState.map((element) => (element.presences.first).payload['user_id'] as String).toList();
+      _userids = presenceState.map((element) => (element.presences.first).payload['waiting_user_id'] as String).toList();
     }).onPresenceJoin((payload) {
     }).onPresenceLeave((payload) {
       _waitingChannel.untrack();
@@ -99,7 +115,7 @@ class MultiGame {
     }).subscribe((status, [_]) async {
       if (status == RealtimeSubscribeStatus.subscribed) {
         print('[onWaiting] >>> onSubscrive / ${myUserId} / ${status}');
-        await _waitingChannel.track({'user_id': myUserId});
+        await _waitingChannel.track({'waiting_user_id': myUserId});
       }
     });
   }
@@ -308,10 +324,6 @@ class MultiGame {
       removeGameChannel();
       _multiGameOverCallback?.call();
     }).subscribe();
-    // }).subscribe((status, [_]) async {
-    //   print('[_onGameStarted] >>> onSubscrive');
-    //   await _matchChannel.track({'user_id': myUserId});
-    // });
 
     removeWaitingChannel();
 

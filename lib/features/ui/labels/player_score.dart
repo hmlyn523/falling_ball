@@ -1,19 +1,19 @@
 import 'dart:ui';
 
-import 'package:falling_ball/features/game/components/score_label.dart';
+import 'package:falling_ball/features/game/components/number_label.dart';
 import 'package:falling_ball/app/config.dart';
 import 'package:flame/components.dart';
 
 class PlayerScore {
-  late final ScoreLabel _scoreLabel;
+  late final NumberLabel _scoreLabel;
 
-  int get score => _scoreLabel.score;
-  ScoreLabel get label => _scoreLabel;
+  int get score => _scoreLabel.number;
+  NumberLabel get label => _scoreLabel;
 
   PlayerScore._(this._scoreLabel);
 
   static Future<PlayerScore> create() async {
-    final scoreLabel = await ScoreLabel(
+    final scoreLabel = await NumberLabel(
       position: Vector2(Config.WORLD_WIDTH * .93, Config.WORLD_HEIGHT * .058),
       color: const Color.fromRGBO(255, 255, 255, 1),
     );
@@ -26,7 +26,7 @@ class PlayerScore {
   // }
 
   void reset() {
-    _scoreLabel.score = 0;
+    _scoreLabel.number = 0;
   }
 
   void update(int score) {
