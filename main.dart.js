@@ -39555,7 +39555,7 @@ o.toString
 q.ok=A.fp(o,null,null)
 q.h5()
 o=new A.i(new Float64Array(2))
-o.a3(20,31.98)
+o.a3(20,28.782)
 p=q.at.d
 p.b7(o)
 p.Z()
@@ -39575,12 +39575,12 @@ o.toString
 q.ok=A.fp(o,null,null)
 q.h5()
 o=new A.i(new Float64Array(2))
-o.a3(20,41.574000000000005)
+o.a3(20,38.376)
 p=q.at.d
 p.b7(o)
 p.Z()
 o=new A.i(new Float64Array(2))
-o.a3(21.200000000000003,6.0762)
+o.a3(27.200000000000003,6.0762)
 q.sJ(0,o)
 q.sdc(100)
 q.ay=B.V
