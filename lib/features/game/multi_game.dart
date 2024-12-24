@@ -1,4 +1,5 @@
 import 'package:falling_ball/core/modules/chain.dart';
+import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:uuid/uuid.dart';
@@ -35,6 +36,7 @@ class MultiGame {
 
   void Function()? _multiGameStartCallback;
   void Function()? _multiGameOverCallback;
+  void Function()? _multiComboCallback;
 
   final Chain chain = Chain();
 
@@ -42,8 +44,11 @@ class MultiGame {
     onOnline();
   }
 
+  get mergeItemPotision => null;
+
   void addGameStartCallback(callback) => _multiGameStartCallback = callback;
   void addGameOverCallback(callback) => _multiGameOverCallback = callback;
+  void addComboCallback(callback) => _multiComboCallback = callback;
 
   void onOnline() {
     _gameChannel = supabase.channel(
@@ -199,6 +204,7 @@ class MultiGame {
 
   Future<void> _sendChainMessage() async {
     if (chain.sendChains > 0) {
+      _multiComboCallback?.call();
       await _matchChannel.sendBroadcastMessage(
         event: 'game_chain',
         payload: {

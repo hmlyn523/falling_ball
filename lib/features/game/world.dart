@@ -11,6 +11,7 @@ import 'package:falling_ball/features/ui/labels/lobby_number.dart';
 import 'package:falling_ball/features/ui/labels/next_item.dart';
 import 'package:falling_ball/features/ui/labels/opponent_score.dart';
 import 'package:falling_ball/features/ui/labels/player_score.dart';
+import 'package:flame/effects.dart';
 import 'package:flame/events.dart';
 import 'package:flame/flame.dart';
 import 'package:flame_forge2d/flame_forge2d.dart';
@@ -22,6 +23,7 @@ import 'package:falling_ball/features/game/components/background.dart';
 import 'package:falling_ball/features/game/components/wall.dart';
 import 'package:falling_ball/features/game/components/audio.dart';
 import 'package:falling_ball/app/config.dart';
+import 'package:flutter/material.dart';
 
 class FallGameWorld extends Base
   with HasGameReference<Forge2DGame>,
@@ -58,10 +60,33 @@ class FallGameWorld extends Base
     Audio.bgmPlay(Audio.AUDIO_TITLE);
   }
 
-  void chain() {
+  void chain(position) {
     if (_isMulti) {
       _multiGame.chain.addChain();
+      if (_multiGame.chain.sendChains > 1 ) {
+        _showCombo(position);
+      } 
     }
+  }
+
+  void _showCombo(Vector2 position) {
+    final scoreText = TextComponent(
+      text: 'Combo!',
+      position: position,
+      anchor: Anchor.center,
+      textRenderer: TextPaint(
+        style: const TextStyle(
+          fontFamily: 'Square-L',
+          color: Colors.black54,
+          fontSize: 12,
+        ),
+      ),
+      priority: 2,
+    );
+    add(scoreText);
+
+    scoreText.add(MoveEffect.by(Vector2(0, -10), EffectController(duration: .8)));
+    scoreText.add(RemoveEffect(delay: .8, onComplete: () => scoreText.removeFromParent()));
   }
 
   // プレイ中かつ落下中のみアイテムをスポーンし、落下位置確認用ラインを消す。
@@ -183,6 +208,7 @@ class FallGameWorld extends Base
 
     if (_isMulti) {
       opponentScore.show();
+      _multiGame.sendEnemyBallHeight(0.0);
       // enemyBallHeight.showMark();
     }
 
@@ -190,7 +216,7 @@ class FallGameWorld extends Base
   }
 
   double elapsedTime = 0.0;
-    @override
+  @override
   void play(d) {
     super.play(d);
 
@@ -349,6 +375,26 @@ class FallGameWorld extends Base
     moveToGameOverState();
   }
 
+  void _onMultiCombo() {
+     final scoreText = TextComponent(
+      text: 'Combo!',
+      position: fallingItemFactory.mergeItemPotision,
+      anchor: Anchor.center,
+      textRenderer: TextPaint(
+        style: const TextStyle(
+          fontFamily: 'Square-L',
+          color: Colors.yellowAccent,
+          fontSize: 10,
+        ),
+      ),
+      priority: 2,
+    );
+    add(scoreText);
+
+    scoreText.add(MoveEffect.by(Vector2(0, -5), EffectController(duration: .8)));
+    scoreText.add(RemoveEffect(delay: .8, onComplete: () => scoreText.removeFromParent()));
+  }
+
   void _showLine() {
     tapArea.showLine(
         fallingItemFactory.getNowFallingItemAttributes().image,
@@ -365,6 +411,7 @@ class FallGameWorld extends Base
     _multiGame = MultiGame();
     _multiGame.addGameStartCallback(_onMultiGameStart);
     _multiGame.addGameOverCallback(_onMultiGameOver);
+    _multiGame.addComboCallback(_onMultiCombo);
     _multiGame.opponentScore.addListener(_updateOpponentScoreLabel);
     _multiGame.opponetBall.addListener(_updateOpponentBall);
     _multiGame.memberCount.addListener(_updateLobbyMemberCount);

@@ -36,6 +36,9 @@ class FallingItemFactory extends Component
   late List<FallingItem> _onScreenFallingItems = [];
   List<FallingItem> get onScreenFallingItems => _onScreenFallingItems;
 
+  // 最後に衝突した位置
+  late Vector2 mergeItemPotision;
+
   // コンストラクタ
   FallingItemFactory() {
     _initialize();
@@ -252,6 +255,8 @@ class FallingItemFactory extends Component
       _showScore(mergeItemIndex, nextItemPosition);
       _showExplosion(nextItemPosition);
 
+      mergeItemPotision = nextItemPosition;
+
       if (mergeItemIndex < 12) {
         _removeItems(selfObject, otherObject);
       }
@@ -269,7 +274,7 @@ class FallingItemFactory extends Component
   // 新しいアイテム表示
   void _createAndDisplayNextItem(int mergeItemIndex, Vector2 position) {
     // world.setScore(getFallingItemAttributes(mergeItemIndex).score);
-    world.chain();
+    world.chain(position);
     
     Future.delayed(Duration(milliseconds: 50), () {
       var FallingItem = _generateItem(mergeItemIndex, position, fadeInDuration: 0.1);
