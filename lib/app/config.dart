@@ -23,8 +23,8 @@ class Config {
   static const WORLD_HEIGHT = 63.96;//53.3;//26.65;//13.325;
 
   // 連鎖間隔
-  static const CHAIN_INTERVAL = 1000;
-  static const MIN_CHAIN = 3;
+  static const CHAIN_INTERVAL = 600;
+  static const MIN_CHAIN = 2;
 
   static const PRIORITY_MAX = 999;
   static const PRIORITY_TITLE_LOGO = 120;
