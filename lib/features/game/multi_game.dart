@@ -20,8 +20,8 @@ class MultiGame {
   late var _sentEnemyBallHeight= 0.0;
   final supabase = Supabase.instance.client;
   String opponent = "";
-  late double? enemyBallState = null;
-  late List<EnemyBallStatus> enemyBallState2 = [];
+  // late double? enemyBallState = null;
+  late List<EnemyBallStatus> enemyBallState = [];
   int _other_players = 0;
 
   // 通知
@@ -253,6 +253,7 @@ class MultiGame {
     
     _sentScores = 0;
     _sentEnemyBallHeight = 0.0;
+    enemyBallState.clear();
 
     _matchChannel = supabase.channel(
       gameId,
@@ -273,31 +274,14 @@ class MultiGame {
       final sendId = payload['send_id'] as String;
       if (sendId != myUserId) {
         print('enemy_ball_height: $enemy_ball_height');
-        enemyBallState = enemy_ball_height;
+        // enemyBallState = enemy_ball_height;
         ///////////////////////////////////////////////////
         print('----- BEFORE --------------------');
-        for (var status in enemyBallState2) {
+        for (var status in enemyBallState) {
           print('UserID: ${status.userid}, Height: ${status.height}');
         }
-        ///////////////////////////////////////////////////
-        // bool bbb = false;
-        // for (int i=0; i < enemyBallState2.length; i++) {
-        //   if (enemyBallState2[i].userid == sendId) {
-        //     enemyBallState2[i].height = enemy_ball_height;
-        //     bbb = true;
-        //     break;
-        //   }
-        // }
-        // if (!bbb) {
-        //   // 新しい状態を追加
-        //   var newStatus = EnemyBallStatus();
-        //   newStatus.userid = sendId;
-        //   newStatus.height = enemy_ball_height;
-        //   enemyBallState2.add(newStatus);
-        // }
-        ///////////////////////////////////////////////////
         // 既存のユーザーIDを持つ状態を探す
-        var existingStatus = enemyBallState2.firstWhere(
+        var existingStatus = enemyBallState.firstWhere(
           (e) => e.userid == sendId,
           orElse: () => EnemyBallStatus()..userid = '',
         );
@@ -307,12 +291,12 @@ class MultiGame {
           existingStatus.height = enemy_ball_height;
         } else {
           // 見つからない場合は新しい状態を追加
-          enemyBallState2.add(EnemyBallStatus()
+          enemyBallState.add(EnemyBallStatus()
             ..userid = sendId
             ..height = enemy_ball_height);
         }
         print('----- AFTER --------------------');
-        for (var status in enemyBallState2) {
+        for (var status in enemyBallState) {
           print('UserID: ${status.userid}, Height: ${status.height}');
         }
         ///////////////////////////////////////////////////
