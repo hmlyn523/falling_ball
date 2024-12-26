@@ -230,18 +230,11 @@ class FallGameWorld extends Base
       elapsedTime += d;
       if (elapsedTime >= Config.ENEMY_BALL_HEIGHT_INTERVAL) {
         var height = double.parse(fallingItemFactory.getFallingItemHeight().toStringAsFixed(1));
-        // _multiGame.onPlayUpdate(playerScore.score, height, _isGameOver());
         _multiGame.sendEnemyBallHeight(height);
         elapsedTime = 0.0;
-        // enemyBallHeight.setHeight(_multiGame.enemyBallHeight);
-        for (var i = 0; i < _multiGame.enemyBallState2.length; i++) {
-          enemyBallHeight[i].setMark(_multiGame.enemyBallState2[i].height);
+        for (var i = 0; i < _multiGame.enemyBallState.length; i++) {
+          enemyBallHeight[i].setMark(_multiGame.enemyBallState[i].height);
         }
-        // int i=0;
-        // _multiGame.enemyBallState2.forEach((state) {
-        //   enemyBallHeight[i].setMark(state.height);
-        //   i++;
-        // });
       }
     }
 
@@ -286,10 +279,6 @@ class FallGameWorld extends Base
     moveToTitleState();
 
     if (_isMulti) {
-      // enemyBallHeight.hideMark();
-      // for (int i=0; i<_multiGame.enemyBallState2.length; i++) {
-      //   enemyBallHeight.setMark(_multiGame.enemyBallState2[i].height);
-      // }
       for(int i=0; i< enemyBallHeight.length; i++) {
         enemyBallHeight[i].setMark(null);
       }
