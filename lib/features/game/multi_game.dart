@@ -13,6 +13,7 @@ class MultiGame {
   late RealtimeChannel _gameChannel;
   late RealtimeChannel _waitingChannel;
   late RealtimeChannel _matchChannel;
+  bool _isGameChannelInitialized = false;
 
   List<String> _userids = [];
   final myUserId = const Uuid().v4();
@@ -51,10 +52,13 @@ class MultiGame {
   void addComboCallback(callback) => _multiComboCallback = callback;
 
   void onOnline() {
-    _gameChannel = supabase.channel(
-      'game',
-      opts: const RealtimeChannelConfig(self: true),
-    );
+    if (!_isGameChannelInitialized) {
+      _gameChannel = supabase.channel(
+        'game',
+        opts: const RealtimeChannelConfig(self: true),
+      );
+    }
+    _isGameChannelInitialized = true;
     _gameChannel.onPresenceSync((payload) {
       print('[onOnline] >>> onPresenceSync');
       final presenceState = _gameChannel.presenceState();
