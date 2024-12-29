@@ -104,12 +104,22 @@ class FallingItemFactory extends Component
   }
 
   // 全ての落下アイテムを削除
+  // void deleteAllFallingItem(children) {
+  //   children
+  //       .where((element) => element is FallingItem)
+  //       .forEach((element) {
+  //         element.removeFromParent();
+  //       });
+  //   _onScreenFallingItems.clear();
+  // }
   void deleteAllFallingItem(children) {
-    children
-        .where((element) => element is FallingItem)
-        .forEach((element) {
-          element.removeFromParent();
-        });
+    final fallingItems = children.whereType<FallingItem>().toList();
+
+    for (var item in fallingItems) {
+      item.removeFromParent();
+    }
+
+    // 落下アイテムリストも同期してクリア
     _onScreenFallingItems.clear();
   }
 
