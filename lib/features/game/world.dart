@@ -275,14 +275,14 @@ class FallGameWorld extends Base
     // 落下アイテム消去
     tapArea.hideLine();
 
-    // Titleステータスへ遷移
-    moveToTitleState();
-
     if (_isMulti) {
       for(int i=0; i< enemyBallHeight.length; i++) {
         enemyBallHeight[i].setMark(null);
       }
     }
+
+    // Titleステータスへ遷移
+    moveToTitleState();
   }
 
   Future<void> _initializeCamera() async {
