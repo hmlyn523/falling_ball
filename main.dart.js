@@ -38467,7 +38467,7 @@ q=r.CW.a[q]
 s=s.ok
 s===$&&A.b()
 s.D6(q.b,q.d,q.c)}else if(s===B.hM)p.fP(0,b)
-else if(s===B.l3){p.Pb(b)
+else if(s===B.hN){p.Pb(b)
 s=p.ab
 s===$&&A.b()
 s.aI$=!1
@@ -38478,7 +38478,7 @@ s===$&&A.b()
 s.JB(p.geZ(0))
 A.BC()
 A.oh("title.wav")
-p.ry=B.hN}else if(s===B.hN){p.P9(b)
+p.ry=B.l3}else if(s===B.l3){p.P9(b)
 s=p.fH
 s===$&&A.b()
 s.sdc(80)
@@ -39299,7 +39299,7 @@ if(m<=0)n.aI$=!1
 else{n.aI$=!0
 n=n.at.d
 n.qV(0,m)
-n.Y()}++p}}}if(l.Gf())l.ry=B.l3},
+n.Y()}++p}}}if(l.Gf())l.ry=B.hN},
 zG(a,b){var s,r,q,p,o,n=this
 n.P8(0,b)
 s=n.X
@@ -72547,8 +72547,8 @@ B.e5=new A.jl(0,"title")
 B.l2=new A.jl(1,"preparation")
 B.hL=new A.jl(2,"start")
 B.hM=new A.jl(3,"playing")
-B.l3=new A.jl(4,"playend")
-B.hN=new A.jl(5,"gameover")
+B.hN=new A.jl(4,"playend")
+B.l3=new A.jl(5,"gameover")
 B.l4=new A.jl(6,"end")
 B.Gt=new A.FT(!0,"generatingSemanticsTree")
 B.b5=new A.FW(0,"accepted")
