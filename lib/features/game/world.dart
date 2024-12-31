@@ -371,7 +371,7 @@ class FallGameWorld extends Base
   }
 
   void _onMultiGameOver() {
-    moveToGameOverState();
+    moveToPlayEndState();
   }
 
   void _onMultiCombo() {
