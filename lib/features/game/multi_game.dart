@@ -1,5 +1,4 @@
 import 'package:falling_ball/core/modules/chain.dart';
-import 'package:flame/components.dart';
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:uuid/uuid.dart';
