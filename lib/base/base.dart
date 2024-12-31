@@ -6,6 +6,7 @@ enum GameState {
   preparation,
   start,
   playing,
+  playend,
   gameover,
   end,
 }
@@ -26,6 +27,8 @@ abstract class Base extends Forge2DWorld {
       start(d);
     } else if (isPlayingState()) {
       play(d);
+    } else if (isPlayEndState()) {
+      playend(d);
     } else if (isGameOverState()) {
       gameover(d);
     } else if (isEndState()) {
@@ -46,6 +49,9 @@ abstract class Base extends Forge2DWorld {
   void play(d) {}
 
   @mustCallSuper
+  void playend(d) {}
+
+  @mustCallSuper
   void gameover(d) {}
 
   @mustCallSuper
@@ -55,6 +61,7 @@ abstract class Base extends Forge2DWorld {
   bool isPreparationState() => _state == GameState.preparation;
   bool isStartState() => _state == GameState.start;
   bool isPlayingState() => _state == GameState.playing;
+  bool isPlayEndState() => _state == GameState.playend;
   bool isGameOverState() => _state == GameState.gameover;
   bool isEndState() => _state == GameState.end;
 
@@ -62,6 +69,7 @@ abstract class Base extends Forge2DWorld {
   void moveToPreparationState() => _state = GameState.preparation;
   void moveToStartState() => _state = GameState.start;
   void moveToPlayingState() => _state = GameState.playing;
+  void moveToPlayEndState() => _state = GameState.playend;
   void moveToGameOverState() => _state = GameState.gameover;
   void moveToEndState() => _state = GameState.end;
 }
