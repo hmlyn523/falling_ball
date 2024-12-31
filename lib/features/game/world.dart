@@ -239,15 +239,15 @@ class FallGameWorld extends Base
     }
 
     if (_isGameOver()) {
-      moveToGameOverState();
+      moveToPlayEndState();
     }
   }
 
   @override
-  void gameover(d) {
-    super.gameover(d);
+  void playend(d) {
+    super.playend(d);
 
-    // ゲームオーバーラインの非表示
+     // ゲームオーバーラインの非表示
     foreground.setVisibility(false);
 
     // 連鎖
@@ -257,10 +257,21 @@ class FallGameWorld extends Base
 
     // 落下アイテム消去
     fallingItemFactory.deleteAllFallingItem(this.children);
-    // drawGameOverScreen(true);
-    gameoverDialog.show(this);
+
+    // ゲーム用BGM停止
     Audio.bgmStop();
+
+    // タイトル用BGM再生
     Audio.bgmPlay(Audio.AUDIO_TITLE);
+
+    moveToGameOverState();
+  }
+
+  @override
+  void gameover(d) {
+    super.gameover(d);
+
+    gameoverDialog.show(this);
   }
 
   @override
