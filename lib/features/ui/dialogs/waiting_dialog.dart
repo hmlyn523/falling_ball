@@ -4,29 +4,32 @@ import 'package:flame/components.dart';
 import 'package:falling_ball/app/config.dart';
 import 'package:flame/flame.dart';
 
-class WaitingDialog {
+class WaitingDialog extends PositionComponent
+  with HasVisibility {
+
   late final List<Component> _waitingDialog;
-  bool _isShown = false;
 
   List<Component> get waitingDialog => _waitingDialog;
 
-  Future<void> initialize() async {
+  WaitingDialog(): super(
+    position: Vector2.all(0),
+    size: Vector2(Config.WORLD_WIDTH, Config.WORLD_HEIGHT),
+  ){
+    priority = Config.PRIORITY_CONNECT;
     _waitingDialog = [
       WaitingPanel(),
       CancelButton(),
     ];
   }
 
-  void show(game) {
-    if (_isShown) return;
-    game.addAll(_waitingDialog);
-    _isShown = true;
+  @override
+  Future<void> onLoad() async {
+    addAll(_waitingDialog);
   }
 
-  void hide(game) {
-    if (!_isShown) return;
-    _waitingDialog.forEach((element) {element.removeFromParent();});
-    _isShown = false;
+  void setVisibility(bool isVisible) {
+    priority = isVisible ? Config.PRIORITY_CONNECT : Config.PRIORITY_MIN;
+    this.isVisible = isVisible;
   }
 }
 
@@ -40,7 +43,6 @@ class WaitingPanel extends SpriteAnimationComponent {
     );
     position = Vector2(Config.WORLD_WIDTH * .5, Config.WORLD_HEIGHT * .61);
     size = Vector2(Config.WORLD_WIDTH * .7, Config.WORLD_HEIGHT * .3);
-    priority = Config.PRIORITY_CONNECT;
     anchor = Anchor.center;
   }
 }
@@ -56,7 +58,6 @@ class CancelButton extends SpriteComponent
     sprite = Sprite(images.fromCache(Config.IMAGE_CANCEL));
     position = Vector2(Config.WORLD_WIDTH * .5, Config.WORLD_HEIGHT * .65);
     size = Vector2(Config.WORLD_WIDTH * .53, Config.WORLD_HEIGHT * .1);
-    priority = Config.PRIORITY_CANCEL;
     anchor = Anchor.center;
   }
 

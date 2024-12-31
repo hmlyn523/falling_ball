@@ -27,15 +27,11 @@ class Config {
   static const MIN_CHAIN = 2;
 
   static const PRIORITY_MAX = 999;
-  static const PRIORITY_TITLE_LOGO = 120;
-  static const PRIORITY_GAME_OVER_LOGO = 110;
-  static const PRIORITY_TAP_TITLE = 100;
-  static const PRIORITY_CANCEL = 90;
-  static const PRIORITY_CONNECT = 80;
-  static const PRIORITY_START_BUTTON = 70;
-  static const PRIORITY_MENU = 60;
-  static const PRIORITY_BACK_F = 55;
-  static const PRIORITY_ENEMY_BALL_HEIGHT = 52;
+  static const PRIORITY_CONNECT = 100;
+  static const PRIORITY_TITLE = 90;
+  static const PRIORITY_GAME_OVER = 80;
+  static const PRIORITY_BACK_F = 70;
+  static const PRIORITY_ENEMY_BALL_HEIGHT = 60;
   static const PRIORITY_FALL_ITEM = 50;
   static const PRIORITY_GAME_COMPONENT = 40;
   static const PRIORITY_FALL_ITEM_SPRITE = 30;

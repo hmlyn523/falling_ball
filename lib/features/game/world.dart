@@ -43,7 +43,6 @@ class FallGameWorld extends Base
   late final TitleDialog titleDialog;
   late final GameoverDialog gameoverDialog;
   late final WaitingDialog waitingDialog;
-  // late final PositionComponent _waitingDialog;
 
   late final TapArea tapArea;
   late List<EnemyBallHeightImage> enemyBallHeight = [];
@@ -130,18 +129,10 @@ class FallGameWorld extends Base
     nextItem = await NextItem.create();
     lobbyNumber = await LobbyNumber.create();
 
-    titleDialog = await TitleDialog();
-    gameoverDialog = await GameoverDialog();
-    waitingDialog = await WaitingDialog();
-
     add(playerScore.label);
     add(opponentScore.label);
     add(nextItem.label);
     add(lobbyNumber.label);
-
-    await titleDialog.initialize();
-    await gameoverDialog.initialize();
-    await waitingDialog.initialize();
 
     // 画像やオーディオの読み込み
     await _loadAssets();
@@ -163,21 +154,20 @@ class FallGameWorld extends Base
     super.title(d);
 
     // 接続中画面非表示
-    waitingDialog.hide(this);
-    // drawWaitingDialog(false);
+    waitingDialog.setVisibility(false);
 
     // ゲームオーバ非表示
-    gameoverDialog.hide(this);
+    gameoverDialog.setVisibility(false);
 
     // タイトル表示
-    titleDialog.show(this);  
+    titleDialog.setVisibility(true);
   }
 
   @override
   void preparation(d) {
     super.preparation(d);
 
-    waitingDialog.show(this);
+    waitingDialog.setVisibility(true);
     _multiGame.onWaitingUpdate();
   }
 
@@ -195,12 +185,12 @@ class FallGameWorld extends Base
     foreground.setVisibility(true);
 
     // タイトル非表示
-    titleDialog.hide(this);
+    titleDialog.setVisibility(false);
 
     // 落下アイテム削除
     fallingItemFactory.deleteAllFallingItem(this.children);
 
-    waitingDialog.hide(this);
+    waitingDialog.setVisibility(false);
     Audio.bgmStop();
     Audio.bgmPlay(Audio.AUDIO_BGM);
     // Playステータスへ繊維
@@ -271,7 +261,7 @@ class FallGameWorld extends Base
   void gameover(d) {
     super.gameover(d);
 
-    gameoverDialog.show(this);
+    gameoverDialog.setVisibility(true);
   }
 
   @override
@@ -322,6 +312,15 @@ class FallGameWorld extends Base
   Future<void> _setupUIComponents() async {
     tapArea = TapArea(dragAndTapCallback: spawn );
     add(tapArea);
+
+    titleDialog = TitleDialog();
+    add(titleDialog);
+
+    waitingDialog = WaitingDialog();
+    add(waitingDialog);
+
+    gameoverDialog = GameoverDialog();
+    add(gameoverDialog);
 
     createWall().forEach(add);
     _addBackground();
