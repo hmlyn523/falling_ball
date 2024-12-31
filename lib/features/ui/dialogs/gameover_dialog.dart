@@ -7,6 +7,7 @@ import 'package:flame/events.dart';
 
 class GameoverDialog {
   late final List<SpriteComponent> _gameOverDialog;
+  bool _isShown = false;
 
   List<SpriteComponent> get gameOverDialog => _gameOverDialog;
 
@@ -18,11 +19,15 @@ class GameoverDialog {
   }
 
   void show(game){
+    if (_isShown) return;
     game.addAll(_gameOverDialog);
+    _isShown = true;
   }
 
   void hide(game) {
-  _gameOverDialog.forEach((element) {element.removeFromParent();});
+    if (!_isShown) return;
+    _gameOverDialog.forEach((element) {element.removeFromParent();});
+    _isShown = false;
   }
 }
 

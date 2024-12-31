@@ -6,6 +6,7 @@ import 'package:flame/flame.dart';
 
 class WaitingDialog {
   late final List<Component> _waitingDialog;
+  bool _isShown = false;
 
   List<Component> get waitingDialog => _waitingDialog;
 
@@ -17,11 +18,15 @@ class WaitingDialog {
   }
 
   void show(game) {
+    if (_isShown) return;
     game.addAll(_waitingDialog);
+    _isShown = true;
   }
 
   void hide(game) {
+    if (!_isShown) return;
     _waitingDialog.forEach((element) {element.removeFromParent();});
+    _isShown = false;
   }
 }
 

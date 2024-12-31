@@ -8,6 +8,7 @@ import 'package:url_launcher/url_launcher.dart';
 
 class TitleDialog {
   late final List<SpriteComponent> _titleDialog;
+  bool _isShown = false;
 
   List<SpriteComponent> get titleDialog => _titleDialog;
 
@@ -25,11 +26,15 @@ class TitleDialog {
   }
 
   void show(game) {
+    if (_isShown) return;
     game.addAll(_titleDialog);
+    _isShown = true;
   }
 
   void hide(game) {
+    if (!_isShown) return;
     _titleDialog.forEach((element) {element.removeFromParent();});
+    _isShown = false;
   }
 }
 
