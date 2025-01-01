@@ -7,6 +7,7 @@ import 'package:falling_ball/features/ui/dialogs/waiting_dialog.dart';
 import 'package:falling_ball/core/services/connectivity_provider.dart';
 import 'package:falling_ball/features/game/factories/fallingItem_factory.dart';
 import 'package:falling_ball/features/game/multi_game.dart';
+import 'package:falling_ball/features/ui/dialogs/win_and_lose_dialog.dart';
 import 'package:falling_ball/features/ui/labels/lobby_number.dart';
 import 'package:falling_ball/features/ui/labels/next_item.dart';
 import 'package:falling_ball/features/ui/labels/opponent_score.dart';
@@ -43,12 +44,14 @@ class FallGameWorld extends Base
   late final TitleDialog titleDialog;
   late final GameoverDialog gameoverDialog;
   late final WaitingDialog waitingDialog;
+  late final WinAndLoseDialog winAndLoseDialog;
 
   late final TapArea tapArea;
   late List<EnemyBallHeightImage> enemyBallHeight = [];
 
   late final MultiGame _multiGame;
   bool _isMulti = false;
+  bool _isWin = true;
 
   late final ConnectivityProvider _connectivityProvider;
 
@@ -159,6 +162,10 @@ class FallGameWorld extends Base
     // ゲームオーバ非表示
     gameoverDialog.setVisibility(false);
 
+    // 勝敗非表示
+    winAndLoseDialog.setVisibility(false, true);
+    winAndLoseDialog.setVisibility(false, false);
+
     // タイトル表示
     titleDialog.setVisibility(true);
   }
@@ -212,7 +219,10 @@ class FallGameWorld extends Base
 
     if (_isMulti) {
       // フレーム単位で処理
-      if (_isGameOver()) _multiGame.resetAndSendGameOver();
+      if (_isGameOver()) {
+        _isWin = false;
+        _multiGame.resetAndSendGameOver();
+      }
       _multiGame.sendScore(playerScore.score);
       _multiGame.sendChain();
 
@@ -262,6 +272,14 @@ class FallGameWorld extends Base
     super.gameover(d);
 
     gameoverDialog.setVisibility(true);
+
+    if (_isMulti) {
+      if (_isWin) {
+        winAndLoseDialog.setVisibility(true, true);
+      } else {
+        winAndLoseDialog.setVisibility(true, false);
+      }
+    }
   }
 
   @override
@@ -281,6 +299,8 @@ class FallGameWorld extends Base
         enemyBallHeight[i].setMark(null);
       }
     }
+
+    _isWin = true;
 
     // Titleステータスへ遷移
     moveToTitleState();
@@ -321,6 +341,9 @@ class FallGameWorld extends Base
 
     gameoverDialog = GameoverDialog();
     add(gameoverDialog);
+
+    winAndLoseDialog = WinAndLoseDialog();
+    add(winAndLoseDialog);
 
     createWall().forEach(add);
     _addBackground();
@@ -371,6 +394,7 @@ class FallGameWorld extends Base
   }
 
   void _onMultiGameOver() {
+    // moveToGameOverState();
     moveToPlayEndState();
   }
 
@@ -403,7 +427,7 @@ class FallGameWorld extends Base
 
   bool _isGameOver() {
     return fallingItemFactory.onScreenFallingItems.any((item) =>
-        item.body.position.y < Config.WORLD_HEIGHT * 0.2 && (item.falling == false));
+        item.body.position.y < Config.WORLD_HEIGHT * 0.8 && (item.falling == false));
   }
 
   void _setupMultiGame() {

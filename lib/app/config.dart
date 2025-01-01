@@ -29,6 +29,7 @@ class Config {
   static const PRIORITY_MAX = 999;
   static const PRIORITY_CONNECT = 100;
   static const PRIORITY_TITLE = 90;
+  static const PRIORITY_WIN_AND_LOSE = 85;
   static const PRIORITY_GAME_OVER = 80;
   static const PRIORITY_BACK_F = 70;
   static const PRIORITY_ENEMY_BALL_HEIGHT = 60;
@@ -65,6 +66,8 @@ class Config {
   static const IMAGE_RANKING = "ranking.png";
   static const IMAGE_GAME_OVER = "game_over.png";
   static const IMAGE_TAP_TITLE = "tap_title.png";
+  static const IMAGE_WIN = "win.png";
+  static const IMAGE_LOSE = "lose.png";
   static const IMAGE_EMPTY = "empty.png";
   static const IMAGE_CONNECT = "connect.gif"; static const IMAGE_CANCEL = "cancel.png";
 }
