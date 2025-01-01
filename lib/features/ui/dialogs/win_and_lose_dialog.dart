@@ -1,9 +1,7 @@
-import 'package:falling_ball/features/game/world.dart';
 import 'package:flame/components.dart';
 
 import 'package:falling_ball/app/config.dart';
 import 'package:falling_ball/features/game/game.dart';
-import 'package:flame/events.dart';
 
 class WinAndLoseDialog extends PositionComponent
   with HasVisibility {
@@ -44,8 +42,8 @@ class WinLogo extends SpriteComponent with HasGameReference, HasVisibility {
   @override
   Future<void> onLoad() async {
     sprite = Sprite((game as FallGame).images.fromCache(Config.IMAGE_WIN));
-    position = Vector2(Config.WORLD_WIDTH * .5, Config.WORLD_HEIGHT * .35);
-    size = Vector2(Config.WORLD_WIDTH * .54, Config.WORLD_HEIGHT * .084);
+    position = Vector2(Config.WORLD_WIDTH * .5, Config.WORLD_HEIGHT * .3);
+    size = Vector2(Config.WORLD_WIDTH * .45, Config.WORLD_HEIGHT * .09);
     anchor = Anchor.center;
     isVisible = false;
   }
@@ -56,8 +54,8 @@ class LoseLogo extends SpriteComponent with HasGameReference, HasVisibility {
   @override
   Future<void> onLoad() async {
     sprite = Sprite((game as FallGame).images.fromCache(Config.IMAGE_LOSE));
-    position = Vector2(Config.WORLD_WIDTH * .5, Config.WORLD_HEIGHT * .35);
-    size = Vector2(Config.WORLD_WIDTH * .54, Config.WORLD_HEIGHT * .084);
+    position = Vector2(Config.WORLD_WIDTH * .5, Config.WORLD_HEIGHT * .3);
+    size = Vector2(Config.WORLD_WIDTH * .45, Config.WORLD_HEIGHT * .09);
     anchor = Anchor.center;
     isVisible = false;
   }
