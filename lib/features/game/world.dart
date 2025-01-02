@@ -226,20 +226,20 @@ class FallGameWorld extends Base
       _multiGame.sendScore(playerScore.score);
       _multiGame.sendChain();
 
-      // 0.5秒間隔で実行
+      // 指定時間間隔で実行
       elapsedTime += d;
       if (elapsedTime >= Config.ENEMY_BALL_HEIGHT_INTERVAL) {
+        elapsedTime = 0.0;
         var height = double.parse(fallingItemFactory.getFallingItemHeight().toStringAsFixed(1));
         _multiGame.sendEnemyBallHeight(height);
-        elapsedTime = 0.0;
         for (var i = 0; i < _multiGame.enemyBallState.length; i++) {
           enemyBallHeight[i].setMark(_multiGame.enemyBallState[i].height);
         }
       }
-    }
-
-    if (_isGameOver()) {
-      moveToPlayEndState();
+    } else {
+      if (_isGameOver()) {
+        moveToPlayEndState();
+      }
     }
   }
 
@@ -274,11 +274,7 @@ class FallGameWorld extends Base
     gameoverDialog.setVisibility(true);
 
     if (_isMulti) {
-      if (_isWin) {
-        winAndLoseDialog.setVisibility(true, true);
-      } else {
-        winAndLoseDialog.setVisibility(true, false);
-      }
+      winAndLoseDialog.setVisibility(true, _isWin);
     }
   }
 

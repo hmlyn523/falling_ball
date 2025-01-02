@@ -7,7 +7,7 @@ class Config {
     "enemy_ball_height2.png",
   ];
 
-  static const ENEMY_BALL_HEIGHT_INTERVAL = 0.5;
+  static const ENEMY_BALL_HEIGHT_INTERVAL = 1.0;
 
   // static const List<int> itemDischargeProbability = [15, 10, 10, 10, 10, 10, 10, 10, 10, 5];
   static const List<int> itemDischargeProbability = [22, 18, 20, 21, 19];
