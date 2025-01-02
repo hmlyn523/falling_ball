@@ -117,6 +117,8 @@ flutter:
     - assets/images/explosion.png
     - assets/images/enemy_ball_height.png
     - assets/images/enemy_ball_height2.png
+    - assets/images/win.png
+    - assets/images/lose.png
     - assets/audio/title.wav
     - assets/audio/bgm.wav
     - assets/audio/bgm.mp3
