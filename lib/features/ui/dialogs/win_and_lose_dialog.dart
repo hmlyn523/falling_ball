@@ -43,7 +43,7 @@ class WinLogo extends SpriteComponent with HasGameReference, HasVisibility {
   Future<void> onLoad() async {
     sprite = Sprite((game as FallGame).images.fromCache(Config.IMAGE_WIN));
     position = Vector2(Config.WORLD_WIDTH * .5, Config.WORLD_HEIGHT * .3);
-    size = Vector2(Config.WORLD_WIDTH * .45, Config.WORLD_HEIGHT * .09);
+    size = Vector2(Config.WORLD_WIDTH * .46, Config.WORLD_HEIGHT * .13);
     anchor = Anchor.center;
     isVisible = false;
   }
@@ -55,7 +55,7 @@ class LoseLogo extends SpriteComponent with HasGameReference, HasVisibility {
   Future<void> onLoad() async {
     sprite = Sprite((game as FallGame).images.fromCache(Config.IMAGE_LOSE));
     position = Vector2(Config.WORLD_WIDTH * .5, Config.WORLD_HEIGHT * .3);
-    size = Vector2(Config.WORLD_WIDTH * .45, Config.WORLD_HEIGHT * .09);
+    size = Vector2(Config.WORLD_WIDTH * .56, Config.WORLD_HEIGHT * .13);
     anchor = Anchor.center;
     isVisible = false;
   }
