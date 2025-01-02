@@ -4,7 +4,7 @@ const TEMP = 'flutter-temp-cache';
 const CACHE_NAME = 'flutter-app-cache';
 
 const RESOURCES = {"flutter.js": "76f08d47ff9f5715220992f993002504",
-"main.dart.js": "23cf5d2b015f700ee57c02aea06482de",
+"main.dart.js": "260c632104cc3f7fea63cb20e5bffbb1",
 "splash/img/light-3x.png": "ed5b2566ce8c5ba7c3424c36909dac66",
 "splash/img/light-1x.png": "0e11ccf013220e6454618376d6512300",
 "splash/img/light-2x.png": "997432f244fa18fc1b3bce575ef0968d",
@@ -38,7 +38,7 @@ const RESOURCES = {"flutter.js": "76f08d47ff9f5715220992f993002504",
 "assets/assets/images/start.png": "b14b5804410bedb2a52aff3b08a65a11",
 "assets/assets/images/connect_0.png": "89b86c6c1ceb1c36b0ccd213fcdf659d",
 "assets/assets/images/menu.png": "751bddafea4540a7ff52a1827c76cd61",
-"assets/assets/images/lose.png": "4e6dd7d974c70d7cd7d23b001ec5b8f8",
+"assets/assets/images/lose.png": "5b2b3155eaa68f2d91834a49b372fafd",
 "assets/assets/images/post.png": "61b29a978f9ae35d8804ccfd9ab30898",
 "assets/assets/images/ranking.png": "dccb336a27a6a0ba73c695a1ba9bbc54",
 "assets/assets/images/enemy_ball_height.png": "1325fbd0ab6cecbb7aa2f9cb8e2f8000",
@@ -53,7 +53,7 @@ const RESOURCES = {"flutter.js": "76f08d47ff9f5715220992f993002504",
 "assets/assets/images/game_over.png": "ad64819fc2a064a5af7764a7ca71111c",
 "assets/assets/images/3-icon.png": "3d417581a8b9bfb07298831a5c555ed2",
 "assets/assets/images/tap_title.png": "ea8d178ffee813c471763936f012afb9",
-"assets/assets/images/win.png": "d1de9a7d7308006c60b5535b543ae489",
+"assets/assets/images/win.png": "5353a81940ec799d6c27c3eab02d95be",
 "assets/assets/images/multi2.png": "c00ff3758a0be01de8f4a1feb9029122",
 "assets/assets/audio/bgm.mp3": "2720a15eb3340ca843d0c0a70f557e40",
 "assets/assets/audio/sfx/spawn.wav": "68a602aba9e33e519073ada25bdf77c5",
@@ -83,7 +83,7 @@ const RESOURCES = {"flutter.js": "76f08d47ff9f5715220992f993002504",
 "icons/Icon-512.png": "96e752610906ba2a93c65f8abe1645f1",
 "favicon.png": "5dcef449791fa27946b3d35ad8803796",
 "version.json": "2009e33ee92575714318bb93c345bb23",
-"flutter_bootstrap.js": "7144853d9d67f907a8cd6864c6034cab"};
+"flutter_bootstrap.js": "3fe6ebd647bfec2b551f76719acf75ca"};
 // The application shell files that are downloaded before a service worker can
 // start.
 const CORE = ["main.dart.js",
