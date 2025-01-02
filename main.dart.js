@@ -38701,9 +38701,9 @@ s===$&&A.b()
 s=s.ag
 s===$&&A.b()
 r=$.WT().a[0]+s
-if(p<=r)p=r+0.4
+if(p<=r)p=r+0.04
 s=$.WU().a[0]-s
-q.qU(0,p>=s?s-0.4:p)
+q.qU(0,p>=s?s-0.04:p)
 q.W()}return!0}}
 A.Rg.prototype={
 bZ(a){if(this.aj$)this.h3(a)}}
