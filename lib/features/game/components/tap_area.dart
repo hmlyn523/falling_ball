@@ -50,7 +50,7 @@ class TapArea extends PositionComponent with TapCallbacks,
   @override
   void onDragUpdate(DragUpdateEvent event) {
     _dragging = true;
-    if (!line.updateLine(event.localPosition)) {
+    if (!line.updateLine(event.localStartPosition)) {
       _dragging = false;
     }
   }
