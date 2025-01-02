@@ -55,7 +55,7 @@ class Line extends RectangleComponent
 
   double _xDirectionAdjustment(x) {
     final r = _nowFallingItemSprite.radius;
-    var adjustment = Config.WORLD_WIDTH * .01;
+    var adjustment = Config.WORLD_WIDTH * .001;
     if (x <= WallPosition.topLeft.x + r) {
       x = (WallPosition.topLeft.x + r);
       x += adjustment; // 誤差調整
