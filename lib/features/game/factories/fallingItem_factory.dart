@@ -200,16 +200,16 @@ class FallingItemFactory extends Component
     final selfObject = _getSelfObject(item, contact);
     final otherObject = _getOtherObject(item, contact);
 
+    // ボールがぶつかった相手が、壁の場合は何も処理をせずに終了する。
+    if (other is Wall) {
+      return;
+    }
+
     // ボールの落下が完了した場合[isFallingItem=false]、ボールとラインを表示する。
     // ボールの表示は本クラスで行うが、ラインの表示はTapAreaクラスで行うため、
     // whereTypeのfirstを利用してTapAreaコンポーネントの取得を行う。
     if (!isFallingItem()) {
       _handleNonFallingState();
-    }
-
-    // ボールがぶつかった相手が、壁の場合は何も処理をせずに終了する。
-    if (other is Wall) {
-      return;
     }
 
     // 同じ番号のボールが衝突した場合、次の番号のボールをぶつかったボールの中間点に表示する。
