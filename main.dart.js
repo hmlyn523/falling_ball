@@ -38806,6 +38806,7 @@ s.a=0
 return B.b.KJ(B.oM,new A.a1a(s,q))},
 TU(a,b,c){var s,r,q,p,o,n,m,l,k=this,j=null,i=c.d.b,h=i.fr,g=h===a?h:c.e.b.fr,f=c.e.b.fr
 h=f===a?h:f
+if(b instanceof A.qp)return
 if(!k.L3()){k.ax.LJ("onFallComplete",j)
 s=k.ghx().d_
 s===$&&A.b()
@@ -38814,8 +38815,7 @@ s===$&&A.b()
 r=k.cx
 r===$&&A.b()
 r=k.CW.a[r]
-s.D7(r.b,r.d,r.c)}if(b instanceof A.qp)return
-s=t.wv
+s.D7(r.b,r.d,r.c)}s=t.wv
 s.a(g)
 r=g.x1
 s.a(h)
