@@ -163,8 +163,7 @@ class FallGameWorld extends Base
     gameoverDialog.setVisibility(false);
 
     // 勝敗非表示
-    winAndLoseDialog.setVisibility(false, true);
-    winAndLoseDialog.setVisibility(false, false);
+    winAndLoseDialog.setVisibility(false);
 
     // タイトル表示
     titleDialog.setVisibility(true);
@@ -274,7 +273,7 @@ class FallGameWorld extends Base
     gameoverDialog.setVisibility(true);
 
     if (_isMulti) {
-      winAndLoseDialog.setVisibility(true, _isWin);
+      winAndLoseDialog.setWinVisibility(_isWin);
     }
   }
 

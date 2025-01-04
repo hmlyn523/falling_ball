@@ -6,35 +6,34 @@ import 'package:falling_ball/features/game/game.dart';
 class WinAndLoseDialog extends PositionComponent
   with HasVisibility {
 
-  late final List<SpriteComponent> _winAndLoseDialog;
+  late final WinLogo _winLogoComponent;
+  late final LoseLogo _loseLogoComponent;
 
   WinAndLoseDialog(): super(
     position: Vector2.all(0),
     size: Vector2(Config.WORLD_WIDTH, Config.WORLD_HEIGHT),
   ){
     priority = Config.PRIORITY_GAME_OVER;
-    _winAndLoseDialog = [
-      WinLogo(),
-      LoseLogo(),
-    ];
+    _winLogoComponent = WinLogo();
+    _loseLogoComponent = LoseLogo();
     isVisible = false;
   }
 
   @override
   Future<void> onLoad() async {
-    addAll(_winAndLoseDialog);
+    add(_winLogoComponent);
+    add(_loseLogoComponent);
   }
 
-  void setVisibility(bool isVisible, bool winAndLose) {
-    priority = isVisible ? Config.PRIORITY_WIN_AND_LOSE : Config.PRIORITY_MIN;
-    this.isVisible = isVisible;
-    if (winAndLose) {
-      (_winAndLoseDialog[0] as WinLogo).setVisibility(true);
-      (_winAndLoseDialog[1] as LoseLogo).setVisibility(false);
-    } else {
-      (_winAndLoseDialog[0] as WinLogo).setVisibility(false);
-      (_winAndLoseDialog[1] as LoseLogo).setVisibility(true);
-    }
+  void setVisibility(visible) {
+    priority = visible ? Config.PRIORITY_WIN_AND_LOSE : Config.PRIORITY_MIN;
+    this.isVisible = visible;
+  }
+
+  void setWinVisibility(visible) {
+    setVisibility(true);
+    _winLogoComponent.setVisibility(visible);
+    _loseLogoComponent.setVisibility(!visible);
   }
 }
 
