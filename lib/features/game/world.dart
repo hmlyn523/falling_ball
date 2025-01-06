@@ -83,7 +83,7 @@ class FallGameWorld extends Base
           fontSize: 12,
         ),
       ),
-      priority: 2,
+      priority: Config.PRIORITY_COMBO,
     );
     add(scoreText);
 

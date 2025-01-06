@@ -27,10 +27,11 @@ class Config {
   static const MIN_CHAIN = 2;
 
   static const PRIORITY_MAX = 999;
-  static const PRIORITY_CONNECT = 100;
-  static const PRIORITY_TITLE = 90;
-  static const PRIORITY_WIN_AND_LOSE = 85;
-  static const PRIORITY_GAME_OVER = 80;
+  static const PRIORITY_CONNECT = 120;
+  static const PRIORITY_TITLE = 110;
+  static const PRIORITY_WIN_AND_LOSE = 100;
+  static const PRIORITY_GAME_OVER = 90;
+  static const PRIORITY_COMBO = 80;
   static const PRIORITY_BACK_F = 70;
   static const PRIORITY_ENEMY_BALL_HEIGHT = 60;
   static const PRIORITY_FALL_ITEM = 50;
