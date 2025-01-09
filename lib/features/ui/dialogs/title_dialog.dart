@@ -75,7 +75,7 @@ class StartButton extends SpriteComponent
   }
 
   @override
-  bool onTapDown(TapDownEvent info) {
+  bool onTapUp(TapUpEvent info) {
     (world as FallGameWorld).singleStart();
     return false;
   }
@@ -92,7 +92,7 @@ class Multi2Button extends SpriteComponent
   }
 
   @override
-  bool onTapDown(TapDownEvent info) {
+  bool onTapUp(TapUpEvent info) {
     (world as FallGameWorld).multiStart(other_players: 1);
     return false;
   }
@@ -109,7 +109,7 @@ class Multi3Button extends SpriteComponent
   }
 
   @override
-  bool onTapDown(TapDownEvent info) {
+  bool onTapUp(TapUpEvent info) {
     (world as FallGameWorld).multiStart(other_players: 2);
     return false;
   }
@@ -126,7 +126,7 @@ class RankingButton extends SpriteComponent
   }
 
   @override
-  bool onTapDown(TapDownEvent info) {
+  bool onTapUp(TapUpEvent info) {
     // GamesServices.showLeaderboards(iOSLeaderboardID: 'tapjump.ranking');
     // GamesServices.loadLeaderboardScores(
     //   iOSLeaderboardID: 'tapjump.ranking',
@@ -148,7 +148,7 @@ class PostButton extends SpriteComponent
   }
 
   @override
-  bool onTapDown(TapDownEvent info) {
+  bool onTapUp(TapUpEvent info) {
     // var message = L10n.of((game as FallGame).context)!.post1 +
     //               (world as FallGameWorld).score.toString() +
     //               L10n.of((game as FallGame).context)!.post2;
