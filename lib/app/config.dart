@@ -8,6 +8,7 @@ class Config {
   ];
 
   static const ENEMY_BALL_HEIGHT_INTERVAL = 1.0;
+  static const AUTO_FALLING_INTERVAL = 5;
 
   // static const List<int> itemDischargeProbability = [15, 10, 10, 10, 10, 10, 10, 10, 10, 5];
   static const List<int> itemDischargeProbability = [22, 18, 20, 21, 19];
@@ -27,10 +28,11 @@ class Config {
   static const MIN_CHAIN = 2;
 
   static const PRIORITY_MAX = 999;
-  static const PRIORITY_CONNECT = 120;
-  static const PRIORITY_TITLE = 110;
-  static const PRIORITY_WIN_AND_LOSE = 100;
-  static const PRIORITY_GAME_OVER = 90;
+  static const PRIORITY_CONNECT = 130;
+  static const PRIORITY_TITLE = 120;
+  static const PRIORITY_WIN_AND_LOSE = 110;
+  static const PRIORITY_GAME_OVER = 100;
+  static const PRIORITY_AUTO_FALLING_TIME = 90;
   static const PRIORITY_COMBO = 80;
   static const PRIORITY_BACK_F = 70;
   static const PRIORITY_ENEMY_BALL_HEIGHT = 60;

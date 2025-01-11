@@ -9,9 +9,11 @@ class TapArea extends PositionComponent with TapCallbacks,
   var _dragging = true;
   late Line line;
   final void Function(Vector2) dragAndTapCallback;
+  final void Function(Vector2) dragAndTapEndCallback;
 
   TapArea({
     required this.dragAndTapCallback,
+    required this.dragAndTapEndCallback,
   }): super(
     position: Vector2.all(0),
     size: Vector2(Config.WORLD_WIDTH, Config.WORLD_HEIGHT * 1.1),
@@ -38,11 +40,14 @@ class TapArea extends PositionComponent with TapCallbacks,
     line.hideLine();
   }
 
+  void onDragOrTapEnd() => _onDragOrTapEnd();
+
   // タップすると呼ばれる
   @override
   bool containsLocalPoint(Vector2 point) {
     _dragging = true;
     line.updateLine(point);
+    dragAndTapCallback(Vector2(line.position.x, Config.WORLD_HEIGHT * .14));
     return true;
   }
 
@@ -71,6 +76,6 @@ class TapArea extends PositionComponent with TapCallbacks,
 
   void _onDragOrTapEnd() {
     if (!_dragging) return;
-    dragAndTapCallback(Vector2(line.position.x, Config.WORLD_HEIGHT * .14));
+    dragAndTapEndCallback(Vector2(line.position.x, Config.WORLD_HEIGHT * .14));
   }
 }

@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:falling_ball/features/game/components/enemyBallHeight.dart';
+import 'package:falling_ball/features/game/helpers/auto_falling_timer.dart';
 import 'package:falling_ball/features/ui/dialogs/gameover_dialog.dart';
 import 'package:falling_ball/features/ui/dialogs/title_dialog.dart';
 import 'package:falling_ball/features/ui/dialogs/waiting_dialog.dart';
@@ -8,6 +9,7 @@ import 'package:falling_ball/core/services/connectivity_provider.dart';
 import 'package:falling_ball/features/game/factories/fallingItem_factory.dart';
 import 'package:falling_ball/features/game/multi_game.dart';
 import 'package:falling_ball/features/ui/dialogs/win_and_lose_dialog.dart';
+import 'package:falling_ball/features/ui/labels/auto_falling_time.dart';
 import 'package:falling_ball/features/ui/labels/lobby_number.dart';
 import 'package:falling_ball/features/ui/labels/next_item.dart';
 import 'package:falling_ball/features/ui/labels/opponent_score.dart';
@@ -40,6 +42,7 @@ class FallGameWorld extends Base
   late final OpponentScore opponentScore;
   late final NextItem nextItem;
   late final LobbyNumber lobbyNumber;
+  late final AutoFallingTime autoFallingTime;
 
   late final TitleDialog titleDialog;
   late final GameoverDialog gameoverDialog;
@@ -56,6 +59,7 @@ class FallGameWorld extends Base
   late final ConnectivityProvider _connectivityProvider;
 
   late FallingItemFactory fallingItemFactory;
+  late final autoFallingTimer;
 
   FallGameWorld()
   {
@@ -131,11 +135,13 @@ class FallGameWorld extends Base
     opponentScore = await OpponentScore.create();
     nextItem = await NextItem.create();
     lobbyNumber = await LobbyNumber.create();
+    autoFallingTime = await AutoFallingTime.create();
 
     add(playerScore.label);
     add(opponentScore.label);
     add(nextItem.label);
     add(lobbyNumber.label);
+    add(autoFallingTime.label);
 
     // 画像やオーディオの読み込み
     await _loadAssets();
@@ -144,6 +150,7 @@ class FallGameWorld extends Base
     _setupConnectivityListener();
     _setupMultiGame();
     _setupFactories();
+    _setupHelpers();
 
     // 壁や背景などの描画要素を追加
     _setupUIComponents();
@@ -209,6 +216,8 @@ class FallGameWorld extends Base
     }
 
     _showLine();
+
+    _startAutoFallingTimer();
   }
 
   double elapsedTime = 0.0;
@@ -245,6 +254,8 @@ class FallGameWorld extends Base
   @override
   void playend(d) {
     super.playend(d);
+
+    _stopAutoFallingTimer();
 
      // ゲームオーバーラインの非表示
     foreground.setVisibility(false);
@@ -317,6 +328,11 @@ class FallGameWorld extends Base
       // アイテムの落下が完了したら呼ばれ、次のアイテムの番号をNEXTに表示
       var item = fallingItemFactory.nextFallingItemIndex + 1;
       nextItem.update(item);
+      print(fallingItemFactory.isFallingItem());
+      // タイマーが停止中かつ画面をタップしていなければタイマー開始
+      if (!autoFallingTimer.isRunning() && !tapArea.isDragged) {
+        _startAutoFallingTimer();
+      }
     });
     fallingItemFactory.eventBus.subscribe(fallingItemFactory.ON_MERGE_ITEM, (score) {
       // アイテムがマージされたら呼ばれ、アイテムのスコア更新
@@ -324,8 +340,22 @@ class FallGameWorld extends Base
     });
   }
 
+  void _setupHelpers() {
+    autoFallingTimer = AutoFallingTimer(
+      interval: Duration(seconds: Config.AUTO_FALLING_INTERVAL),
+      onTimeout: _onAutoFallingTimeout,
+    );
+  }
+
   Future<void> _setupUIComponents() async {
-    tapArea = TapArea(dragAndTapCallback: spawn );
+    tapArea = TapArea(dragAndTapCallback: ((_) => {
+      // タップしてもタイマーを停止せずに、指定時間間隔で落下させるようにする。
+      // ゲーム実行中に画面をタップしたら自動落下タイマーを停止
+      // if (isPlayingState()) _stopAutoFallingTimer()
+    }), dragAndTapEndCallback: ((position) => {
+      if (isPlayingState()) _stopAutoFallingTimer(),
+      spawn(position),
+    }));
     add(tapArea);
 
     titleDialog = TitleDialog();
@@ -461,5 +491,32 @@ class FallGameWorld extends Base
   void _updateOpponentScoreLabel() {
     var score = _multiGame.opponentScore.value;
     opponentScore.update(score);
+  }
+
+  void _startAutoFallingTimer() {
+    if (!_isMulti) return;
+    autoFallingTime.show();
+    autoFallingTime.update(Config.AUTO_FALLING_INTERVAL);
+    autoFallingTimer.start(
+      countdownSeconds: Config.AUTO_FALLING_INTERVAL, // カウントダウン5秒
+      onTick: (remainingTime) => _onAutoFallingTick(remainingTime)
+    );
+  }
+
+  void _stopAutoFallingTimer() {
+    if (!_isMulti) return;
+    autoFallingTime.hide();
+    autoFallingTimer.stop();
+  }
+
+  void _onAutoFallingTimeout() {
+    if (!_isMulti) return;
+    autoFallingTime.hide();
+    tapArea.onDragOrTapEnd();
+  }
+
+  void _onAutoFallingTick(remainingTime) {
+    if (!_isMulti) return;
+    autoFallingTime.update(remainingTime);
   }
 }
