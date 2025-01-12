@@ -1,4 +1,3 @@
-import 'dart:async' as async;
 import 'dart:math';
 
 import 'package:falling_ball/features/game/components/audio.dart';

@@ -156,27 +156,27 @@ class PostButton extends SpriteComponent
     return false;
   }
 
-  void _post(message) async {
-    final Map<String, dynamic> postQuery = {
-      "text": message,
-      "url": "",
-      "hashtags": const [],
-      "via": "",
-      "related": "",
-    };
+  // void _post(message) async {
+  //   final Map<String, dynamic> postQuery = {
+  //     "text": message,
+  //     "url": "",
+  //     "hashtags": const [],
+  //     "via": "",
+  //     "related": "",
+  //   };
 
-    final Uri postScheme =
-        Uri(scheme: "twitter", host: "post", queryParameters: postQuery);
+  //   final Uri postScheme =
+  //       Uri(scheme: "twitter", host: "post", queryParameters: postQuery);
 
-    final Uri postIntentUrl =
-        Uri.https("twitter.com", "/intent/tweet", postQuery);
+  //   final Uri postIntentUrl =
+  //       Uri.https("twitter.com", "/intent/tweet", postQuery);
 
-    if (await canLaunchUrl(postScheme)) {
-      await launchUrl(postScheme);
-    } else if (await canLaunchUrl(postIntentUrl)) {
-      await launchUrl(postIntentUrl);
-    }
-  }
+  //   if (await canLaunchUrl(postScheme)) {
+  //     await launchUrl(postScheme);
+  //   } else if (await canLaunchUrl(postIntentUrl)) {
+  //     await launchUrl(postIntentUrl);
+  //   }
+  // }
 }
 
 class Copyright extends SpriteComponent with HasGameReference {
