@@ -13,10 +13,10 @@ class WinAndLoseDialog extends PositionComponent
     position: Vector2.all(0),
     size: Vector2(Config.WORLD_WIDTH, Config.WORLD_HEIGHT),
   ){
-    priority = Config.PRIORITY_GAME_OVER;
     _winLogoComponent = WinLogo();
     _loseLogoComponent = LoseLogo();
     isVisible = false;
+    priority = Config.PRIORITY_MIN;
   }
 
   @override
@@ -46,8 +46,14 @@ class WinLogo extends SpriteComponent with HasGameReference, HasVisibility {
     size = Vector2(Config.WORLD_WIDTH * .46, Config.WORLD_HEIGHT * .13);
     anchor = Anchor.center;
     isVisible = false;
+    priority = Config.PRIORITY_MIN;
   }
-  void setVisibility(bool isVisible) => this.isVisible = isVisible;
+
+  void setVisibility(bool isVisible) {
+     if (isVisible == this.isVisible) return;
+    priority = isVisible ? Config.PRIORITY_WIN_AND_LOSE : Config.PRIORITY_MIN;
+    this.isVisible = isVisible;
+  }
 }
 
 class LoseLogo extends SpriteComponent with HasGameReference, HasVisibility {
@@ -58,6 +64,12 @@ class LoseLogo extends SpriteComponent with HasGameReference, HasVisibility {
     size = Vector2(Config.WORLD_WIDTH * .56, Config.WORLD_HEIGHT * .13);
     anchor = Anchor.center;
     isVisible = false;
+    priority = Config.PRIORITY_MIN;
   }
-  void setVisibility(bool isVisible) => this.isVisible = isVisible;
+
+  void setVisibility(bool isVisible) {
+     if (isVisible == this.isVisible) return;
+    priority = isVisible ? Config.PRIORITY_WIN_AND_LOSE : Config.PRIORITY_MIN;
+    this.isVisible = isVisible;
+  }
 }

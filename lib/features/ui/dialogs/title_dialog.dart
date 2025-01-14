@@ -17,7 +17,6 @@ class TitleDialog extends PositionComponent
     position: Vector2.all(0),
     size: Vector2(Config.WORLD_WIDTH, Config.WORLD_HEIGHT),
   ){
-    priority = Config.PRIORITY_TITLE;
     _titleDialog = [
       Menu(),
       TitleLogo(),
@@ -29,6 +28,7 @@ class TitleDialog extends PositionComponent
       Copyright(),
     ];
     isVisible = false;
+    priority = Config.PRIORITY_MIN;
   }
 
   @override
@@ -38,7 +38,11 @@ class TitleDialog extends PositionComponent
 
   void setVisibility(bool isVisible) {
     if (isVisible == this.isVisible) return;
-    priority = isVisible ? Config.PRIORITY_GAME_OVER : Config.PRIORITY_MIN;
+    // 非表示時にイベントを無効化するため、TapTitleButtonのpriorityを変更
+    priority = isVisible ? Config.PRIORITY_TITLE : Config.PRIORITY_MIN;
+    for (var component in _titleDialog) {
+      component.priority = isVisible ? Config.PRIORITY_TITLE : Config.PRIORITY_MIN;
+    }
     this.isVisible = isVisible;
   }
 }

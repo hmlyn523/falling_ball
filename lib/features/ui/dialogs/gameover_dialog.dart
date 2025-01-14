@@ -14,12 +14,12 @@ class GameoverDialog extends PositionComponent
     position: Vector2.all(0),
     size: Vector2(Config.WORLD_WIDTH, Config.WORLD_HEIGHT),
   ){
-    priority = Config.PRIORITY_GAME_OVER;
     _gameOverDialog = [
       GameOverLogo(),
       TapTitleButton(),
     ];
     isVisible = false;
+    priority = Config.PRIORITY_GAME_OVER;
   }
 
   @override
@@ -29,7 +29,11 @@ class GameoverDialog extends PositionComponent
 
   void setVisibility(bool isVisible) {
     if (isVisible == this.isVisible) return;
+    // 非表示時にイベントを無効化するため、TapTitleButtonのpriorityを変更
     priority = isVisible ? Config.PRIORITY_GAME_OVER : Config.PRIORITY_MIN;
+    for (var component in _gameOverDialog) {
+      component.priority = isVisible ? Config.PRIORITY_GAME_OVER : Config.PRIORITY_MIN;
+    }
     this.isVisible = isVisible;
   }
 }
