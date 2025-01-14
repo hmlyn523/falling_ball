@@ -244,11 +244,11 @@ class FallingItemFactory extends Component
   void _handleNonFallingState() {
     // world.setNextItem(_nextFallingItemIndex + 1); // ooo
     eventBus.publish(ON_FALL_COMPLETE, null);
-    world.tapArea.line.showLine(
-      getNowFallingItemAttributes().image,
-      getNowFallingItemAttributes().size,
-      getNowFallingItemAttributes().radius,
-    );
+    // world.tapArea.line.show(
+    //   getNowFallingItemAttributes().image,
+    //   getNowFallingItemAttributes().size,
+    //   getNowFallingItemAttributes().radius,
+    // );
   }
 
   bool _shouldMergeItems(FallingItem selfObject, Contact contact) {

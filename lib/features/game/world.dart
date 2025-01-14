@@ -101,7 +101,7 @@ class FallGameWorld extends Base
     if (fallingItemFactory.isFallingItem()) return;
     fallingItemFactory.spawn(position);
     Audio.play(Audio.AUDIO_SPAWN);
-    tapArea.hideLine();
+    tapArea.line.hide();
   }
 
   // Singleボタンが押されたら呼ばれる
@@ -129,19 +129,6 @@ class FallGameWorld extends Base
 
     // ビューファインダーの設定(左上の座標を0,0として扱う)
     await _initializeCamera();
-
-    // UI
-    playerScore = await PlayerScore.create();
-    opponentScore = await OpponentScore.create();
-    nextItem = await NextItem.create();
-    lobbyNumber = await LobbyNumber.create();
-    autoFallingTime = await AutoFallingTime.create();
-
-    add(playerScore.label);
-    add(opponentScore.label);
-    add(nextItem.label);
-    add(lobbyNumber.label);
-    add(autoFallingTime.label);
 
     // 画像やオーディオの読み込み
     await _loadAssets();
@@ -298,7 +285,7 @@ class FallGameWorld extends Base
     // GameBoard.playCountAndAverageScore(_scoreLabel.score);
 
     // 落下アイテム消去
-    tapArea.hideLine();
+    tapArea.line.hide();
 
     if (_isMulti) {
       for(int i=0; i< enemyBallHeight.length; i++) {
@@ -333,6 +320,10 @@ class FallGameWorld extends Base
       if (!autoFallingTimer.isRunning() && !tapArea.isDragged) {
         _startAutoFallingTimer();
       }
+      tapArea.line.show(
+        fallingItemFactory.getNowFallingItemAttributes().image,
+        fallingItemFactory.getNowFallingItemAttributes().size,
+        fallingItemFactory.getNowFallingItemAttributes().radius);
     });
     fallingItemFactory.eventBus.subscribe(fallingItemFactory.ON_MERGE_ITEM, (score) {
       // アイテムがマージされたら呼ばれ、アイテムのスコア更新
@@ -348,14 +339,29 @@ class FallGameWorld extends Base
   }
 
   Future<void> _setupUIComponents() async {
-    tapArea = TapArea(dragAndTapCallback: ((_) => {
-      // タップしてもタイマーを停止せずに、指定時間間隔で落下させるようにする。
-      // ゲーム実行中に画面をタップしたら自動落下タイマーを停止
-      // if (isPlayingState()) _stopAutoFallingTimer()
-    }), dragAndTapEndCallback: ((position) => {
-      if (isPlayingState()) _stopAutoFallingTimer(),
-      spawn(position),
-    }));
+    // UI
+    playerScore = await PlayerScore.create();
+    opponentScore = await OpponentScore.create();
+    nextItem = await NextItem.create();
+    lobbyNumber = await LobbyNumber.create();
+    autoFallingTime = await AutoFallingTime.create();
+
+    add(playerScore.label);
+    add(opponentScore.label);
+    add(nextItem.label);
+    add(lobbyNumber.label);
+    add(autoFallingTime.label);
+
+    tapArea = TapArea(
+      tapDown: ((_) => {
+        // タップしてもタイマーを停止せずに、指定時間間隔で落下させるようにすためにコメントアウト
+        // ゲーム実行中に画面をタップしたら自動落下タイマーを停止
+        // if (isPlayingState()) _stopAutoFallingTimer()
+      }),
+      tapUp: ((position) => {
+        if (isPlayingState()) _stopAutoFallingTimer(),
+        spawn(position),
+      }));
     add(tapArea);
 
     titleDialog = TitleDialog();
@@ -444,7 +450,7 @@ class FallGameWorld extends Base
   }
 
   void _showLine() {
-    tapArea.showLine(
+    tapArea.line.show(
         fallingItemFactory.getNowFallingItemAttributes().image,
         fallingItemFactory.getNowFallingItemAttributes().size,
         fallingItemFactory.getNowFallingItemAttributes().radius);

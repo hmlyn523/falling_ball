@@ -28,6 +28,7 @@ class GameoverDialog extends PositionComponent
   }
 
   void setVisibility(bool isVisible) {
+    if (isVisible == this.isVisible) return;
     priority = isVisible ? Config.PRIORITY_GAME_OVER : Config.PRIORITY_MIN;
     this.isVisible = isVisible;
   }
@@ -38,7 +39,7 @@ class GameOverLogo extends SpriteComponent with HasGameReference {
   Future<void> onLoad() async {
     sprite = Sprite((game as FallGame).images.fromCache(Config.IMAGE_GAME_OVER));
     position = Vector2(Config.WORLD_WIDTH * .5, Config.WORLD_HEIGHT * .45);
-    size = Vector2(Config.WORLD_WIDTH * .54, Config.WORLD_HEIGHT * .084);
+    size = Vector2(Config.WORLD_WIDTH * .648, Config.WORLD_HEIGHT * .1);
     anchor = Anchor.center;
   }
 }

@@ -8,22 +8,22 @@ class TapArea extends PositionComponent with TapCallbacks,
                                        DragCallbacks {
   var _dragging = true;
   late Line line;
-  final void Function(Vector2) dragAndTapCallback;
-  final void Function(Vector2) dragAndTapEndCallback;
+  final void Function(Vector2) tapDown;
+  final void Function(Vector2) tapUp;
 
   TapArea({
-    required this.dragAndTapCallback,
-    required this.dragAndTapEndCallback,
-  }): super(
-    position: Vector2.all(0),
-    size: Vector2(Config.WORLD_WIDTH, Config.WORLD_HEIGHT * 1.1),
-  ){
+    required this.tapDown,
+    required this.tapUp,
+  }): line = Line(),
+      super(
+        position: Vector2.all(0),
+        size: Vector2(Config.WORLD_WIDTH, Config.WORLD_HEIGHT * 1.1),
+      ) {
     priority = Config.PRIORITY_GAME_COMPONENT;
   }
 
   @override
   Future<void> onLoad() async {
-    line = Line();
     line
       ..position.x = Config.WORLD_WIDTH * .5
       ..position.y = Config.WORLD_HEIGHT * .14;
@@ -31,14 +31,14 @@ class TapArea extends PositionComponent with TapCallbacks,
     add(line);
   }
 
-  // 指定された画像を指定されたサイズのボールをラインと一緒に表示する。
-  void showLine(_nowBallImage, _nowBallSize, _nowBallRadius) {
-    line.showLine(_nowBallImage, _nowBallSize, _nowBallRadius);
-  }
+  // // 指定された画像を指定されたサイズのボールをラインと一緒に表示する。
+  // void showLine(_nowBallImage, _nowBallSize, _nowBallRadius) {
+  //   line.showLine(_nowBallImage, _nowBallSize, _nowBallRadius);
+  // }
 
-  void hideLine() {
-    line.hideLine();
-  }
+  // void hideLine() {
+  //   line.hideLine();
+  // }
 
   void onDragOrTapEnd() => _onDragOrTapEnd();
 
@@ -47,7 +47,7 @@ class TapArea extends PositionComponent with TapCallbacks,
   bool containsLocalPoint(Vector2 point) {
     _dragging = true;
     line.updateLine(point);
-    dragAndTapCallback(Vector2(line.position.x, Config.WORLD_HEIGHT * .14));
+    tapDown(Vector2(line.position.x, Config.WORLD_HEIGHT * .14));
     return true;
   }
 
@@ -76,6 +76,6 @@ class TapArea extends PositionComponent with TapCallbacks,
 
   void _onDragOrTapEnd() {
     if (!_dragging) return;
-    dragAndTapEndCallback(Vector2(line.position.x, Config.WORLD_HEIGHT * .14));
+    tapUp(Vector2(line.position.x, Config.WORLD_HEIGHT * .14));
   }
 }

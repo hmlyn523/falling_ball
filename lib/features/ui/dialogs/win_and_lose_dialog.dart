@@ -26,6 +26,7 @@ class WinAndLoseDialog extends PositionComponent
   }
 
   void setVisibility(visible) {
+    if (visible == this.isVisible) return;
     priority = visible ? Config.PRIORITY_WIN_AND_LOSE : Config.PRIORITY_MIN;
     this.isVisible = visible;
   }

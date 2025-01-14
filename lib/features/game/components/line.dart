@@ -28,7 +28,7 @@ class Line extends RectangleComponent
     ]);
   }
 
-  void showLine(image, size, radius) {
+  void show(image, size, radius) {
     this.isVisible = true;
     _nowFallingItemSprite.isVisible = true;
 
@@ -38,7 +38,7 @@ class Line extends RectangleComponent
     _nowFallingItemSprite.position = Vector2.zero();
   }
 
-  void hideLine() {
+  void hide() {
     this.isVisible = false;
     _nowFallingItemSprite.isVisible = false;
   }

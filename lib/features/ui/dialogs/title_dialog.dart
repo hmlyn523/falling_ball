@@ -37,6 +37,7 @@ class TitleDialog extends PositionComponent
   }
 
   void setVisibility(bool isVisible) {
+    if (isVisible == this.isVisible) return;
     priority = isVisible ? Config.PRIORITY_GAME_OVER : Config.PRIORITY_MIN;
     this.isVisible = isVisible;
   }
