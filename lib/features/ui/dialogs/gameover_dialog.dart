@@ -45,6 +45,7 @@ class GameOverLogo extends SpriteComponent with HasGameReference {
     position = Vector2(Config.WORLD_WIDTH * .5, Config.WORLD_HEIGHT * .45);
     size = Vector2(Config.WORLD_WIDTH * .648, Config.WORLD_HEIGHT * .1);
     anchor = Anchor.center;
+    priority = Config.PRIORITY_MIN;
   }
 }
 
@@ -55,6 +56,7 @@ class TapTitleButton extends SpriteComponent with TapCallbacks, HasGameReference
     position = Vector2(Config.WORLD_WIDTH * .5, Config.WORLD_HEIGHT * .6);
     size = Vector2(Config.WORLD_WIDTH * .68, Config.WORLD_HEIGHT * .095);
     anchor = Anchor.center;
+    priority = Config.PRIORITY_MIN;
   }
 
   @override
