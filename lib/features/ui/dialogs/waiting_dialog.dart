@@ -50,6 +50,7 @@ class WaitingPanel extends SpriteAnimationComponent {
     position = Vector2(Config.WORLD_WIDTH * .5, Config.WORLD_HEIGHT * .61);
     size = Vector2(Config.WORLD_WIDTH * .7, Config.WORLD_HEIGHT * .3);
     anchor = Anchor.center;
+    priority = Config.PRIORITY_MIN;
   }
 }
 
@@ -65,6 +66,7 @@ class CancelButton extends SpriteComponent
     position = Vector2(Config.WORLD_WIDTH * .5, Config.WORLD_HEIGHT * .65);
     size = Vector2(Config.WORLD_WIDTH * .53, Config.WORLD_HEIGHT * .1);
     anchor = Anchor.center;
+    priority = Config.PRIORITY_MIN;
   }
 
   @override

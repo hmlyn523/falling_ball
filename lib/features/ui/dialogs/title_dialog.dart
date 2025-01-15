@@ -54,6 +54,7 @@ class TitleLogo extends SpriteComponent with HasGameReference {
     position = Vector2(Config.WORLD_WIDTH * .5, Config.WORLD_HEIGHT * .25);
     size = Vector2(Config.WORLD_WIDTH * .83, Config.WORLD_HEIGHT * .22);
     anchor = Anchor.center;
+    priority = Config.PRIORITY_MIN;
   }
 }
 
@@ -66,6 +67,7 @@ class Menu extends SpriteComponent
     size = Vector2(Config.WORLD_WIDTH * .6, Config.WORLD_HEIGHT * .4);
     // priority = Config.PRIORITY_MENU;
     anchor = Anchor.center;
+    priority = Config.PRIORITY_MIN;
   }
 }
 
@@ -77,6 +79,7 @@ class StartButton extends SpriteComponent
     position = Vector2(Config.WORLD_WIDTH * .5, Config.WORLD_HEIGHT * .485);
     size = Vector2(Config.WORLD_WIDTH * .53, Config.WORLD_HEIGHT * .095);
     anchor = Anchor.center;
+    priority = Config.PRIORITY_MIN;
   }
 
   @override
@@ -94,6 +97,7 @@ class Multi2Button extends SpriteComponent
     position = Vector2(Config.WORLD_WIDTH * .5, Config.WORLD_HEIGHT * .595);
     size = Vector2(Config.WORLD_WIDTH * .53, Config.WORLD_HEIGHT * .095);
     anchor = Anchor.center;
+    priority = Config.PRIORITY_MIN;
   }
 
   @override
@@ -111,6 +115,7 @@ class Multi3Button extends SpriteComponent
     position = Vector2(Config.WORLD_WIDTH * .5, Config.WORLD_HEIGHT * .705);
     size = Vector2(Config.WORLD_WIDTH * .53, Config.WORLD_HEIGHT * .095);
     anchor = Anchor.center;
+    priority = Config.PRIORITY_MIN;
   }
 
   @override
@@ -128,6 +133,7 @@ class RankingButton extends SpriteComponent
     position = Vector2(Config.WORLD_WIDTH * .4, Config.WORLD_HEIGHT * .74);
     size = Vector2(Config.WORLD_WIDTH * .18, Config.WORLD_HEIGHT * .10);
     anchor = Anchor.center;
+    priority = Config.PRIORITY_MIN;
   }
 
   @override
@@ -150,6 +156,7 @@ class PostButton extends SpriteComponent
     position = Vector2(Config.WORLD_WIDTH * .6, Config.WORLD_HEIGHT * .74);
     size = Vector2(Config.WORLD_WIDTH * .15, Config.WORLD_HEIGHT * .09);
     anchor = Anchor.center;
+    priority = Config.PRIORITY_MIN;
   }
 
   @override
@@ -192,5 +199,6 @@ class Copyright extends SpriteComponent with HasGameReference {
     position = Vector2(Config.WORLD_WIDTH * .5, Config.WORLD_HEIGHT * .85);
     size = Vector2(Config.WORLD_WIDTH * .6, Config.WORLD_HEIGHT * .055);
     anchor = Anchor.center;
+    priority = Config.PRIORITY_MIN;
   }
 }
