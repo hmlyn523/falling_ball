@@ -19,7 +19,7 @@ class GameoverDialog extends PositionComponent
       TapTitleButton(),
     ];
     isVisible = false;
-    priority = Config.PRIORITY_GAME_OVER;
+    priority = Config.PRIORITY_MIN;
   }
 
   @override
