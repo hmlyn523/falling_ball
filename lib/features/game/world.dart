@@ -2,6 +2,7 @@ import 'dart:math';
 
 import 'package:falling_ball/features/game/components/enemyBallHeight.dart';
 import 'package:falling_ball/features/game/helpers/auto_falling_timer.dart';
+import 'package:falling_ball/features/game/leaderboard_service.dart';
 import 'package:falling_ball/features/ui/dialogs/gameover_dialog.dart';
 import 'package:falling_ball/features/ui/dialogs/title_dialog.dart';
 import 'package:falling_ball/features/ui/dialogs/waiting_dialog.dart';
@@ -34,6 +35,8 @@ class FallGameWorld extends Base
        DragCallbacks
 {
   final images = Flame.images;
+
+  late final LeaderboardService leaderboardService;
 
   late final Background background;
   late final Background foreground;
@@ -142,6 +145,8 @@ class FallGameWorld extends Base
     // 壁や背景などの描画要素を追加
     _setupUIComponents();
 
+    leaderboardService = LeaderboardService();
+
     // GameBoard.signedIn();
     // _gameOverScreen = createGameOverScreen();
   }
@@ -241,6 +246,8 @@ class FallGameWorld extends Base
   @override
   void playend(d) {
     super.playend(d);
+
+    leaderboardService.uploadScore('sagara', playerScore.score);
 
     _stopAutoFallingTimer();
 
