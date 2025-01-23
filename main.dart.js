@@ -45253,7 +45253,7 @@ $S:0}
 A.a6S.prototype={
 $1(a){var s=a.at
 s===$&&A.a()
-return s.d.a.a[1]<51.168000000000006&&a.aS===!1},
+return s.d.a.a[1]<12.792000000000002&&a.aS===!1},
 $S:93}
 A.a6Z.prototype={
 $1(a){return this.a.agj(a)},
