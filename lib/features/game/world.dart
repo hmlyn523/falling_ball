@@ -28,6 +28,7 @@ import 'package:falling_ball/features/game/components/wall.dart';
 import 'package:falling_ball/features/game/components/audio.dart';
 import 'package:falling_ball/app/config.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class FallGameWorld extends Base
   with HasGameReference<Forge2DGame>,
@@ -244,11 +245,16 @@ class FallGameWorld extends Base
   }
 
   @override
-  void playend(d) {
+  void playend(d) async {
     super.playend(d);
 
-    leaderboardService.uploadScore('sagara', playerScore.score);
+    // ユーザ名取得
+    final prefs = await SharedPreferences.getInstance();
+    final userName = prefs.getString('userName') ?? 'GUIEST';
+    // スコア更新
+    leaderboardService.uploadScore(userName, playerScore.score);
 
+    // アイテムの自動落下タイマー停止
     _stopAutoFallingTimer();
 
      // ゲームオーバーラインの非表示
@@ -465,7 +471,7 @@ class FallGameWorld extends Base
 
   bool _isGameOver() {
     return fallingItemFactory.onScreenFallingItems.any((item) =>
-        item.body.position.y < Config.WORLD_HEIGHT * 0.2 && (item.falling == false));
+        item.body.position.y < Config.WORLD_HEIGHT * 0.8 && (item.falling == false));
   }
 
   void _setupMultiGame() {

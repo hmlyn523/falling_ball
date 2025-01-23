@@ -140,6 +140,9 @@ flutter:
     - family: Square-L
       fonts:
         - asset: assets/fonts/Square-L.ttf
+    - family: PixelFont
+      fonts:
+        - asset: assets/fonts/PressStart2P-Regular.ttf
   #       - asset: fonts/Schyler-Regular.ttf
   #       - asset: fonts/Schyler-Italic.ttf
   #         style: italic

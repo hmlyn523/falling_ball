@@ -9,13 +9,12 @@ class LeaderboardService {
     final supabase = Supabase.instance.client;
 
     try {
-      // 現在のスコアを取得
+      // 現在保存されている最高スコアを取得
       final currentScoreResponse = await supabase
           .from('scores')
           .select('score')
           .eq('player_name', playerName)
           .maybeSingle();
-
       final currentScore = currentScoreResponse?['score'] as int? ?? 0;
 
       // 最高スコアを更新
@@ -43,13 +42,6 @@ class LeaderboardService {
     } catch (e) {
       print('得点履歴の追加に失敗: $e');
     }
-  //   try {
-  //     await supabase
-  //         .from('scores')
-  //         .insert({'player_name': playerName, 'score': score});
-  //   } catch (e) {
-  //     print('得点の更新に失敗: $e');
-  //   }
   }
 
   // ランキングを取得
