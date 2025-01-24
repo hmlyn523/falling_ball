@@ -24,8 +24,9 @@ class FallGame extends Forge2DGame {
     // SharedPreferencesでユーザー名を確認
     final prefs = await SharedPreferences.getInstance();
     final userName = prefs.getString('userName');
-    print('userName : ${userName}'); // Debug　
-    if (userName == null || userName.isEmpty) {
+    final uuid = prefs.getString('uuid');
+    print('userName : ${userName} / uuid: ${uuid}'); // Debug　
+    if (userName == null || userName.isEmpty || uuid == null || uuid.isEmpty) {
       // ゲーム開始時にユーザー名入力オーバーレイを表示
       showUserNameInput();
     }else{

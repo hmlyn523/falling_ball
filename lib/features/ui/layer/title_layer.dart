@@ -18,7 +18,7 @@ class TitleDialog extends PositionComponent
     size: Vector2(Config.WORLD_WIDTH, Config.WORLD_HEIGHT),
   ){
     _titleDialog = [
-      Menu(),
+      // Menu(),
       TitleLogo(),
       StartButton(),
       Multi2Button(),
@@ -76,8 +76,8 @@ class StartButton extends SpriteComponent
   @override
   Future<void> onLoad() async {
     sprite = Sprite((game as FallGame).images.fromCache(Config.IMAGE_START));
-    position = Vector2(Config.WORLD_WIDTH * .5, Config.WORLD_HEIGHT * .485);
-    size = Vector2(Config.WORLD_WIDTH * .53, Config.WORLD_HEIGHT * .095);
+    position = Vector2(Config.WORLD_WIDTH * .5, Config.WORLD_HEIGHT * .45);
+    size = Vector2(Config.WORLD_WIDTH * .31, Config.WORLD_HEIGHT * .125);
     anchor = Anchor.center;
     priority = Config.PRIORITY_MIN;
   }
@@ -94,8 +94,8 @@ class Multi2Button extends SpriteComponent
   @override
   Future<void> onLoad() async {
     sprite = Sprite((game as FallGame).images.fromCache(Config.IMAGE_MULTI2));
-    position = Vector2(Config.WORLD_WIDTH * .5, Config.WORLD_HEIGHT * .595);
-    size = Vector2(Config.WORLD_WIDTH * .53, Config.WORLD_HEIGHT * .095);
+    position = Vector2(Config.WORLD_WIDTH * .3, Config.WORLD_HEIGHT * .6);
+    size = Vector2(Config.WORLD_WIDTH * .31, Config.WORLD_HEIGHT * .125);
     anchor = Anchor.center;
     priority = Config.PRIORITY_MIN;
   }
@@ -112,8 +112,8 @@ class Multi3Button extends SpriteComponent
   @override
   Future<void> onLoad() async {
     sprite = Sprite((game as FallGame).images.fromCache(Config.IMAGE_MULTI3));
-    position = Vector2(Config.WORLD_WIDTH * .5, Config.WORLD_HEIGHT * .705);
-    size = Vector2(Config.WORLD_WIDTH * .53, Config.WORLD_HEIGHT * .095);
+    position = Vector2(Config.WORLD_WIDTH * .7, Config.WORLD_HEIGHT * .6);
+    size = Vector2(Config.WORLD_WIDTH * .31, Config.WORLD_HEIGHT * .125);
     anchor = Anchor.center;
     priority = Config.PRIORITY_MIN;
   }

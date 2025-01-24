@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:uuid/uuid.dart';
 
 class GameScreen extends StatefulWidget {
   @override
@@ -44,14 +45,16 @@ class _GameScreenState extends State<GameScreen> {
             overlayBuilderMap: {
               'userNameInput': (context, game) => UserNameInputOverlay(
                 onSave: (userName) async {
+                  final uuid = const Uuid().v4();
                   final prefs = await SharedPreferences.getInstance();
-                  final success = await prefs.setString('userName', userName);
-                    if (success) {
-                      print('ユーザー名の保存に成功しました: $userName');
-                      (game as FallGame).hideUserNameInput();
-                    } else {
-                      print('ユーザー名の保存に失敗しました');
-                    }
+                  final userNameSetResult = await prefs.setString('userName', userName);
+                  final uuidSetResult = await prefs.setString('uuid', uuid);
+                  if (userNameSetResult && uuidSetResult) {
+                    print('ユーザー名の保存に成功しました: $userName');
+                    (game as FallGame).hideUserNameInput();
+                  } else {
+                    print('ユーザー名の保存に失敗しました');
+                  }
                   (game as FallGame).hideUserNameInput();
                 },
               ),

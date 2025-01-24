@@ -1,15 +1,16 @@
 import 'dart:math';
 
+import 'package:falling_ball/core/models/player_data.dart';
 import 'package:falling_ball/features/game/components/enemyBallHeight.dart';
 import 'package:falling_ball/features/game/helpers/auto_falling_timer.dart';
-import 'package:falling_ball/features/game/leaderboard_service.dart';
-import 'package:falling_ball/features/ui/dialogs/gameover_dialog.dart';
-import 'package:falling_ball/features/ui/dialogs/title_dialog.dart';
-import 'package:falling_ball/features/ui/dialogs/waiting_dialog.dart';
+import 'package:falling_ball/core/services/leaderboard_service.dart';
+import 'package:falling_ball/features/ui/layer/gameover_layer.dart';
+import 'package:falling_ball/features/ui/layer/title_layer.dart';
+import 'package:falling_ball/features/ui/layer/waiting_layer.dart';
 import 'package:falling_ball/core/services/connectivity_provider.dart';
 import 'package:falling_ball/features/game/factories/fallingItem_factory.dart';
 import 'package:falling_ball/features/game/multi_game.dart';
-import 'package:falling_ball/features/ui/dialogs/win_and_lose_dialog.dart';
+import 'package:falling_ball/features/ui/layer/win_and_lose_layer.dart';
 import 'package:falling_ball/features/ui/labels/auto_falling_time.dart';
 import 'package:falling_ball/features/ui/labels/lobby_number.dart';
 import 'package:falling_ball/features/ui/labels/next_item.dart';
@@ -250,9 +251,17 @@ class FallGameWorld extends Base
 
     // ユーザ名取得
     final prefs = await SharedPreferences.getInstance();
-    final userName = prefs.getString('userName') ?? 'GUIEST';
-    // スコア更新
-    leaderboardService.uploadScore(userName, playerScore.score);
+    final userName = prefs.getString('userName');
+    final uuid = prefs.getString('uuid');
+    if (userName != null && userName.isNotEmpty && uuid != null && uuid.isNotEmpty){
+      final playerData = PlayerData(
+        userName: userName,
+        uuid: uuid,
+        score: playerScore.score,
+      );
+      // スコア更新
+      leaderboardService.uploadScore(playerData);
+    }
 
     // アイテムの自動落下タイマー停止
     _stopAutoFallingTimer();

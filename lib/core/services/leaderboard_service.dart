@@ -1,10 +1,10 @@
+import 'package:falling_ball/core/models/player_data.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class LeaderboardService {
-  // late final dynamic currentScoreResponse;
 
   // 得点をアップロード
-  Future<void> uploadScore(String playerName, int newScore) async {
+  Future<void> uploadScore(PlayerData playerData) async {
     // Supabaseや他のバックエンドに得点を送信
     final supabase = Supabase.instance.client;
 
@@ -13,15 +13,17 @@ class LeaderboardService {
       final currentScoreResponse = await supabase
           .from('scores')
           .select('score')
-          .eq('player_name', playerName)
+          .eq('player_name', playerData.userName)
+          .eq('player_uuid', playerData.uuid)
           .maybeSingle();
       final currentScore = currentScoreResponse?['score'] as int? ?? 0;
 
       // 最高スコアを更新
-      if (newScore > currentScore) {
+      if (playerData.score > currentScore) {
         final response = await supabase.from('scores').upsert({
-          'player_name': playerName,
-          'score': newScore,
+          'player_name': playerData.userName,
+          'player_uuid': playerData.uuid,
+          'score': playerData.score,
         }, onConflict: 'player_name');
 
         print('新しいスコアで更新しました！');
@@ -36,8 +38,9 @@ class LeaderboardService {
     try {
       // 得点履歴を追加（score_historyテーブル）
       await supabase.from('score_history').insert({
-        'player_name': playerName,
-        'score': newScore,
+        'player_name': playerData.userName,
+        'player_uuid': playerData.uuid,
+        'score': playerData.score,
       });
     } catch (e) {
       print('得点履歴の追加に失敗: $e');
