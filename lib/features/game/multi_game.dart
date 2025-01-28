@@ -106,8 +106,11 @@ class MultiGame {
       opts: const RealtimeChannelConfig(self: true),
     );
     _waitingChannel.onPresenceSync((payload) {
+      print('[onWaiting] >>> onPresenceSync');
+      print('  --> プレゼンス情報を受信しました。現在のプレゼンス情報: $payload');
       final presenceState = _waitingChannel.presenceState();
       _userids = presenceState.map((element) => (element.presences.first).payload['waiting_user_id'] as String).toList();
+      print('  --> _userids : ${_userids}');
     }).onPresenceJoin((payload) {
     }).onPresenceLeave((payload) {
       _waitingChannel.untrack();
@@ -121,14 +124,27 @@ class MultiGame {
         _onGameStarted(gameId);
       }
     }).subscribe((status, [_]) async {
+      print('[onWaiting] >>> onSubscrive');
+      print('  --> myUserId : ${myUserId}');
+      print('  --> status : ${status}');
       if (status == RealtimeSubscribeStatus.subscribed) {
-        print('[onWaiting] >>> onSubscrive / ${myUserId} / ${status}');
+        print('    --> クライアントがサーバーと接続し、リアルタイムデータを受信できる状態です。');
+        print('    --> プレゼンス情報を送信します。 (trackの実行)');
         await _waitingChannel.track({'waiting_user_id': myUserId});
+      }
+      else if (status == RealtimeSubscribeStatus.channelError) {
+        print('    --> チャンネルにエラーが発生しました。');
+      }
+      else if (status == RealtimeSubscribeStatus.closed) {
+        print('    --> チャンネルが閉じられました。');
+      }
+      else if (status == RealtimeSubscribeStatus.timedOut) {
+        print('    --> サーバーからの応答が一定時間内に受信できず、接続がタイムアウトしました。');
       }
     });
   }
 
-  // preのupdateで呼ばれる
+  // preparationで呼ばれ続ける
   Future<void> onWaitingUpdate() async {
     await Future.delayed(Duration.zero);
     if (_userids.length <= _other_players/*Config.OTHER_PLAYER_COUNT*/) {
@@ -138,7 +154,10 @@ class MultiGame {
     var playUserId = _userids.where((userId) => userId != myUserId).take(2).toList();
     playUserId.add(myUserId);
     var gameId = const Uuid().v4();
-    print('[waiting] >>> send game_start / gameId:${gameId} / _userids:${_userids} / playUserId:${playUserId}');
+    print('[waiting] >>> send game_start');
+    print('  --> ゲームID(gameId) : ${gameId} ');
+    // print('  --> 全プレーヤーID(_userids) : ${_userids}');
+    print('  --> 対戦参加者ID(playUserId) : ${playUserId}');
     _userids.clear();
     await _waitingChannel.sendBroadcastMessage(
       event: 'game_start',
@@ -219,15 +238,59 @@ class MultiGame {
     }
   }
 
+  // Future<void> _sendEnemyBallHeight(height) async {
+  //   if (height > 0.0) {
+  //     final response = await _matchChannel.sendBroadcastMessage(
+  //       event: 'game_enemy_ball_height',
+  //       payload: {
+  //         'enemy_ball_height': height.toDouble(),
+  //         'send_id' : myUserId,
+  //       },
+  //     );
+  //   }
+  // }
+  // Future<void> sendBroadcastMessageWithRetry() async {
   Future<void> _sendEnemyBallHeight(height) async {
-    if (height > 0.0) {
-      await _matchChannel.sendBroadcastMessage(
-        event: 'game_enemy_ball_height',
-        payload: {
-          'enemy_ball_height': height.toDouble(),
-          'send_id' : myUserId,
-        },
-      );
+    if (height <= 0.0) return;
+
+    const int maxRetries = 3; // 最大リトライ回数
+    int retryCount = 0;
+    bool success = false;
+
+    while (!success && retryCount < maxRetries) {
+      try {
+        final response = await _matchChannel.sendBroadcastMessage(
+          event: 'game_enemy_ball_height',
+          payload: {
+            'enemy_ball_height': height.toDouble(),
+            'send_id': myUserId,
+          },
+        );
+
+        // // 成功したか確認
+        // if (response == null) {
+        //   // 送信成功時、`response` が `null` になる場合もあるためチェック。
+        //   success = true;
+        //   print("メッセージ送信成功！");
+        // } else {
+        //   // 必要に応じてレスポンス内容をデバッグ
+        //   print("レスポンス内容: $response");
+        //   success = true;
+        // }
+        if (response == ChannelResponse.ok) {
+          print('送信に成功!');
+          success = true;
+        } else {
+          print('送信に失敗 : ${response}');
+        }
+      } catch (e) {
+        retryCount++;
+        print("メッセージ送信失敗。リトライ中... (${retryCount}/${maxRetries})");
+        if (retryCount >= maxRetries) {
+          print("リトライ上限に達しました: $e");
+          // 必要に応じてエラーハンドリング
+        }
+      }
     }
   }
 
@@ -263,26 +326,30 @@ class MultiGame {
       opts: const RealtimeChannelConfig(self: true)
     );
     _matchChannel.onPresenceLeave((payload) {
+      print('[_onGameStarted] >>> onPresenceSync');
+      print('  --> プレゼンス情報を受信しました。現在のプレゼンス情報: $payload');
       _matchChannel.untrack();
       _matchChannel.unsubscribe();
     }).onBroadcast(event: 'game_score', callback: (payload) {
+      print('[_onGameStarted] >>> game_score');
       final score = payload['score'] as int;
       final sendId = payload['send_id'] as String;
       if (sendId != myUserId) {
         _updateOpponentScore(score);
       }
     }).onBroadcast(event: 'game_enemy_ball_height', callback: (payload) {
+      print('[_onGameStarted] >>> game_enemy_ball_height');
       // final enemy_ball_height = payload['enemy_ball_height'] as double;
       final enemy_ball_height = (payload['enemy_ball_height'] as num).toDouble();
       final sendId = payload['send_id'] as String;
       if (sendId != myUserId) {
-        print('enemy_ball_height: $enemy_ball_height');
+        // print('enemy_ball_height: $enemy_ball_height');
         // enemyBallState = enemy_ball_height;
         ///////////////////////////////////////////////////
-        print('----- BEFORE --------------------');
-        for (var status in enemyBallState) {
-          print('UserID: ${status.userid}, Height: ${status.height}');
-        }
+        // print('----- BEFORE --------------------');
+        // for (var status in enemyBallState) {
+        //   print('UserID: ${status.userid}, Height: ${status.height}');
+        // }
         // 既存のユーザーIDを持つ状態を探す
         var existingStatus = enemyBallState.firstWhere(
           (e) => e.userid == sendId,
@@ -298,13 +365,14 @@ class MultiGame {
             ..userid = sendId
             ..height = enemy_ball_height);
         }
-        print('----- AFTER --------------------');
-        for (var status in enemyBallState) {
-          print('UserID: ${status.userid}, Height: ${status.height}');
-        }
+        // print('----- AFTER --------------------');
+        // for (var status in enemyBallState) {
+        //   print('UserID: ${status.userid}, Height: ${status.height}');
+        // }
         ///////////////////////////////////////////////////
       }
     }).onBroadcast(event: 'game_chain', callback: (payload) {
+      print('[_onGameStarted] >>> game_chain');
       final sendId = payload['send_id'] as String;
       final chain = payload['chain'] as int;
       if (sendId != myUserId) {
@@ -313,10 +381,25 @@ class MultiGame {
         // _onOpponentChainAttack(chain);
       }
     }).onBroadcast(event: 'game_over', callback: (payload) {
-      print('[game] >>> game_over');
+      print('[_onGameStarted] >>> game_over');
       removeGameChannel();
       _multiGameOverCallback?.call();
-    }).subscribe();
+    }).subscribe((status, [_]) async {
+      print('[_onGameStarted] >>> onSubscrive');
+      print('  --> status : ${status}');
+      if (status == RealtimeSubscribeStatus.subscribed) {
+        print('    --> クライアントがサーバーと接続し、リアルタイムデータを受信できる状態です。');
+      }
+      else if (status == RealtimeSubscribeStatus.channelError) {
+        print('    --> チャンネルにエラーが発生しました。');
+      }
+      else if (status == RealtimeSubscribeStatus.closed) {
+        print('    --> チャンネルが閉じられました。');
+      }
+      else if (status == RealtimeSubscribeStatus.timedOut) {
+        print('    --> サーバーからの応答が一定時間内に受信できず、接続がタイムアウトしました。');
+      }
+    });
 
     removeWaitingChannel();
 
