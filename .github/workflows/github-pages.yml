@@ -21,6 +21,9 @@ jobs:
           git clone https://github.com/flutter/flutter.git --depth 1 -b beta _flutter
           echo "${GITHUB_WORKSPACE}/_flutter/bin" >> ${GITHUB_PATH}
 
+      - name: Fetch all branches
+        run: git fetch --prune --unshallow
+  
       - name: Install
         run: |
           flutter config --enable-web
