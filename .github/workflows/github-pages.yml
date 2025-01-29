@@ -12,22 +12,12 @@ jobs:
     concurrency:
       group: ${{ github.workflow }}-${{ github.ref }}
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
-        with:
-          fetch-depth: 0  # すべての履歴を取得
-          ref: main
-
-      - name: Set main branch as default (if needed)
-        run: |
-          git fetch origin main
-          git symbolic-ref refs/remotes/origin/HEAD refs/remotes/origin/main
+      - uses: actions/checkout@v3
 
       - name: Setup Flutter
-        uses: subosito/flutter-action@v2
-        with:
-          flutter-version: '3.27.3-stable'  # ← 最新の Flutter バージョンを指定
-          channel: 'beta'
+        run: |
+          git clone https://github.com/flutter/flutter.git --depth 1 -b beta _flutter
+          echo "${GITHUB_WORKSPACE}/_flutter/bin" >> ${GITHUB_PATH}
 
       - name: Install
         run: |
