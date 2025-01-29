@@ -12,7 +12,6 @@ class RankingLayer extends PositionComponent with HasGameReference, HasVisibilit
   late final BackButton _backButton;
   late final TouchBlocker _touchBlocker;
   late RankingListComponent _scrollTextBox;
-  late final List<TextComponent> _rankingTexts;
 
   RankingLayer()
       : super(
@@ -76,7 +75,7 @@ class RankingLayer extends PositionComponent with HasGameReference, HasVisibilit
 
     add(_touchBlocker);
     add(_background);
-    add(_scrollTextBox!);
+    add(_scrollTextBox);
     add(_backButton);
   }
 
@@ -234,13 +233,6 @@ class RankingListComponent extends PositionComponent with DragCallbacks {
     scrollOffset -= event.localDelta.y;
     scrollOffset = scrollOffset.clamp(0, maxScrollOffset);
     scrollVelocity = event.localDelta.y; // スクロール速度を記憶
-  }
-
-  @override
-  void onDragEnd(DragEndEvent event) {
-    // ドラッグ終了後、慣性を適用
-    // scrollVelocity = event.velocity.pixelsPerSecond.dy; // 終了時速度を使用
-    scrollVelocity = event.velocity.y; // 終了時速度を使用
   }
 
   @override
