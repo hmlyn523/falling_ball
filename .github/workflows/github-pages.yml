@@ -15,7 +15,11 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v3
         with:
-          fetch-depth: 0  # これを追加！
+          fetch-depth: 0  # すべての履歴を取得
+
+      - name: Set main branch as default (if needed)
+        run: |
+          git symbolic-ref refs/remotes/origin/HEAD refs/remotes/origin/main
 
       - name: Setup Flutter
         run: |
