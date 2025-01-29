@@ -5,6 +5,7 @@ import 'package:falling_ball/features/game/components/enemyBallHeight.dart';
 import 'package:falling_ball/features/game/helpers/auto_falling_timer.dart';
 import 'package:falling_ball/core/services/leaderboard_service.dart';
 import 'package:falling_ball/features/ui/layer/gameover_layer.dart';
+import 'package:falling_ball/features/ui/layer/ranking_layer.dart';
 import 'package:falling_ball/features/ui/layer/title_layer.dart';
 import 'package:falling_ball/features/ui/layer/waiting_layer.dart';
 import 'package:falling_ball/core/services/connectivity_provider.dart';
@@ -53,6 +54,7 @@ class FallGameWorld extends Base
   late final GameoverDialog gameoverDialog;
   late final WaitingDialog waitingDialog;
   late final WinAndLoseDialog winAndLoseDialog;
+  RankingLayer? rankingLayer = null;
 
   late final TapArea tapArea;
   late List<EnemyBallHeightImage> enemyBallHeight = [];
@@ -148,9 +150,6 @@ class FallGameWorld extends Base
     _setupUIComponents();
 
     leaderboardService = LeaderboardService();
-
-    // GameBoard.signedIn();
-    // _gameOverScreen = createGameOverScreen();
   }
 
   @override
@@ -206,7 +205,6 @@ class FallGameWorld extends Base
     if (_isMulti) {
       opponentScore.show();
       _multiGame.sendEnemyBallHeight(0.0);
-      // enemyBallHeight.showMark();
     }
 
     _showLine();
@@ -300,11 +298,6 @@ class FallGameWorld extends Base
   @override
   void end(d) {
     super.end(d);
-
-    // 得点（リーダーボード）
-    // GameBoard.leaderboardScore(_scoreLabel.score);
-    // プレイ回数と平均得点（リーダーボード）
-    // GameBoard.playCountAndAverageScore(_scoreLabel.score);
 
     // 落下アイテム消去
     tapArea.line.hide();
@@ -401,9 +394,6 @@ class FallGameWorld extends Base
     createWall().forEach(add);
     _addBackground();
 
-    // final loadImage = await images.load(Config.IMAGE_ENEMY_BALL_HEIGHT);
-    // var height = EnemyBallHeight(loadImage);
-
     // 対戦相手の最大数分の情報を用意しておく
     // 例えば対戦相手が1人だったとしても、2人分用意しておく。
     // なぜならばこのonLoadの時点では対戦相手はわかっていないので
@@ -417,8 +407,6 @@ class FallGameWorld extends Base
       enemyBallHeight.add(height);
     }
     addAll(enemyBallHeight);
-    // enemyBallHeight = List.generate(Config.PLAYERS - 1, (_) => EnemyBallHeightLine());
-    // addAll(enemyBallHeight);
   }
 
   Future<void> _addBackground() async {
@@ -429,8 +417,6 @@ class FallGameWorld extends Base
     add(foreground);
     add(background);
     background.setVisibility(true);
-    // createBackgound(foregroundImage, Config.PRIORITY_BACK_F).forEach(add);
-    // createBackgound(backgroundImage, Config.PRIORITY_BACK_B).forEach(add);
   }
 
   void _setupConnectivityListener() {
@@ -447,7 +433,6 @@ class FallGameWorld extends Base
   }
 
   void _onMultiGameOver() {
-    // moveToGameOverState();
     moveToPlayEndState();
   }
 
@@ -546,5 +531,25 @@ class FallGameWorld extends Base
   void _onAutoFallingTick(remainingTime) {
     if (!_isMulti) return;
     autoFallingTime.update(remainingTime);
+  }
+
+  // 常に最新情報を表示したいため、ランキングボタンが押されるたびに
+  // RankingLayerインスタンスを作成し、情報を取得する。
+  void showRankingLayer() async {
+    if (rankingLayer == null) {
+      rankingLayer = RankingLayer();
+      await add(rankingLayer!); // onLoad()が終わるのを待つ
+    }
+    // 再表示時にもランキングデータを更新
+    rankingLayer!.updateRanking();
+    rankingLayer!.setVisibility(true);
+  }
+
+  // ランキングが閉じられたらインスタンスを破棄し初期化する。
+  void hideRankingLayer() {
+    if (rankingLayer == null) return;
+    rankingLayer!.setVisibility(false);
+    rankingLayer!.removeFromParent();
+    rankingLayer = null;
   }
 }

@@ -28,6 +28,7 @@ class Config {
   static const MIN_CHAIN = 2;
 
   static const PRIORITY_MAX = 999;
+  static const PRIORITY_RANKING_DIALOG = 140;
   static const PRIORITY_CONNECT = 130;
   static const PRIORITY_TITLE = 120;
   static const PRIORITY_WIN_AND_LOSE = 110;
@@ -72,7 +73,9 @@ class Config {
   static const IMAGE_WIN = "win.png";
   static const IMAGE_LOSE = "lose.png";
   static const IMAGE_EMPTY = "empty.png";
-  static const IMAGE_CONNECT = "connect.gif"; static const IMAGE_CANCEL = "cancel.png";
+  static const IMAGE_CONNECT = "connect.gif";
+  static const IMAGE_CANCEL = "cancel.png";
+  static const IMAGE_RANKING_BACKGROUND = "ranking_dialog.png";
 }
 
 class WallPosition {

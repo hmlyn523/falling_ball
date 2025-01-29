@@ -1,4 +1,5 @@
 import 'package:falling_ball/features/game/world.dart';
+import 'package:falling_ball/features/ui/layer/ranking_layer.dart';
 import 'package:flame/events.dart';
 import 'package:flame/components.dart';
 import 'package:falling_ball/app/config.dart';
@@ -23,7 +24,7 @@ class TitleDialog extends PositionComponent
       StartButton(),
       Multi2Button(),
       Multi3Button(),
-      // RankingButton(),
+      RankingButton(),
       // PostButton(),
       Copyright(),
     ];
@@ -126,18 +127,21 @@ class Multi3Button extends SpriteComponent
 }
 
 class RankingButton extends SpriteComponent
-    with TapCallbacks, HasGameReference {
+    with TapCallbacks, HasGameReference, HasWorldReference {
   @override
   Future<void> onLoad() async {
     sprite = Sprite((game as FallGame).images.fromCache(Config.IMAGE_RANKING));
-    position = Vector2(Config.WORLD_WIDTH * .4, Config.WORLD_HEIGHT * .74);
-    size = Vector2(Config.WORLD_WIDTH * .18, Config.WORLD_HEIGHT * .10);
+    position = Vector2(Config.WORLD_WIDTH * .3, Config.WORLD_HEIGHT * .74);
+    size = Vector2(Config.WORLD_WIDTH * .31, Config.WORLD_HEIGHT * .125);
     anchor = Anchor.center;
     priority = Config.PRIORITY_MIN;
   }
 
   @override
   bool onTapUp(TapUpEvent info) {
+    (world as FallGameWorld).showRankingLayer();
+    // RankingLayer aaa = RankingLayer();
+    
     // GamesServices.showLeaderboards(iOSLeaderboardID: 'tapjump.ranking');
     // GamesServices.loadLeaderboardScores(
     //   iOSLeaderboardID: 'tapjump.ranking',

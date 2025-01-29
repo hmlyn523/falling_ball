@@ -47,10 +47,36 @@ class LeaderboardService {
     }
   }
 
+  // // ランキングを取得
+  // Future<List<RankingEntry>> getLeaderboard() async {
+  //   // Supabaseや他のバックエンドからランキングを取得
+  //   return [];
+  // }
   // ランキングを取得
   Future<List<RankingEntry>> getLeaderboard() async {
-    // Supabaseや他のバックエンドからランキングを取得
-    return [];
+    final supabase = Supabase.instance.client;
+
+    try {
+      // スコアを降順に取得（上位10人）
+      final response = await supabase
+          .from('scores')
+          .select('player_name, score')
+          .order('score', ascending: false)
+          .limit(10); // 上位10名を取得
+
+      // レスポンスを RankingEntry のリストに変換
+      final leaderboard = (response as List)
+          .map((entry) => RankingEntry(
+                playerId: entry['player_name'] as String,
+                score: entry['score'] as int,
+              ))
+          .toList();
+
+      return leaderboard;
+    } catch (e) {
+      print('ランキングの取得に失敗しました: $e');
+      return [];
+    }
   }
 
   // 対戦の勝敗をアップロード
