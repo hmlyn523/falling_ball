@@ -16,6 +16,7 @@ jobs:
         uses: actions/checkout@v3
         with:
           fetch-depth: 0  # すべての履歴を取得
+          ref: main
 
       - name: Set main branch as default (if needed)
         run: |
