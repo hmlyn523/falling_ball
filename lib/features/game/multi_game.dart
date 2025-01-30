@@ -1,4 +1,5 @@
 import 'package:falling_ball/core/modules/chain.dart';
+import 'package:falling_ball/core/services/error_handler.dart';
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:uuid/uuid.dart';
@@ -9,6 +10,7 @@ class EnemyBallStatus {
 }
 
 class MultiGame {
+  final context;
   late RealtimeChannel _gameChannel;
   late RealtimeChannel _waitingChannel;
   late RealtimeChannel _matchChannel;
@@ -40,7 +42,7 @@ class MultiGame {
 
   final Chain chain = Chain();
 
-  MultiGame() {
+  MultiGame(this.context) {
     onOnline();
   }
 
@@ -282,6 +284,7 @@ class MultiGame {
           success = true;
         } else {
           print('送信に失敗 : ${response}');
+          throw ();
         }
       } catch (e) {
         retryCount++;
@@ -304,7 +307,7 @@ class MultiGame {
     );
   }
 
-  void removeWaitingChannel() async {
+  Future<void> removeWaitingChannel() async {
     print('[waiting] >>> remove _waitingChannel');
     await supabase.removeChannel(_waitingChannel);
   }
@@ -332,6 +335,7 @@ class MultiGame {
       _matchChannel.unsubscribe();
     }).onBroadcast(event: 'game_score', callback: (payload) {
       print('[_onGameStarted] >>> game_score');
+      if (payload['score'] == null || payload['send_id'] == null) return;
       final score = payload['score'] as int;
       final sendId = payload['send_id'] as String;
       if (sendId != myUserId) {
@@ -339,7 +343,10 @@ class MultiGame {
       }
     }).onBroadcast(event: 'game_enemy_ball_height', callback: (payload) {
       print('[_onGameStarted] >>> game_enemy_ball_height');
-      // final enemy_ball_height = payload['enemy_ball_height'] as double;
+      if (payload['enemy_ball_height'] == null) {
+        ErrorHandler.showErrorDialog(context, '対戦相手のアイテムの高さの受信に失敗');
+        return;
+      }
       final enemy_ball_height = (payload['enemy_ball_height'] as num).toDouble();
       final sendId = payload['send_id'] as String;
       if (sendId != myUserId) {
@@ -370,9 +377,14 @@ class MultiGame {
         //   print('UserID: ${status.userid}, Height: ${status.height}');
         // }
         ///////////////////////////////////////////////////
+        print('[受信] 対戦相手の高さ設定');
       }
     }).onBroadcast(event: 'game_chain', callback: (payload) {
       print('[_onGameStarted] >>> game_chain');
+      if (payload['send_id'] == null || payload['chain'] == null) {
+        ErrorHandler.showErrorDialog(context, '対戦相手からの[おじゃまむし]の受信に失敗');
+        return;
+      }
       final sendId = payload['send_id'] as String;
       final chain = payload['chain'] as int;
       if (sendId != myUserId) {
@@ -401,7 +413,7 @@ class MultiGame {
       }
     });
 
-    removeWaitingChannel();
+    await removeWaitingChannel();
 
     _multiGameStartCallback?.call();
   }

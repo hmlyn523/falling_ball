@@ -37,6 +37,7 @@ class FallGameWorld extends Base
        TapCallbacks,
        DragCallbacks
 {
+  final context;
   final images = Flame.images;
 
   late final LeaderboardService leaderboardService;
@@ -68,7 +69,7 @@ class FallGameWorld extends Base
   late FallingItemFactory fallingItemFactory;
   late final autoFallingTimer;
 
-  FallGameWorld()
+  FallGameWorld(this.context)
   {
     Audio.bgmPlay(Audio.AUDIO_TITLE);
   }
@@ -469,7 +470,7 @@ class FallGameWorld extends Base
   }
 
   void _setupMultiGame() {
-    _multiGame = MultiGame();
+    _multiGame = MultiGame(context);
     _multiGame.addGameStartCallback(_onMultiGameStart);
     _multiGame.addGameOverCallback(_onMultiGameOver);
     _multiGame.addComboCallback(_onMultiCombo);
