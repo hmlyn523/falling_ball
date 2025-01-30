@@ -284,6 +284,7 @@ class MultiGame {
           success = true;
         } else {
           print('送信に失敗 : ${response}');
+          ErrorHandler.showErrorDialog(context, '対戦相手のアイテムの高さの送信に失敗');
           throw ();
         }
       } catch (e) {
@@ -403,13 +404,13 @@ class MultiGame {
         print('    --> クライアントがサーバーと接続し、リアルタイムデータを受信できる状態です。');
       }
       else if (status == RealtimeSubscribeStatus.channelError) {
-        print('    --> チャンネルにエラーが発生しました。');
+        ErrorHandler.showErrorDialog(context, 'チャンネルにエラーが発生');
       }
       else if (status == RealtimeSubscribeStatus.closed) {
         print('    --> チャンネルが閉じられました。');
       }
       else if (status == RealtimeSubscribeStatus.timedOut) {
-        print('    --> サーバーからの応答が一定時間内に受信できず、接続がタイムアウトしました。');
+        ErrorHandler.showErrorDialog(context, 'サーバーからの応答が一定時間内に受信できず、接続がタイムアウト');
       }
     });
 
