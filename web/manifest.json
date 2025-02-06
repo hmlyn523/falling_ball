@@ -1,7 +1,7 @@
 {
-    "name": "sample1",
-    "short_name": "sample1",
-    "start_url": ".",
+    "name": "Falling Ball",
+    "short_name": "Falling Ball",
+    "start_url": "/",
     "display": "standalone",
     "background_color": "#0175C2",
     "theme_color": "#0175C2",
