@@ -21,8 +21,15 @@
   <!-- iOS meta tags & icons -->
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-title" content="Falling Ball">
   <link rel="apple-touch-icon" href="icons/Icon-192.png">
+  <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, viewport-fit=cover">
+  <script>
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('/flutter_service_worker.js');
+    }
+  </script>
 
   <title>Falling Ball</title>
   <link rel="manifest" href="manifest.json">
