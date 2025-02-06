@@ -1,7 +1,7 @@
 {
     "name": "Falling Ball",
     "short_name": "FB",
-    "start_url": ".",
+    "start_url": "/falling_ball/",
     "display": "standalone",
     "background_color": "#795548",
     "theme_color": "#795548",
