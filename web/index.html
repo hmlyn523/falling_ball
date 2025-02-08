@@ -1,19 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <!--
-    If you are serving your web app in a path other than the root, change the
-    href value below to reflect the base path you are serving from.
-
-    The path provided below has to start and end with a slash "/" in order for
-    it to work correctly.
-
-    For more details:
-    * https://developer.mozilla.org/en-US/docs/Web/HTML/Element/base
-  -->
-<!--  <base href="/falling_ball/">`-->
-  <base href="$FLUTTER_BASE_HREF">`
-
+  <base href="$FLUTTER_BASE_HREF">
   <meta charset="UTF-8">
   <meta content="IE=Edge" http-equiv="X-UA-Compatible">
   <meta name="description" content="A new Flutter project.">
@@ -25,11 +13,6 @@
   <meta name="apple-mobile-web-app-title" content="Falling Ball">
   <link rel="apple-touch-icon" href="icons/Icon-192.png">
   <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1, viewport-fit=cover">
-  <script>
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('flutter_service_worker.js');
-    }
-  </script>
 
   <title>Falling Ball</title>
   <link rel="manifest" href="manifest.json">
@@ -39,14 +22,15 @@
         image-rendering: pixelated;
     }
     
-    flt-glass-pane *p{
+    flt-glass-pane * {
         image-rendering: pixelated;
-    }</style>
+    }
+  </style>
 </head>
 <body style="position: fixed; inset: 0px; overflow: hidden; padding: 0px; margin: 0px; user-select: none; touch-action: none; font: 14px sans-serif; color: red;">
-  <!-- This script installs service_worker.js to provide PWA functionality to
-       application. For more information, see:
-       https://developers.google.com/web/fundamentals/primers/service-workers -->
-       <script src="flutter_bootstrap.js" async></script>
+  <!-- Flutter のサービスワーカーを自動登録 -->
+  <script src="flutter.js" defer></script>
+  <!-- Flutter アプリのブートストラップ -->
+  <script src="flutter_bootstrap.js" async></script>
 </body>
 </html>
