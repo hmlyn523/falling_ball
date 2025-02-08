@@ -1,6 +1,6 @@
 {
     "name": "Falling Ball",
-    "short_name": "FB",
+    "short_name": "Falling Ball",
     "start_url": "/falling_ball/",
     "scope": "/falling_ball/",
     "display": "standalone",
