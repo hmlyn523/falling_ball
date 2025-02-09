@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 
 class UserNameInputOverlay extends StatelessWidget {
-  final Function(String) onSave;
+  final Function(String, String) onSave;
 
   UserNameInputOverlay({required this.onSave});
 
-  final TextEditingController _controller = TextEditingController(); // コントローラーを管理
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -23,14 +24,14 @@ class UserNameInputOverlay extends StatelessWidget {
             Text(
               'Enter Your Name',
               style: TextStyle(
-                fontFamily: 'PixelFont', // ドット絵風フォントを指定
+                fontFamily: 'PixelFont',
                 color: Colors.brown,
                 fontSize: 20,
               ),
             ),
-            SizedBox(height: 20),
+            SizedBox(height: 10),
             TextField(
-              controller: _controller, // コントローラーをTextFieldに設定
+              controller: _nameController,
               style: TextStyle(
                 fontFamily: 'PixelFont',
                 color: Colors.black,
@@ -44,22 +45,51 @@ class UserNameInputOverlay extends StatelessWidget {
                 filled: true,
                 fillColor: Colors.white,
                 border: OutlineInputBorder(
-                  borderSide: BorderSide(
-                    color: Colors.white,
-                  ),
+                  borderSide: BorderSide(color: Colors.white),
+                ),
+              ),
+            ),
+            SizedBox(height: 10),
+            Text(
+              'Enter Your Password',
+              style: TextStyle(
+                fontFamily: 'PixelFont',
+                color: Colors.brown,
+                fontSize: 20,
+              ),
+            ),
+            SizedBox(height: 10),
+            TextField(
+              controller: _passwordController,
+              obscureText: true,
+              style: TextStyle(
+                fontFamily: 'PixelFont',
+                color: Colors.black,
+              ),
+              decoration: InputDecoration(
+                hintText: 'Password',
+                hintStyle: TextStyle(
+                  fontFamily: 'PixelFont',
+                  color: Colors.grey,
+                ),
+                filled: true,
+                fillColor: Colors.white,
+                border: OutlineInputBorder(
+                  borderSide: BorderSide(color: Colors.white),
                 ),
               ),
             ),
             SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
-                final value = _controller.text.trim(); // コントローラーからテキストを取得
-                if (value.isNotEmpty) {
-                  onSave(value); // 入力値を保存
+                final name = _nameController.text.trim();
+                final password = _passwordController.text.trim();
+
+                if (name.isNotEmpty && password.isNotEmpty) {
+                  onSave(name, password);
                 } else {
-                  // 必要に応じてエラー表示
                   ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(content: Text("ユーザー名を入力してください")),
+                    SnackBar(content: Text("ユーザー名とパスワードを入力してください")),
                   );
                 }
               },

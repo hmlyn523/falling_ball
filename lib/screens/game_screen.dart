@@ -1,4 +1,5 @@
 import 'package:falling_ball/core/services/ad_state.dart';
+import 'package:falling_ball/core/services/auth_service.dart';
 import 'package:falling_ball/features/game/game.dart';
 import 'package:falling_ball/screens/user_name_input_overlay.dart';
 import 'package:flame/game.dart';
@@ -6,7 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:uuid/uuid.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class GameScreen extends StatefulWidget {
   @override
@@ -15,6 +16,13 @@ class GameScreen extends StatefulWidget {
 
 class _GameScreenState extends State<GameScreen> {
   BannerAd? banner;
+  late final SupabaseClient supabase;
+
+  @override
+  void initState() {
+    super.initState();
+    supabase = Supabase.instance.client;
+  }
 
   @override
   void didChangeDependencies() {
@@ -41,20 +49,11 @@ class _GameScreenState extends State<GameScreen> {
         children: [
           // ゲーム本体
           GameWidget(
-            game: FallGame(context: context),
+            game: FallGame(context: context, supabase: supabase),
             overlayBuilderMap: {
               'userNameInput': (context, game) => UserNameInputOverlay(
-                onSave: (userName) async {
-                  final uuid = const Uuid().v4();
-                  final prefs = await SharedPreferences.getInstance();
-                  final userNameSetResult = await prefs.setString('userName', userName);
-                  final uuidSetResult = await prefs.setString('uuid', uuid);
-                  if (userNameSetResult && uuidSetResult) {
-                    print('ユーザー名の保存に成功しました: $userName');
-                    (game as FallGame).hideUserNameInput();
-                  } else {
-                    print('ユーザー名の保存に失敗しました');
-                  }
+                onSave: (userName, password) async {
+                  AuthService.signInOrSignUp(context, supabase, userName, password);
                   (game as FallGame).hideUserNameInput();
                 },
               ),
@@ -66,9 +65,7 @@ class _GameScreenState extends State<GameScreen> {
             right: 20,
             child: ElevatedButton(
               onPressed: () async {
-                final prefs = await SharedPreferences.getInstance();
-                await prefs.remove('userName'); // ユーザー名を削除
-
+                AuthService.logout(supabase);
                 // SplashScreenに戻る
                 Navigator.of(context).pushReplacement(
                   PageRouteBuilder(
@@ -81,7 +78,7 @@ class _GameScreenState extends State<GameScreen> {
               style: ElevatedButton.styleFrom(
                 backgroundColor: Colors.white,
               ),
-              child: Text("ユーザ削除"),
+              child: Text("ログアウト"),
             ),
           ),
           // <<< debug

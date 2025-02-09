@@ -2,49 +2,50 @@ import 'package:falling_ball/core/models/player_data.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class LeaderboardService {
+  final SupabaseClient supabase;
+
+  LeaderboardService(this.supabase);
 
   // 得点をアップロード
-  Future<void> uploadScore(PlayerData playerData) async {
-    // Supabaseや他のバックエンドに得点を送信
-    final supabase = Supabase.instance.client;
+  Future<void> uploadScore(supabase, PlayerData playerData) async {
+    // // Supabaseや他のバックエンドに得点を送信
+    // try {
+    //   // 現在保存されている最高スコアを取得
+    //   final currentScoreResponse = await supabase
+    //       .from('scores')
+    //       .select('score')
+    //       .eq('player_name', playerData.username)
+    //       // .eq('player_uuid', playerData.uuid)
+    //       .maybeSingle();
+    //   final currentScore = currentScoreResponse?['score'] as int? ?? 0;
 
-    try {
-      // 現在保存されている最高スコアを取得
-      final currentScoreResponse = await supabase
-          .from('scores')
-          .select('score')
-          .eq('player_name', playerData.userName)
-          .eq('player_uuid', playerData.uuid)
-          .maybeSingle();
-      final currentScore = currentScoreResponse?['score'] as int? ?? 0;
+    //   // 最高スコアを更新
+    //   if (playerData.score > currentScore) {
+    //     final response = await supabase.from('scores').upsert({
+    //       'player_name': playerData.userName,
+    //       'player_uuid': playerData.uuid,
+    //       'score': playerData.score,
+    //     }, onConflict: 'player_name');
 
-      // 最高スコアを更新
-      if (playerData.score > currentScore) {
-        final response = await supabase.from('scores').upsert({
-          'player_name': playerData.userName,
-          'player_uuid': playerData.uuid,
-          'score': playerData.score,
-        }, onConflict: 'player_name');
+    //     print('新しいスコアで更新しました！');
+    //     print('レスポンス: $response');
+    //   } else {
+    //     print('スコアが既存のものより低いため更新されませんでした。');
+    //   }
+    // } catch (e) {
+    //   print('スコアの保存/更新に失敗しました: $e');
+    // }
 
-        print('新しいスコアで更新しました！');
-        print('レスポンス: $response');
-      } else {
-        print('スコアが既存のものより低いため更新されませんでした。');
-      }
-    } catch (e) {
-      print('スコアの保存/更新に失敗しました: $e');
-    }
-
-    try {
-      // 得点履歴を追加（score_historyテーブル）
-      await supabase.from('score_history').insert({
-        'player_name': playerData.userName,
-        'player_uuid': playerData.uuid,
-        'score': playerData.score,
-      });
-    } catch (e) {
-      print('得点履歴の追加に失敗: $e');
-    }
+    // try {
+    //   // 得点履歴を追加（score_historyテーブル）
+    //   await supabase.from('score_history').insert({
+    //     'player_name': playerData.userName,
+    //     'player_uuid': playerData.uuid,
+    //     'score': playerData.score,
+    //   });
+    // } catch (e) {
+    //   print('得点履歴の追加に失敗: $e');
+    // }
   }
 
   // // ランキングを取得
@@ -54,20 +55,18 @@ class LeaderboardService {
   // }
   // ランキングを取得
   Future<List<RankingEntry>> getLeaderboard() async {
-    final supabase = Supabase.instance.client;
-
     try {
       // スコアを降順に取得（上位10人）
       final response = await supabase
           .from('scores')
-          .select('player_name, score')
+          .select('score, players(username)')
           .order('score', ascending: false)
-          .limit(10); // 上位10名を取得
+          .limit(10);
 
       // レスポンスを RankingEntry のリストに変換
       final leaderboard = (response as List)
           .map((entry) => RankingEntry(
-                playerId: entry['player_name'] as String,
+                playerName: entry['players']['username'] as String,
                 score: entry['score'] as int,
               ))
           .toList();
@@ -93,10 +92,11 @@ class LeaderboardService {
 
 // ランキングエントリのデータモデル
 class RankingEntry {
-  final String playerId;
+  // final String playerId;
+  final String playerName;
   final int score;
 
-  RankingEntry({required this.playerId, required this.score});
+  RankingEntry({required this.playerName, required this.score});
 }
 
 // 対戦結果のデータモデル

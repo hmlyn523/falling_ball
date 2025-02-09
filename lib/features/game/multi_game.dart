@@ -20,7 +20,7 @@ class MultiGame {
   final myUserId = const Uuid().v4();
   late var _sentScores = 0;
   late var _sentEnemyBallHeight= 0.0;
-  final supabase = Supabase.instance.client;
+  final supabase;
   String opponent = "";
   // late double? enemyBallState = null;
   late List<EnemyBallStatus> enemyBallState = [];
@@ -42,7 +42,7 @@ class MultiGame {
 
   final Chain chain = Chain();
 
-  MultiGame(this.context) {
+  MultiGame(this.context, this.supabase) {
     onOnline();
   }
 

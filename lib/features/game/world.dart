@@ -1,6 +1,8 @@
 import 'dart:math';
 
 import 'package:falling_ball/core/models/player_data.dart';
+import 'package:falling_ball/core/services/auth_service.dart';
+import 'package:falling_ball/core/services/player_service.dart';
 import 'package:falling_ball/features/game/components/enemyBallHeight.dart';
 import 'package:falling_ball/features/game/helpers/auto_falling_timer.dart';
 import 'package:falling_ball/core/services/leaderboard_service.dart';
@@ -31,6 +33,7 @@ import 'package:falling_ball/features/game/components/audio.dart';
 import 'package:falling_ball/app/config.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class FallGameWorld extends Base
   with HasGameReference<Forge2DGame>,
@@ -38,6 +41,7 @@ class FallGameWorld extends Base
        DragCallbacks
 {
   final context;
+  final supabase;
   final images = Flame.images;
 
   late final LeaderboardService leaderboardService;
@@ -69,7 +73,10 @@ class FallGameWorld extends Base
   late FallingItemFactory fallingItemFactory;
   late final autoFallingTimer;
 
-  FallGameWorld(this.context)
+  late final PlayerService playerService;
+  late PlayerData? playerData = null;
+
+  FallGameWorld(this.context, this.supabase)
   {
     Audio.bgmPlay(Audio.AUDIO_TITLE);
   }
@@ -150,11 +157,13 @@ class FallGameWorld extends Base
     // 壁や背景などの描画要素を追加
     _setupUIComponents();
 
-    leaderboardService = LeaderboardService();
+    leaderboardService = LeaderboardService(this.supabase);
+
+    playerService = PlayerService(Supabase.instance.client);
   }
 
   @override
-  void title(d) {
+  void title(d) async {
     super.title(d);
 
     // 接続中画面非表示
@@ -168,6 +177,10 @@ class FallGameWorld extends Base
 
     // タイトル表示
     titleDialog.setVisibility(true);
+
+    if (playerData == null) {
+      playerData = (await playerService.getPlayerData());
+    }
   }
 
   @override
@@ -179,7 +192,7 @@ class FallGameWorld extends Base
   }
 
   @override
-  void start(d) {
+  void start(d) async {
     super.start(d);
 
     var nextItemType = (fallingItemFactory.getNextFallingItemAttributes().type + 1);
@@ -248,19 +261,22 @@ class FallGameWorld extends Base
   void playend(d) async {
     super.playend(d);
 
-    // ユーザ名取得
-    final prefs = await SharedPreferences.getInstance();
-    final userName = prefs.getString('userName');
-    final uuid = prefs.getString('uuid');
-    if (userName != null && userName.isNotEmpty && uuid != null && uuid.isNotEmpty){
-      final playerData = PlayerData(
-        userName: userName,
-        uuid: uuid,
-        score: playerScore.score,
-      );
-      // スコア更新
-      leaderboardService.uploadScore(playerData);
-    }
+    playerService.addScoreHistory(playerScore.score);
+    playerService.updateScoreIfHigher(playerScore.score);
+
+    // // ユーザ名取得
+    // final prefs = await SharedPreferences.getInstance();
+    // final userName = prefs.getString('userName');
+    // final uuid = prefs.getString('uuid');
+    // if (userName != null && userName.isNotEmpty && uuid != null && uuid.isNotEmpty){
+    //   final playerData = PlayerData(
+    //     username: userName,
+    //     uuid: uuid,
+    //     score: playerScore.score,
+    //   );
+    //   // スコア更新
+    //   leaderboardService.uploadScore(supabase, playerData);
+    // }
 
     // アイテムの自動落下タイマー停止
     _stopAutoFallingTimer();
@@ -470,7 +486,7 @@ class FallGameWorld extends Base
   }
 
   void _setupMultiGame() {
-    _multiGame = MultiGame(context);
+    _multiGame = MultiGame(context, supabase);
     _multiGame.addGameStartCallback(_onMultiGameStart);
     _multiGame.addGameOverCallback(_onMultiGameOver);
     _multiGame.addComboCallback(_onMultiCombo);
@@ -542,7 +558,7 @@ class FallGameWorld extends Base
       await add(rankingLayer!); // onLoad()が終わるのを待つ
     }
     // 再表示時にもランキングデータを更新
-    rankingLayer!.updateRanking();
+    rankingLayer!.updateRanking(this);
     rankingLayer!.setVisibility(true);
   }
 

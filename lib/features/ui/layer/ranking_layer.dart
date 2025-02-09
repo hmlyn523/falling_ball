@@ -80,9 +80,9 @@ class RankingLayer extends PositionComponent with HasGameReference, HasVisibilit
   }
 
   /// ランキング情報を更新
-  Future<void> updateRanking() async {
+  Future<void> updateRanking(game) async {
     // Supabaseからランキングを取得
-    final leaderboardService = LeaderboardService();
+    final leaderboardService = LeaderboardService(game.supabase);
     try {
       final rankings = await leaderboardService.getLeaderboard();
       List<String> rankings_no = [];
@@ -90,7 +90,7 @@ class RankingLayer extends PositionComponent with HasGameReference, HasVisibilit
       List<String> rankings_score = [];
       for (var i = 0; i < rankings.length; i++) {
         rankings_no.add('${i + 1}.');
-        rankings_name.add('${rankings[i].playerId}');
+        rankings_name.add('${rankings[i].playerName}');
         rankings_score.add('${rankings[i].score}');
       }
       // スクロールテキストボックの再作成
