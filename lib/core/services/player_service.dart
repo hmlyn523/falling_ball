@@ -6,13 +6,13 @@ class PlayerService {
 
   PlayerService(this.supabase);
 
-  User? getLoginUser() {
-    return supabase.auth.currentUser;
+  Future<User?> getLoginUser() async {
+    return await supabase.auth.currentUser;
   } 
 
   // プレイヤー情報を取得
   Future<PlayerData?> getPlayerData() async {
-    final user = getLoginUser();
+    final user = await getLoginUser();
     if (user == null) {
       print("❌ ユーザがログインしていません");
       return null;
@@ -53,7 +53,7 @@ class PlayerService {
 
   // スコア履歴を追加
   Future<bool> addScoreHistory(int score) async {
-    final user = getLoginUser();
+    final user = await getLoginUser();
     if (user == null) {
       print("❌ ユーザがログインしていません");
       return false;
@@ -75,7 +75,7 @@ class PlayerService {
 
   // スコアを更新 (現在のスコアより高い場合のみ)
   Future<bool> updateScoreIfHigher(int newScore) async {
-    final user = getLoginUser();
+    final user = await getLoginUser();
     if (user == null) {
       print("❌ ユーザがログインしていません");
       return false;
