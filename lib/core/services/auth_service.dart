@@ -35,7 +35,7 @@ class AuthService {
   //
   static Future<void> signInWithUsername(supabase, username, password) async {
     // ユーザ名からダミーのメールアドレスを作成
-    String fakeEmail = "$username@example.com";
+    String fakeEmail = "${username.hashCode}@example.com"; // ハッシュを使ってエラー回避
 
     final response = await supabase.auth.signInWithPassword(
       email: fakeEmail,
