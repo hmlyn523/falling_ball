@@ -10,7 +10,7 @@ class FallGame extends Forge2DGame {
 
   FallGame({required this.context, required this.supabase})
       : super(
-          gravity: Vector2(0, 30.0),
+          gravity: Vector2(0.0, 30.0),
           world: FallGameWorld(context, supabase),
           camera: CameraComponent.withFixedResolution(
             width: Config.WORLD_WIDTH,

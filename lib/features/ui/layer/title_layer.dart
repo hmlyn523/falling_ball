@@ -1,12 +1,8 @@
 import 'package:falling_ball/features/game/world.dart';
-import 'package:falling_ball/features/ui/layer/ranking_layer.dart';
 import 'package:flame/events.dart';
 import 'package:flame/components.dart';
 import 'package:falling_ball/app/config.dart';
 import 'package:falling_ball/features/game/game.dart';
-import 'package:games_services/games_services.dart';
-
-import 'package:url_launcher/url_launcher.dart';
 
 class TitleDialog extends PositionComponent
   with HasVisibility {
@@ -21,13 +17,17 @@ class TitleDialog extends PositionComponent
   ){
     _titleDialog = [
       // Menu(),
+      Copyright(),
       TitleLogo(),
+      ChoosePlayers(),
       StartButton(),
       Multi2Button(),
       Multi3Button(),
+      Multi4Button(),
+      RankAndScore(),
       RankingButton(),
+      ScoreButton(),
       // PostButton(),
-      Copyright(),
     ];
     isVisible = false;
     priority = Config.PRIORITY_MIN;
@@ -53,8 +53,8 @@ class TitleLogo extends SpriteComponent with HasGameReference {
   @override
   Future<void> onLoad() async {
     sprite = Sprite((game as FallGame).images.fromCache(Config.IMAGE_TITLE));
-    position = Vector2(Config.WORLD_WIDTH * .5, Config.WORLD_HEIGHT * .25);
-    size = Vector2(Config.WORLD_WIDTH * .83, Config.WORLD_HEIGHT * .22);
+    position = Vector2(Config.WORLD_WIDTH * .5, Config.WORLD_HEIGHT * .275);
+    size = Vector2(Config.WORLD_WIDTH * .92, Config.WORLD_HEIGHT * .17);
     anchor = Anchor.center;
     priority = Config.PRIORITY_MIN;
   }
@@ -78,8 +78,8 @@ class StartButton extends SpriteComponent
   @override
   Future<void> onLoad() async {
     sprite = Sprite((game as FallGame).images.fromCache(Config.IMAGE_START));
-    position = Vector2(Config.WORLD_WIDTH * .5, Config.WORLD_HEIGHT * .45);
-    size = Vector2(Config.WORLD_WIDTH * .31, Config.WORLD_HEIGHT * .125);
+    position = Vector2(Config.WORLD_WIDTH * .35, Config.WORLD_HEIGHT * .5);
+    size = Vector2(Config.WORLD_WIDTH * .25, Config.WORLD_HEIGHT * .09);
     anchor = Anchor.center;
     priority = Config.PRIORITY_MIN;
   }
@@ -96,8 +96,8 @@ class Multi2Button extends SpriteComponent
   @override
   Future<void> onLoad() async {
     sprite = Sprite((game as FallGame).images.fromCache(Config.IMAGE_MULTI2));
-    position = Vector2(Config.WORLD_WIDTH * .3, Config.WORLD_HEIGHT * .6);
-    size = Vector2(Config.WORLD_WIDTH * .31, Config.WORLD_HEIGHT * .125);
+    position = Vector2(Config.WORLD_WIDTH * .65, Config.WORLD_HEIGHT * .5);
+    size = Vector2(Config.WORLD_WIDTH * .25, Config.WORLD_HEIGHT * .09);
     anchor = Anchor.center;
     priority = Config.PRIORITY_MIN;
   }
@@ -114,8 +114,8 @@ class Multi3Button extends SpriteComponent
   @override
   Future<void> onLoad() async {
     sprite = Sprite((game as FallGame).images.fromCache(Config.IMAGE_MULTI3));
-    position = Vector2(Config.WORLD_WIDTH * .7, Config.WORLD_HEIGHT * .6);
-    size = Vector2(Config.WORLD_WIDTH * .31, Config.WORLD_HEIGHT * .125);
+    position = Vector2(Config.WORLD_WIDTH * .35, Config.WORLD_HEIGHT * .62);
+    size = Vector2(Config.WORLD_WIDTH * .25, Config.WORLD_HEIGHT * .09);
     anchor = Anchor.center;
     priority = Config.PRIORITY_MIN;
   }
@@ -127,13 +127,31 @@ class Multi3Button extends SpriteComponent
   }
 }
 
+class Multi4Button extends SpriteComponent
+    with TapCallbacks, HasGameReference, HasWorldReference {
+  @override
+  Future<void> onLoad() async {
+    sprite = Sprite((game as FallGame).images.fromCache(Config.IMAGE_MULTI4));
+    position = Vector2(Config.WORLD_WIDTH * .65, Config.WORLD_HEIGHT * .62);
+    size = Vector2(Config.WORLD_WIDTH * .25, Config.WORLD_HEIGHT * .09);
+    anchor = Anchor.center;
+    priority = Config.PRIORITY_MIN;
+  }
+
+  @override
+  bool onTapUp(TapUpEvent info) {
+    (world as FallGameWorld).multiStart(other_players: 3);
+    return false;
+  }
+}
+
 class RankingButton extends SpriteComponent
     with TapCallbacks, HasGameReference, HasWorldReference {
   @override
   Future<void> onLoad() async {
     sprite = Sprite((game as FallGame).images.fromCache(Config.IMAGE_RANKING));
-    position = Vector2(Config.WORLD_WIDTH * .3, Config.WORLD_HEIGHT * .74);
-    size = Vector2(Config.WORLD_WIDTH * .31, Config.WORLD_HEIGHT * .125);
+    position = Vector2(Config.WORLD_WIDTH * .35, Config.WORLD_HEIGHT * .81);
+    size = Vector2(Config.WORLD_WIDTH * .25, Config.WORLD_HEIGHT * .09);
     anchor = Anchor.center;
     priority = Config.PRIORITY_MIN;
   }
@@ -149,6 +167,24 @@ class RankingButton extends SpriteComponent
     //   scope: PlayerScope.global,
     //   timeScope: TimeScope.allTime,
     //   maxResults: 10);
+    return false;
+  }
+}
+
+class ScoreButton extends SpriteComponent
+    with TapCallbacks, HasGameReference, HasWorldReference {
+  @override
+  Future<void> onLoad() async {
+    sprite = Sprite((game as FallGame).images.fromCache(Config.IMAGE_SCORE));
+    position = Vector2(Config.WORLD_WIDTH * .65, Config.WORLD_HEIGHT * .81);
+    size = Vector2(Config.WORLD_WIDTH * .25, Config.WORLD_HEIGHT * .09);
+    anchor = Anchor.center;
+    priority = Config.PRIORITY_MIN;
+  }
+
+  @override
+  bool onTapUp(TapUpEvent info) {
+    // (world as FallGameWorld).showRankingLayer();
     return false;
   }
 }
@@ -201,8 +237,32 @@ class Copyright extends SpriteComponent with HasGameReference {
   Future<void> onLoad() async {
     sprite =
         Sprite((game as FallGame).images.fromCache(Config.IMAGE_COPYRIGHT));
-    position = Vector2(Config.WORLD_WIDTH * .5, Config.WORLD_HEIGHT * .85);
+    position = Vector2(Config.WORLD_WIDTH * .5, Config.WORLD_HEIGHT * .14);
     size = Vector2(Config.WORLD_WIDTH * .6, Config.WORLD_HEIGHT * .055);
+    anchor = Anchor.center;
+    priority = Config.PRIORITY_MIN;
+  }
+}
+
+class ChoosePlayers extends SpriteComponent with HasGameReference {
+  @override
+  Future<void> onLoad() async {
+    sprite =
+        Sprite((game as FallGame).images.fromCache(Config.IMAGE_CHOOSE_PLAYErS));
+    position = Vector2(Config.WORLD_WIDTH * .5, Config.WORLD_HEIGHT * .415);
+    size = Vector2(Config.WORLD_WIDTH * .595, Config.WORLD_HEIGHT * .038);
+    anchor = Anchor.center;
+    priority = Config.PRIORITY_MIN;
+  }
+}
+
+class RankAndScore extends SpriteComponent with HasGameReference {
+  @override
+  Future<void> onLoad() async {
+    sprite =
+        Sprite((game as FallGame).images.fromCache(Config.IMAGE_RANK_AND_SCORE));
+    position = Vector2(Config.WORLD_WIDTH * .5, Config.WORLD_HEIGHT * .72);
+    size = Vector2(Config.WORLD_WIDTH * .625, Config.WORLD_HEIGHT * .038);
     anchor = Anchor.center;
     priority = Config.PRIORITY_MIN;
   }

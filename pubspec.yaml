@@ -100,12 +100,13 @@ flutter:
     - assets/images/12-icon.png
     - assets/images/back_background.png
     - assets/images/back_foreground.png
+    - assets/images/back_background_game.png
     - assets/images/title.png
     - assets/images/start.png
     - assets/images/multi2.png
     - assets/images/multi3.png
+    - assets/images/multi4.png
     - assets/images/ranking.png
-    - assets/images/post.png
     - assets/images/copyright.png
     - assets/images/menu.png
     - assets/images/game_over.png
@@ -120,11 +121,14 @@ flutter:
     - assets/images/explosion.png
     - assets/images/enemy_ball_height.png
     - assets/images/enemy_ball_height2.png
+    - assets/images/enemy_ball_height3.png
     - assets/images/win.png
     - assets/images/lose.png
     - assets/images/ranking_dialog.png
     - assets/images/ranking.png
+    - assets/images/rank_and_score.png
     - assets/images/score.png
+    - assets/images/choose_players.png
     - assets/audio/title.wav
     - assets/audio/bgm.wav
     - assets/audio/bgm.mp3

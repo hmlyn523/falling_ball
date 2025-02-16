@@ -47,7 +47,7 @@ class WaitingPanel extends SpriteAnimationComponent {
       await Future.wait(sprites),
       stepTime: .5,
     );
-    position = Vector2(Config.WORLD_WIDTH * .5, Config.WORLD_HEIGHT * .61);
+    position = Vector2(Config.WORLD_WIDTH * .5, Config.WORLD_HEIGHT * .6);
     size = Vector2(Config.WORLD_WIDTH * .7, Config.WORLD_HEIGHT * .3);
     anchor = Anchor.center;
     priority = Config.PRIORITY_MIN;

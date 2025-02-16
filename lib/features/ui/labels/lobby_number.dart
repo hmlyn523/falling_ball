@@ -14,7 +14,7 @@ class LobbyNumber {
 
   static Future<LobbyNumber> create() async {
     final label = await NumberLabel(
-      position: Vector2(Config.WORLD_WIDTH * .47, Config.WORLD_HEIGHT * .962),
+      position: Vector2(Config.WORLD_WIDTH * .47, Config.WORLD_HEIGHT * .968),
       color: const Color.fromRGBO(255, 255, 255, 1),
     );
     label.isVisible = true;

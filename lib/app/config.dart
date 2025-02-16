@@ -1,10 +1,11 @@
 import 'package:flame/components.dart';
 
 class Config {
-  static const MAX_OTHER_PLAYER_COUNT = 2;
+  static const MAX_OTHER_PLAYER_COUNT = 3;
   static const List<String> ENEMY_BALL_HEIGHT_IMAGES = [
     "enemy_ball_height.png",
     "enemy_ball_height2.png",
+    "enemy_ball_height3.png",
   ];
 
   static const ENEMY_BALL_HEIGHT_INTERVAL = 1.0;
@@ -43,7 +44,8 @@ class Config {
   static const PRIORITY_FALL_ITEM_NEXT = 20;
   static const PRIORITY_LINE = 10;
   // static const PRIORITY = 0; // SpriteBodyComponent
-  static const PRIORITY_BACK_B = -10;
+  static const PRIORITY_BACK_GAME_B = -10;
+  static const PRIORITY_BACK_B = -20;
   static const PRIORITY_MIN = -999;
 
   static const IMAGE_1 = "1-icon.png";
@@ -58,16 +60,19 @@ class Config {
   static const IMAGE_10 = "10-icon.png";
   static const IMAGE_11 = "11-icon.png";
   static const IMAGE_12 = "12-icon.png";
-  static const IMAGE_BACKGROUND = "back_background.png";
   static const IMAGE_FOREGROUND = "back_foreground.png";
+  static const IMAGE_BACKGROUND = "back_background.png";
+  static const IMAGE_BACKGROUND_GAME = "back_background_game.png";
   static const IMAGE_TITLE = "title.png";
   static const IMAGE_START = "start.png";
   static const IMAGE_MULTI2 = "multi2.png";
   static const IMAGE_MULTI3 = "multi3.png";
+  static const IMAGE_MULTI4 = "multi4.png";
   static const IMAGE_POST = "post.png";
   static const IMAGE_COPYRIGHT = "copyright.png";
   static const IMAGE_MENU = "menu.png";
   static const IMAGE_RANKING = "ranking.png";
+  static const IMAGE_SCORE = "score.png";
   static const IMAGE_GAME_OVER = "game_over.png";
   static const IMAGE_TAP_TITLE = "tap_title.png";
   static const IMAGE_WIN = "win.png";
@@ -76,6 +81,8 @@ class Config {
   static const IMAGE_CONNECT = "connect.gif";
   static const IMAGE_CANCEL = "cancel.png";
   static const IMAGE_RANKING_BACKGROUND = "ranking_dialog.png";
+  static const IMAGE_CHOOSE_PLAYErS = "choose_players.png";
+  static const IMAGE_RANK_AND_SCORE = "rank_and_score.png";
 }
 
 class WallPosition {

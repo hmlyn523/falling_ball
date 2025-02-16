@@ -46,8 +46,9 @@ class FallGameWorld extends Base
 
   late final LeaderboardService leaderboardService;
 
-  late final Background background;
   late final Background foreground;
+  late final Background background;
+  late final Background background_game;
 
   late final PlayerScore playerScore;
   late final OpponentScore opponentScore;
@@ -224,6 +225,9 @@ class FallGameWorld extends Base
     _showLine();
 
     _startAutoFallingTimer();
+
+    background.setVisibility(false);
+    background_game.setVisibility(true);
   }
 
   double elapsedTime = 0.0;
@@ -327,6 +331,9 @@ class FallGameWorld extends Base
 
     _isWin = true;
 
+    background.setVisibility(true);
+    background_game.setVisibility(false);
+
     // Titleステータスへ遷移
     moveToTitleState();
   }
@@ -429,10 +436,13 @@ class FallGameWorld extends Base
   Future<void> _addBackground() async {
     final foregroundImage = await images.load(Config.IMAGE_FOREGROUND);
     final backgroundImage = await images.load(Config.IMAGE_BACKGROUND);
+    final backgroundGameImage = await images.load(Config.IMAGE_BACKGROUND_GAME);
     foreground = Background(image: foregroundImage, priority: Config.PRIORITY_BACK_F);
     background = Background(image: backgroundImage, priority: Config.PRIORITY_BACK_B);
+    background_game = Background(image: backgroundGameImage, priority: Config.PRIORITY_BACK_GAME_B);
     add(foreground);
     add(background);
+    add(background_game);
     background.setVisibility(true);
   }
 
