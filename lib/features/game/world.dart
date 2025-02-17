@@ -1,7 +1,6 @@
 import 'dart:math';
 
 import 'package:falling_ball/core/models/player_data.dart';
-import 'package:falling_ball/core/services/auth_service.dart';
 import 'package:falling_ball/core/services/player_service.dart';
 import 'package:falling_ball/features/game/components/enemyBallHeight.dart';
 import 'package:falling_ball/features/game/helpers/auto_falling_timer.dart';
@@ -32,7 +31,6 @@ import 'package:falling_ball/features/game/components/wall.dart';
 import 'package:falling_ball/features/game/components/audio.dart';
 import 'package:falling_ball/app/config.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class FallGameWorld extends Base

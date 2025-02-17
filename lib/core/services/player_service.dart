@@ -34,7 +34,7 @@ class PlayerService {
   // プレイヤーデータを更新
   // idが一致するusernameを更新する
   Future<bool> updatePlayerData(PlayerData playerData) async {
-    final user = getLoginUser();
+    final user = await getLoginUser();
     if (user == null) {
       print("❌ ユーザがログインしていません");
       return false;
