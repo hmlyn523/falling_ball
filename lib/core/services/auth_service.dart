@@ -2,8 +2,43 @@
 // Supabase > Authentication > Providers > Email
 // Confirm email を off
 
+import 'package:flutter/widgets.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+
 class AuthService {
 
+  // //
+  // // 認証状態のチェック
+  // //
+  // static Future<void> checkAuthStatus(context, supabase) async {
+  //   final user = supabase.auth.currentUser;
+
+  //   if (user != null) {
+  //     // 認証トークンがある場合、サーバーにユーザ情報があるか確認
+  //     final response = await supabase.from('players').select().eq('id', user.id).single();
+
+  //     if (response.error != null) {
+  //       // サーバーにユーザ情報がない場合 → サインアウトして登録画面へ
+  //       await logout(supabase);
+  //       Navigator.pushReplacementNamed(context, '/signup');
+  //     } else {
+  //       // サーバーにユーザ情報がある → タイトル画面へ
+  //       Navigator.pushReplacementNamed(context, '/title');
+  //     }
+  //   } else {
+  //     // 認証トークンがない場合、ユーザ名で検索
+  //     final response = await supabase.from('players').select('id').eq('username', username).single();
+
+  //     if (response.error != null) {
+  //       // ユーザ情報がない → ユーザ登録画面へ
+  //       Navigator.pushReplacementNamed(context, '/signup');
+  //     } else {
+  //       // ユーザ情報がある → ログイン画面へ
+  //       Navigator.pushReplacementNamed(context, '/login');
+  //     }
+  //   }
+  // }
+  
   //
   // Sign Up : ユーザ登録
   //  - auth.usersテーブルにはユーザ名をハッシュ値に変換して登録
@@ -15,7 +50,7 @@ class AuthService {
 
     if (response.user == null) {
       print("❌ユーザ登録: user.id is null");
-      return;
+      throw Exception("❌ ユーザ登録失敗: user.id is null");
     }
 
     try {
@@ -27,6 +62,7 @@ class AuthService {
       print('✅ユーザ登録: ${response.user!.id}');
     } catch (e) {
       print('❌ユーザ登録: $e');
+      throw Exception("❌ Playersテーブルへの登録失敗: $e");
     }
   }
 
@@ -58,8 +94,11 @@ class AuthService {
       await signInWithUsername(supabase, username, password);
     } catch (error) {
       if (error.toString().contains("Invalid login credentials")) {
-        // ログイン失敗したら、新規登録を試す
-        await signUpWithUsername(supabase, username, password);
+        try {
+          await signUpWithUsername(supabase, username, password);
+        } catch (signUpError) {
+          throw Exception("ユーザ登録に失敗しました: $signUpError");
+        }
       } else {
         // その他のエラーは throw する
         throw error;
@@ -71,7 +110,22 @@ class AuthService {
   // ログイン済みか？
   //  
   static Future<bool> isUserLoggedIn(supabase) async {
-    return supabase.auth.currentUser != null;
+    final user = supabase.auth.currentUser;
+
+    if (user != null) {
+      try {
+        // 認証トークンがある場合、サーバーにユーザ情報があるか確認
+        await supabase.from('players').select().eq('id', user.id).single();
+      } on PostgrestException catch(_) {
+        // 認証トークンあり / サーバーにユーザ情報なし
+        return false;
+      }
+      // 認証トークンあり / サーバーにユーザ情報あり
+      return true;
+    }
+
+    // 認証トークンなし
+    return false;
   }
 
   //

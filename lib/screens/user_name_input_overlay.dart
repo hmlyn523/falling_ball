@@ -1,12 +1,18 @@
 import 'package:flutter/material.dart';
 
-class UserNameInputOverlay extends StatelessWidget {
-  final Function(String, String) onSave;
+class UserNameInputOverlay extends StatefulWidget {
+  final Function(String, String, {Function(String)? onFailure}) onSave;
 
-  UserNameInputOverlay({required this.onSave});
+  const UserNameInputOverlay({Key? key, required this.onSave}) : super(key: key);
 
+  @override
+  _UserNameInputOverlayState createState() => _UserNameInputOverlayState();
+}
+
+class _UserNameInputOverlayState extends State<UserNameInputOverlay> {
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  String? _errorMessage; // エラーメッセージを保持
 
   @override
   Widget build(BuildContext context) {
@@ -79,6 +85,14 @@ class UserNameInputOverlay extends StatelessWidget {
                 ),
               ),
             ),
+            if (_errorMessage != null) // エラーメッセージを表示
+              Padding(
+                padding: const EdgeInsets.only(top: 8),
+                child: Text(
+                  _errorMessage!,
+                  style: TextStyle(color: Colors.red),
+                ),
+              ),
             SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
@@ -86,7 +100,15 @@ class UserNameInputOverlay extends StatelessWidget {
                 final password = _passwordController.text.trim();
 
                 if (name.isNotEmpty && password.isNotEmpty) {
-                  onSave(name, password);
+                  widget.onSave(
+                    name,
+                    password,
+                    onFailure: (error) {
+                      setState(() {
+                        _errorMessage = error; // エラーメッセージを更新
+                      });
+                    },
+                  );
                 } else {
                   ScaffoldMessenger.of(context).showSnackBar(
                     SnackBar(content: Text("ユーザー名とパスワードを入力してください")),

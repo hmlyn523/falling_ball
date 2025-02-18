@@ -51,9 +51,13 @@ class _GameScreenState extends State<GameScreen> {
             game: FallGame(context: context, supabase: supabase),
             overlayBuilderMap: {
               'userNameInput': (context, game) => UserNameInputOverlay(
-                onSave: (userName, password) async {
-                  AuthService.signInOrSignUp(context, supabase, userName, password);
-                  (game as FallGame).hideUserNameInput();
+                onSave: (userName, password, {onFailure}) async {
+                  try {
+                    await AuthService.signInOrSignUp(context, supabase, userName, password);
+                    (game as FallGame).hideUserNameInput();
+                  } catch(e) {
+                    onFailure?.call(e.toString()); // エラーを通知
+                  }
                 },
               ),
             },
