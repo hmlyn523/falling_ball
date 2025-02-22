@@ -490,7 +490,7 @@ class FallGameWorld extends Base
 
   bool _isGameOver() {
     return fallingItemFactory.onScreenFallingItems.any((item) =>
-        item.body.position.y < Config.WORLD_HEIGHT * 0.8 && (item.falling == false));
+        item.body.position.y < Config.WORLD_HEIGHT * 0.2 && (item.falling == false));
   }
 
   void _setupMultiGame() {
