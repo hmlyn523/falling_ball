@@ -8,38 +8,6 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 class AuthService {
 
-  // //
-  // // 認証状態のチェック
-  // //
-  // static Future<void> checkAuthStatus(context, supabase) async {
-  //   final user = supabase.auth.currentUser;
-
-  //   if (user != null) {
-  //     // 認証トークンがある場合、サーバーにユーザ情報があるか確認
-  //     final response = await supabase.from('players').select().eq('id', user.id).single();
-
-  //     if (response.error != null) {
-  //       // サーバーにユーザ情報がない場合 → サインアウトして登録画面へ
-  //       await logout(supabase);
-  //       Navigator.pushReplacementNamed(context, '/signup');
-  //     } else {
-  //       // サーバーにユーザ情報がある → タイトル画面へ
-  //       Navigator.pushReplacementNamed(context, '/title');
-  //     }
-  //   } else {
-  //     // 認証トークンがない場合、ユーザ名で検索
-  //     final response = await supabase.from('players').select('id').eq('username', username).single();
-
-  //     if (response.error != null) {
-  //       // ユーザ情報がない → ユーザ登録画面へ
-  //       Navigator.pushReplacementNamed(context, '/signup');
-  //     } else {
-  //       // ユーザ情報がある → ログイン画面へ
-  //       Navigator.pushReplacementNamed(context, '/login');
-  //     }
-  //   }
-  // }
-  
   //
   // Sign Up : ユーザ登録
   //  - auth.usersテーブルにはユーザ名をハッシュ値に変換して登録
