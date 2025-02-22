@@ -2,7 +2,8 @@
 // Supabase > Authentication > Providers > Email
 // Confirm email を off
 
-import 'package:flutter/widgets.dart';
+import 'dart:developer';
+
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class AuthService {
@@ -49,7 +50,7 @@ class AuthService {
     final response = await supabase.auth.signUp(email: fakeEmail, password: password);
 
     if (response.user == null) {
-      print("❌ユーザ登録: user.id is null");
+      log("❌ユーザ登録: user.id is null");
       throw Exception("❌ ユーザ登録失敗: user.id is null");
     }
 
@@ -59,9 +60,9 @@ class AuthService {
         'id': response.user!.id,
         'username': username,
       });
-      print('✅ユーザ登録: ${response.user!.id}');
+      log('✅ユーザ登録: ${response.user!.id}');
     } catch (e) {
-      print('❌ユーザ登録: $e');
+      log('❌ユーザ登録: $e');
       throw Exception("❌ Playersテーブルへの登録失敗: $e");
     }
   }
@@ -79,9 +80,9 @@ class AuthService {
     );
 
     if (response.user != null) {
-      print("✅ログイン: ${response.user?.id}");
+      log("✅ログイン: ${response.user?.id}");
     } else {
-      print("❌ログイン");
+      log("❌ログイン");
     }
   }
 
@@ -134,9 +135,9 @@ class AuthService {
   static Future<void> logout(supabase) async {
     await supabase.auth.signOut();
     if (supabase.auth.currentUser == null) {
-      print("ログアウトしました");
+      log("ログアウトしました");
     } else {
-      print("ログアウト失敗");
+      log("ログアウト失敗");
     }
   }
 }

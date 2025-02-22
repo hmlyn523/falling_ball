@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:falling_ball/core/services/auth_service.dart';
 import 'package:falling_ball/features/game/world.dart';
 import 'package:flame_forge2d/flame_forge2d.dart';
@@ -30,12 +32,12 @@ class FallGame extends Forge2DGame {
   }
 
   void showUserNameInput() {
-    print('showUserNameInput()');
+    log('showUserNameInput()');
     overlays.add('userNameInput');
   }
 
   void hideUserNameInput() {
-    print('hideUserNameInput()');
+    log('hideUserNameInput()');
     overlays.remove('userNameInput');
   }
 }

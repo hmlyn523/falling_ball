@@ -1,4 +1,5 @@
-import 'dart:math';
+import 'dart:developer';
+import 'dart:math' as math;
 
 import 'package:falling_ball/core/models/player_data.dart';
 import 'package:falling_ball/core/services/player_service.dart';
@@ -352,7 +353,6 @@ class FallGameWorld extends Base
       // アイテムの落下が完了したら呼ばれ、次のアイテムの番号をNEXTに表示
       var item = fallingItemFactory.nextFallingItemIndex + 1;
       nextItem.update(item);
-      print(fallingItemFactory.isFallingItem());
       // タイマーが停止中かつ画面をタップしていなければタイマー開始
       if (!autoFallingTimer.isRunning() && !tapArea.isDragged) {
         _startAutoFallingTimer();
@@ -420,7 +420,7 @@ class FallGameWorld extends Base
     // 例えば対戦相手が1人だったとしても、2人分用意しておく。
     // なぜならばこのonLoadの時点では対戦相手はわかっていないので
     List<int> values = List.generate(Config.MAX_OTHER_PLAYER_COUNT, (index) => index);
-    values.shuffle(Random());
+    values.shuffle(math.Random());
 
     for(int i = 0; i < values.length; i++) {
       final imageName = Config.ENEMY_BALL_HEIGHT_IMAGES[values[i]];
@@ -490,7 +490,7 @@ class FallGameWorld extends Base
 
   bool _isGameOver() {
     return fallingItemFactory.onScreenFallingItems.any((item) =>
-        item.body.position.y < Config.WORLD_HEIGHT * 0.2 && (item.falling == false));
+        item.body.position.y < Config.WORLD_HEIGHT * 0.8 && (item.falling == false));
   }
 
   void _setupMultiGame() {
@@ -506,10 +506,10 @@ class FallGameWorld extends Base
   void _onConnectivityChanged() {
     if (_connectivityProvider.isOnline) {
       // _multiGame.onOnline();
-      print('Connectivity change -------------------------------------------> online');
+      log('Connectivity change -------------------------------------------> online');
     } else {
       // _multiGame.onOffline();
-      print('Connectivity change -------------------------------------------> offline');
+      log('Connectivity change -------------------------------------------> offline');
     }
   }
 

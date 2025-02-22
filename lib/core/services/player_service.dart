@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:falling_ball/core/models/player_data.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -14,7 +16,7 @@ class PlayerService {
   Future<PlayerData?> getPlayerData() async {
     final user = await getLoginUser();
     if (user == null) {
-      print("❌ ユーザがログインしていません");
+      log("❌ ユーザがログインしていません");
       return null;
     }
 
@@ -26,7 +28,7 @@ class PlayerService {
           .single();
       return PlayerData.fromJson(response);
     } catch (error) {
-      print("❌ プレイヤーデータ取得失敗: $error");
+      log("❌ プレイヤーデータ取得失敗: $error");
       return null;
     }
   }
@@ -36,17 +38,17 @@ class PlayerService {
   Future<bool> updatePlayerData(PlayerData playerData) async {
     final user = await getLoginUser();
     if (user == null) {
-      print("❌ ユーザがログインしていません");
+      log("❌ ユーザがログインしていません");
       return false;
     }
     try {
       await supabase.from('players').update({
         'username': playerData.username,
       }).eq('id', playerData.id);
-      print("✅ プレイヤーデータ更新成功");
+      log("✅ プレイヤーデータ更新成功");
       return true;
     } catch (error) {
-      print("❌ プレイヤーデータ更新失敗: $error");
+      log("❌ プレイヤーデータ更新失敗: $error");
       return false;
     }
   }
@@ -55,7 +57,7 @@ class PlayerService {
   Future<bool> addScoreHistory(int score) async {
     final user = await getLoginUser();
     if (user == null) {
-      print("❌ ユーザがログインしていません");
+      log("❌ ユーザがログインしていません");
       return false;
     }
 
@@ -65,10 +67,10 @@ class PlayerService {
         'score': score,
       });
 
-      print("✅ スコア追加成功: $score");
+      log("✅ スコア追加成功: $score");
       return true;
     } catch (error) {
-      print("❌ スコア追加失敗: $error");
+      log("❌ スコア追加失敗: $error");
       return false;
     }
   }
@@ -77,7 +79,7 @@ class PlayerService {
   Future<bool> updateScoreIfHigher(int newScore) async {
     final user = await getLoginUser();
     if (user == null) {
-      print("❌ ユーザがログインしていません");
+      log("❌ ユーザがログインしていません");
       return false;
     }
 
@@ -98,14 +100,14 @@ class PlayerService {
           'score': newScore,
         });
 
-        print("✅ スコア更新成功: $newScore");
+        log("✅ スコア更新成功: $newScore");
         return true;
       } else {
-        print("✅ 現在のスコア ($currentScore) より低いため更新なし");
+        log("✅ 現在のスコア ($currentScore) より低いため更新なし");
         return true;
       }
     } catch (error) {
-      print("❌ スコア更新失敗: $error");
+      log("❌ スコア更新失敗: $error");
       return false;
     }
   }

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:falling_ball/app/config.dart';
 import 'package:falling_ball/core/components/touch_blocker.dart';
 import 'package:falling_ball/core/services/leaderboard_service.dart';
@@ -107,7 +109,7 @@ class RankingLayer extends PositionComponent with HasGameReference, HasVisibilit
       add(_scrollTextBox);
 
     } catch (e) {
-      print('ランキングの取得に失敗しました: $e');
+      log('ランキングの取得に失敗しました: $e');
     }
   }
 

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:falling_ball/core/models/player_data.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -73,7 +75,7 @@ class LeaderboardService {
 
       return leaderboard;
     } catch (e) {
-      print('ランキングの取得に失敗しました: $e');
+      log('ランキングの取得に失敗しました: $e');
       return [];
     }
   }

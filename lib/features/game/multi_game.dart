@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:falling_ball/core/modules/chain.dart';
 import 'package:falling_ball/core/services/error_handler.dart';
 import 'package:flutter/material.dart';
@@ -61,7 +63,7 @@ class MultiGame {
     }
     _isGameChannelInitialized = true;
     _gameChannel.onPresenceSync((payload) {
-      print('[onOnline] >>> onPresenceSync');
+      log('[onOnline] >>> onPresenceSync');
       final presenceState = _gameChannel.presenceState();
       // final onlineUsers = presenceState.map((element) => (element.presences.first).payload['online_user_id'] as String).toList();
       final onlineUsers = presenceState
@@ -72,14 +74,14 @@ class MultiGame {
         .cast<String>() // 型を String に確定
         .toList();
       memberCount.value = onlineUsers.length;
-      print('[onOnline] >>> memberCount.value = ${memberCount.value}');
+      log('[onOnline] >>> memberCount.value = ${memberCount.value}');
     }).onPresenceJoin((payload) {
-      print('[onOnline] >>> onPresenceJoin');
+      log('[onOnline] >>> onPresenceJoin');
     }).onPresenceLeave((payload) {
-      print('[onOnline] >>> onPresenceLeave');
+      log('[onOnline] >>> onPresenceLeave');
     }).subscribe((status, [_]) async {
       if (status == RealtimeSubscribeStatus.subscribed) {
-        print('[onOnline] >>> onSubscrive');
+        log('[onOnline] >>> onSubscrive');
         await _gameChannel.track({'online_user_id': myUserId});
 
         // track完了後にpresenceStateを取得
@@ -88,7 +90,7 @@ class MultiGame {
           (element.presences.first).payload['online_user_id'] as String
         ).toList();
         memberCount.value = onlineUsers.length; // 自分自身を反映
-        print('[onOnline] >>> memberCount.value = ${memberCount.value}');
+        log('[onOnline] >>> memberCount.value = ${memberCount.value}');
       }
     });
   }
@@ -108,11 +110,11 @@ class MultiGame {
       opts: const RealtimeChannelConfig(self: true),
     );
     _waitingChannel.onPresenceSync((payload) {
-      print('[onWaiting] >>> onPresenceSync');
-      print('  --> プレゼンス情報を受信しました。現在のプレゼンス情報: $payload');
+      log('[onWaiting] >>> onPresenceSync');
+      log('  --> プレゼンス情報を受信しました。現在のプレゼンス情報: $payload');
       final presenceState = _waitingChannel.presenceState();
       _userids = presenceState.map((element) => (element.presences.first).payload['waiting_user_id'] as String).toList();
-      print('  --> _userids : ${_userids}');
+      log('  --> _userids : ${_userids}');
     }).onPresenceJoin((payload) {
     }).onPresenceLeave((payload) {
       _waitingChannel.untrack();
@@ -126,22 +128,22 @@ class MultiGame {
         _onGameStarted(gameId);
       }
     }).subscribe((status, [_]) async {
-      print('[onWaiting] >>> onSubscrive');
-      print('  --> myUserId : ${myUserId}');
-      print('  --> status : ${status}');
+      log('[onWaiting] >>> onSubscrive');
+      log('  --> myUserId : ${myUserId}');
+      log('  --> status : ${status}');
       if (status == RealtimeSubscribeStatus.subscribed) {
-        print('    --> クライアントがサーバーと接続し、リアルタイムデータを受信できる状態です。');
-        print('    --> プレゼンス情報を送信します。 (trackの実行)');
+        log('    --> クライアントがサーバーと接続し、リアルタイムデータを受信できる状態です。');
+        log('    --> プレゼンス情報を送信します。 (trackの実行)');
         await _waitingChannel.track({'waiting_user_id': myUserId});
       }
       else if (status == RealtimeSubscribeStatus.channelError) {
-        print('    --> チャンネルにエラーが発生しました。');
+        log('    --> チャンネルにエラーが発生しました。');
       }
       else if (status == RealtimeSubscribeStatus.closed) {
-        print('    --> チャンネルが閉じられました。');
+        log('    --> チャンネルが閉じられました。');
       }
       else if (status == RealtimeSubscribeStatus.timedOut) {
-        print('    --> サーバーからの応答が一定時間内に受信できず、接続がタイムアウトしました。');
+        log('    --> サーバーからの応答が一定時間内に受信できず、接続がタイムアウトしました。');
       }
     });
   }
@@ -156,10 +158,10 @@ class MultiGame {
     var playUserId = _userids.where((userId) => userId != myUserId).take(2).toList();
     playUserId.add(myUserId);
     var gameId = const Uuid().v4();
-    print('[waiting] >>> send game_start');
-    print('  --> ゲームID(gameId) : ${gameId} ');
+    log('[waiting] >>> send game_start');
+    log('  --> ゲームID(gameId) : ${gameId} ');
     // print('  --> 全プレーヤーID(_userids) : ${_userids}');
-    print('  --> 対戦参加者ID(playUserId) : ${playUserId}');
+    log('  --> 対戦参加者ID(playUserId) : ${playUserId}');
     _userids.clear();
     await _waitingChannel.sendBroadcastMessage(
       event: 'game_start',
@@ -280,18 +282,18 @@ class MultiGame {
         //   success = true;
         // }
         if (response == ChannelResponse.ok) {
-          print('送信に成功!');
+          log('送信に成功!');
           success = true;
         } else {
-          print('送信に失敗 : ${response}');
+          log('送信に失敗 : ${response}');
           ErrorHandler.showErrorDialog(context, '対戦相手のアイテムの高さの送信に失敗');
           throw ();
         }
       } catch (e) {
         retryCount++;
-        print("メッセージ送信失敗。リトライ中... (${retryCount}/${maxRetries})");
+        log("メッセージ送信失敗。リトライ中... (${retryCount}/${maxRetries})");
         if (retryCount >= maxRetries) {
-          print("リトライ上限に達しました: $e");
+          log("リトライ上限に達しました: $e");
           // 必要に応じてエラーハンドリング
         }
       }
@@ -309,12 +311,12 @@ class MultiGame {
   }
 
   Future<void> removeWaitingChannel() async {
-    print('[waiting] >>> remove _waitingChannel');
+    log('[waiting] >>> remove _waitingChannel');
     await supabase.removeChannel(_waitingChannel);
   }
 
   void removeGameChannel() async {
-    print('[match] >>> remove _matchChannel');
+    log('[match] >>> remove _matchChannel');
     await supabase.removeChannel(_matchChannel);
   }
 
@@ -330,12 +332,12 @@ class MultiGame {
       opts: const RealtimeChannelConfig(self: true)
     );
     _matchChannel.onPresenceLeave((payload) {
-      print('[_onGameStarted] >>> onPresenceSync');
-      print('  --> プレゼンス情報を受信しました。現在のプレゼンス情報: $payload');
+      log('[_onGameStarted] >>> onPresenceSync');
+      log('  --> プレゼンス情報を受信しました。現在のプレゼンス情報: $payload');
       _matchChannel.untrack();
       _matchChannel.unsubscribe();
     }).onBroadcast(event: 'game_score', callback: (payload) {
-      print('[_onGameStarted] >>> game_score');
+      log('[_onGameStarted] >>> game_score');
       if (payload['score'] == null || payload['send_id'] == null) return;
       final score = payload['score'] as int;
       final sendId = payload['send_id'] as String;
@@ -343,7 +345,7 @@ class MultiGame {
         _updateOpponentScore(score);
       }
     }).onBroadcast(event: 'game_enemy_ball_height', callback: (payload) {
-      print('[_onGameStarted] >>> game_enemy_ball_height');
+      log('[_onGameStarted] >>> game_enemy_ball_height');
       if (payload['enemy_ball_height'] == null) {
         ErrorHandler.showErrorDialog(context, '対戦相手のアイテムの高さの受信に失敗');
         return;
@@ -378,10 +380,10 @@ class MultiGame {
         //   print('UserID: ${status.userid}, Height: ${status.height}');
         // }
         ///////////////////////////////////////////////////
-        print('[受信] 対戦相手の高さ設定');
+        log('[受信] 対戦相手の高さ設定');
       }
     }).onBroadcast(event: 'game_chain', callback: (payload) {
-      print('[_onGameStarted] >>> game_chain');
+      log('[_onGameStarted] >>> game_chain');
       if (payload['send_id'] == null || payload['chain'] == null) {
         ErrorHandler.showErrorDialog(context, '対戦相手からの[おじゃまむし]の受信に失敗');
         return;
@@ -389,25 +391,25 @@ class MultiGame {
       final sendId = payload['send_id'] as String;
       final chain = payload['chain'] as int;
       if (sendId != myUserId) {
-        print('chain(1): $chain');
+        log('chain(1): $chain');
         opponetBall.value = chain;
         // _onOpponentChainAttack(chain);
       }
     }).onBroadcast(event: 'game_over', callback: (payload) {
-      print('[_onGameStarted] >>> game_over');
+      log('[_onGameStarted] >>> game_over');
       removeGameChannel();
       _multiGameOverCallback?.call();
     }).subscribe((status, [_]) async {
-      print('[_onGameStarted] >>> onSubscrive');
-      print('  --> status : ${status}');
+      log('[_onGameStarted] >>> onSubscrive');
+      log('  --> status : ${status}');
       if (status == RealtimeSubscribeStatus.subscribed) {
-        print('    --> クライアントがサーバーと接続し、リアルタイムデータを受信できる状態です。');
+        log('    --> クライアントがサーバーと接続し、リアルタイムデータを受信できる状態です。');
       }
       else if (status == RealtimeSubscribeStatus.channelError) {
         ErrorHandler.showErrorDialog(context, 'チャンネルにエラーが発生');
       }
       else if (status == RealtimeSubscribeStatus.closed) {
-        print('    --> チャンネルが閉じられました。');
+        log('    --> チャンネルが閉じられました。');
       }
       else if (status == RealtimeSubscribeStatus.timedOut) {
         ErrorHandler.showErrorDialog(context, 'サーバーからの応答が一定時間内に受信できず、接続がタイムアウト');
