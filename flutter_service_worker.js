@@ -5,7 +5,7 @@ const CACHE_NAME = 'flutter-app-cache';
 
 const RESOURCES = {"icons/Icon-512.png": "390a61a05d8e5e5c83f2b00a8a4738e9",
 "icons/Icon-192.png": "28be48d815b518228568719e89fa087b",
-"flutter_bootstrap.js": "99311961a12a1c62bc7a3a630367a3ff",
+"flutter_bootstrap.js": "36d54400ee624afcd53bfae100f4261c",
 "canvaskit/skwasm.worker.js": "89990e8c92bcb123999aa81f7e203b1c",
 "canvaskit/skwasm.wasm": "828c26a0b1cc8eb1adacbdd0c5e8bcfa",
 "canvaskit/chromium/canvaskit.wasm": "ea5ab288728f7200f398f60089048b48",
