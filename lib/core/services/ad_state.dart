@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 import 'package:google_mobile_ads/google_mobile_ads.dart';
 
@@ -7,9 +8,7 @@ class AdState {
   String get bannerAdUnitId => Platform.isAndroid ? "ca-app-pub-3940256099942544/6300978111" : "ca-app-pub-3940256099942544/6300978111"; // 広告ユニット ID
   BannerAdListener get adListener => _adListener;
   BannerAdListener _adListener = BannerAdListener(
-    // onAdLoaded: (ad) => print('Ad loaded: ${ad.adUnitId}.'),
-    // onAdFailedToLoad: (ad, error) => print('Ad failed to load: ${ad.adUnitId}, $error.'),
-    onAdLoaded: (ad) => {},
-    onAdFailedToLoad: (ad, error) => {},
+    onAdLoaded: (ad) => log('Ad loaded: ${ad.adUnitId}.'),
+    onAdFailedToLoad: (ad, error) => log('Ad failed to load: ${ad.adUnitId}, $error.'),
   );
 }
