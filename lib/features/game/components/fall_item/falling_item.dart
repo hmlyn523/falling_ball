@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:falling_ball/features/game/components/wall.dart';
 import 'package:flame/components.dart';
 import 'package:flame/effects.dart';
@@ -67,19 +69,23 @@ class FallingItem extends BodyComponent with ContactCallbacks {
 
     final fixtureDef = FixtureDef(shape)
       ..density = density
-      ..friction = 0.5
+      ..friction = 0.7
       ..restitution = 0.0
       ..filter.categoryBits = Config.CATEGORY_BALL
       ..filter.maskBits = Config.CATEGORY_BALL | Config.CATEGORY_DOWN_WALL | Config.CATEGORY_LEFT_WALL | Config.CATEGORY_RIGHT_WALL;
 
+    final random = Random();
     final bodyDef = BodyDef()
       ..userData = this
       ..position = this.position
-      ..angle = (this.position.x + this.position.y) / 2 * 3.14
+      // ..angle = (this.position.x + this.position.y) / 2 * 3.14
+      ..angle = random.nextDouble() * pi * 2
       ..angularDamping = 0.6
       ..type = BodyType.dynamic;
 
-    return world.createBody(bodyDef)..createFixture(fixtureDef);
+    final body = world.createBody(bodyDef)..createFixture(fixtureDef);
+    body.linearVelocity = Vector2(0, 25.0); // 落下速度を追加
+    return body;
   }
 
   @override
