@@ -14,7 +14,7 @@ class PlayerScore {
 
   static Future<PlayerScore> create() async {
     final scoreLabel = await NumberLabel(
-      position: Vector2(Config.WORLD_WIDTH * .93, Config.WORLD_HEIGHT * .046),
+      position: Vector2(Config.WORLD_WIDTH * .93, Config.WORLD_HEIGHT * .057),
       color: const Color.fromRGBO(255, 255, 255, 1),
     );
     scoreLabel.isVisible = true;

@@ -119,6 +119,7 @@ flutter:
     - assets/images/connect_4.png
     - assets/images/cancel.png
     - assets/images/explosion.png
+    - assets/images/hanabi.png
     - assets/images/enemy_ball_height.png
     - assets/images/enemy_ball_height2.png
     - assets/images/enemy_ball_height3.png
@@ -153,6 +154,9 @@ flutter:
     - family: PixelFont
       fonts:
         - asset: assets/fonts/PressStart2P-Regular.ttf
+    - family: kanjifont
+      fonts:
+        - asset: assets/fonts/kanjifont.ttf
   #       - asset: fonts/Schyler-Regular.ttf
   #       - asset: fonts/Schyler-Italic.ttf
   #         style: italic

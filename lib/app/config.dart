@@ -29,6 +29,7 @@ class Config {
   static const MIN_CHAIN = 2;
 
   static const PRIORITY_MAX = 999;
+  static const PRIORITY_ANIMATION = 150;
   static const PRIORITY_RANKING_DIALOG = 140;
   static const PRIORITY_CONNECT = 130;
   static const PRIORITY_TITLE = 120;

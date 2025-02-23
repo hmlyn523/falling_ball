@@ -84,31 +84,31 @@ class FallGameWorld extends Base
   void chain(position) {
     if (_isMulti) {
       _multiGame.chain.addChain();
-      if (_multiGame.chain.sendChains > 1 ) {
-        _showCombo(position);
-      } 
+      // if (_multiGame.chain.sendChains > 1 ) {
+      //   _showCombo(position);
+      // } 
     }
   }
 
-  void _showCombo(Vector2 position) {
-    final scoreText = TextComponent(
-      text: 'Combo!',
-      position: position,
-      anchor: Anchor.center,
-      textRenderer: TextPaint(
-        style: const TextStyle(
-          fontFamily: 'Square-L',
-          color: Colors.black54,
-          fontSize: 12,
-        ),
-      ),
-      priority: Config.PRIORITY_COMBO,
-    );
-    add(scoreText);
+  // void _showCombo(Vector2 position) {
+  //   final scoreText = TextComponent(
+  //     text: 'Combo!',
+  //     position: position,
+  //     anchor: Anchor.center,
+  //     textRenderer: TextPaint(
+  //       style: const TextStyle(
+  //         fontFamily: 'Square-L',
+  //         color: Colors.black54,
+  //         fontSize: 12,
+  //       ),
+  //     ),
+  //     priority: Config.PRIORITY_COMBO,
+  //   );
+  //   add(scoreText);
 
-    scoreText.add(MoveEffect.by(Vector2(0, -10), EffectController(duration: .8)));
-    scoreText.add(RemoveEffect(delay: .8, onComplete: () => scoreText.removeFromParent()));
-  }
+  //   scoreText.add(MoveEffect.by(Vector2(0, -10), EffectController(duration: .8)));
+  //   scoreText.add(RemoveEffect(delay: .8, onComplete: () => scoreText.removeFromParent()));
+  // }
 
   // プレイ中かつ落下中のみアイテムをスポーンし、落下位置確認用ラインを消す。
   void spawn(position) {
@@ -389,6 +389,8 @@ class FallGameWorld extends Base
     add(lobbyNumber.label);
     add(autoFallingTime.label);
 
+    // final random = math.Random();
+    // double value = 0.1 + math.Random().nextDouble() * (0.3 - 0.1);
     tapArea = TapArea(
       tapDown: ((_) => {
         // タップしてもタイマーを停止せずに、指定時間間隔で落下させるようにすためにコメントアウト
@@ -396,8 +398,23 @@ class FallGameWorld extends Base
         // if (isPlayingState()) _stopAutoFallingTimer()
       }),
       tapUp: ((position) => {
-        if (isPlayingState()) _stopAutoFallingTimer(),
-        spawn(position),
+        if (isPlayingState()) {
+          _stopAutoFallingTimer(),
+          add(SpriteAnimationComponent.fromFrameData(
+            images.fromCache("hanabi.png"),
+            SpriteAnimationData.sequenced(
+              textureSize: Vector2.all(32),
+              amount: 12,
+              stepTime: 0.1,
+              loop: false,
+            ),
+            position: Vector2(position.x, position.y + Config.WORLD_HEIGHT * (0.1 + math.Random().nextDouble() * (0.3 - 0.1))),
+            size: Vector2(12, 12),
+            anchor: Anchor.center,
+            priority: Config.PRIORITY_ANIMATION,
+          )),
+          spawn(position),
+        }
       }));
     add(tapArea);
 

@@ -300,8 +300,8 @@ class FallingItemFactory extends Component
       anchor: Anchor.center,
       textRenderer: TextPaint(
         style: const TextStyle(
-          fontFamily: 'Square-L',
-          color: Colors.black54,
+          fontFamily: 'kanjifont',
+          color: Colors.green,
           fontSize: 12,
         ),
       ),
@@ -319,7 +319,7 @@ class FallingItemFactory extends Component
       images.fromCache("explosion.png"),
       SpriteAnimationData.sequenced(
         textureSize: Vector2.all(32),
-        amount: 6,
+        amount: 7,
         stepTime: 0.1,
         loop: false,
       ),

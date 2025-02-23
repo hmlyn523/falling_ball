@@ -11,13 +11,13 @@ class NumberLabel extends TextComponent with HasVisibility {
     this.text = _number.toString();
   }
 
-  NumberLabel({int? score = 0, position, Color? color = Colors.black, double? fontsize = Config.WORLD_WIDTH * 0.18})
+  NumberLabel({int? score = 0, position, Color? color = Colors.black, double? fontsize = Config.WORLD_WIDTH * 0.15})
       : super(
         text: score!.toString(),
         textRenderer: TextPaint(
           style: TextStyle(
             fontSize: fontsize,
-            fontFamily: 'Square-L',
+            fontFamily: 'kanjifont',
             color: color,
             height: 0.1
           )
