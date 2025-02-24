@@ -14,7 +14,7 @@ class NextItem {
 
   static Future<NextItem> create() async {
     final label = await NumberLabel(
-      position: Vector2(Config.WORLD_WIDTH * .35, Config.WORLD_HEIGHT * .052),
+      position: Vector2(Config.WORLD_WIDTH * .35, Config.WORLD_HEIGHT * .057),
       color: const Color.fromRGBO(255, 255, 255, 1),
     );
     label.isVisible = true;
