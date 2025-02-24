@@ -42,8 +42,8 @@ class GameOverLogo extends SpriteComponent with HasGameReference {
   @override
   Future<void> onLoad() async {
     sprite = Sprite((game as FallGame).images.fromCache(Config.IMAGE_GAME_OVER));
-    position = Vector2(Config.WORLD_WIDTH * .5, Config.WORLD_HEIGHT * .4);
-    size = Vector2(Config.WORLD_WIDTH * .65, Config.WORLD_HEIGHT * .085);
+    position = Vector2(Config.WORLD_WIDTH * .5, Config.WORLD_HEIGHT * .53);
+    size = Vector2(Config.WORLD_WIDTH * .72, Config.WORLD_HEIGHT * .095);
     anchor = Anchor.center;
     priority = Config.PRIORITY_MIN;
   }
@@ -53,7 +53,7 @@ class TapTitleButton extends SpriteComponent with TapCallbacks, HasGameReference
   @override
   Future<void> onLoad() async {
     sprite = Sprite((game as FallGame).images.fromCache(Config.IMAGE_TAP_TITLE));
-    position = Vector2(Config.WORLD_WIDTH * .5, Config.WORLD_HEIGHT * .6);
+    position = Vector2(Config.WORLD_WIDTH * .5, Config.WORLD_HEIGHT * .7);
     size = Vector2(Config.WORLD_WIDTH * .18, Config.WORLD_HEIGHT * .115);
     anchor = Anchor.center;
     priority = Config.PRIORITY_MIN;
