@@ -63,7 +63,7 @@ const RESOURCES = {"canvaskit/skwasm.js": "ac0f73826b925320a1e9b0d3fd7da61c",
 "assets/assets/images/multi3.png": "ee698fa6b7d1efb66450347f302252af",
 "assets/assets/images/enemy_ball_height.png": "647bc05d3bd34c88a50c994a956667ca",
 "assets/assets/images/score.png": "843a63cb136358f4ccdd3b11d78cb7ed",
-"assets/assets/images/1-icon.png": "cd6f04f9b067005076ae0226b90dc1db",
+"assets/assets/images/1-icon.png": "120c6facbd50848c9091fb693399b679",
 "assets/assets/images/back_background.png": "1f8a823d8fde700a773ffff19032dcc7",
 "assets/assets/images/11-icon.png": "906a9bb6777dfbaaf9c3b1e2aa33b595",
 "assets/assets/images/choose_players.png": "4a839b05d588ee7788646dc6d5aa8de4",
@@ -90,7 +90,7 @@ const RESOURCES = {"canvaskit/skwasm.js": "ac0f73826b925320a1e9b0d3fd7da61c",
 "icons/Icon-512.png": "390a61a05d8e5e5c83f2b00a8a4738e9",
 "manifest.json": "feecab6b49deef9c9383c9e488c7b33e",
 "favicon.png": "6e4e6784456f71604d3aeb2e4dfba382",
-"flutter_bootstrap.js": "7cccf0a868f984f57967da252c424b00"};
+"flutter_bootstrap.js": "ee8ec2c8615795c6b7432a48ad8a1a33"};
 // The application shell files that are downloaded before a service worker can
 // start.
 const CORE = ["main.dart.js",
