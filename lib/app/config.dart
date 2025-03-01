@@ -43,6 +43,7 @@ class Config {
   static const PRIORITY_GAME_COMPONENT = 40;
   static const PRIORITY_FALL_ITEM_SPRITE = 30;
   static const PRIORITY_FALL_ITEM_NEXT = 20;
+  static const PRIORITY_HANABI = 15;
   static const PRIORITY_LINE = 10;
   // static const PRIORITY = 0; // SpriteBodyComponent
   static const PRIORITY_BACK_GAME_B = -10;

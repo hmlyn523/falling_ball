@@ -411,7 +411,7 @@ class FallGameWorld extends Base
             position: Vector2(position.x, position.y + Config.WORLD_HEIGHT * (0.1 + math.Random().nextDouble() * (0.3 - 0.1))),
             size: Vector2(12, 12),
             anchor: Anchor.center,
-            priority: Config.PRIORITY_ANIMATION,
+            priority: Config.PRIORITY_HANABI,
           )),
           spawn(position),
         }
