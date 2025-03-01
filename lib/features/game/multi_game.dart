@@ -1,6 +1,6 @@
 import 'dart:developer';
 
-import 'package:falling_ball/core/modules/chain.dart';
+import 'package:falling_ball/features/game/helpers/chain.dart';
 import 'package:falling_ball/core/services/error_handler.dart';
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
