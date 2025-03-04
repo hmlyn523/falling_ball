@@ -74,7 +74,7 @@ class FallGameWorld extends Base
   late final autoFallingTimer;
 
   late final PlayerService playerService;
-  late PlayerData? playerData = null;
+  // late PlayerData? playerData = null;
 
   FallGameWorld(this.context, this.supabase)
   {
@@ -178,9 +178,9 @@ class FallGameWorld extends Base
     // タイトル表示
     titleDialog.setVisibility(true);
 
-    if (playerData == null) {
-      playerData = (await playerService.getPlayerData());
-    }
+    // if (playerData == null) {
+    //   playerData = (await playerService.getPlayerData());
+    // }
   }
 
   @override
@@ -579,7 +579,7 @@ class FallGameWorld extends Base
   // RankingLayerインスタンスを作成し、情報を取得する。
   void showRankingLayer() async {
     if (rankingLayer == null) {
-      rankingLayer = RankingLayer();
+      rankingLayer = RankingLayer(Config.IMAGE_RANKING_BACKGROUND);
       await add(rankingLayer!); // onLoad()が終わるのを待つ
     }
     // 再表示時にもランキングデータを更新
@@ -589,6 +589,26 @@ class FallGameWorld extends Base
 
   // ランキングが閉じられたらインスタンスを破棄し初期化する。
   void hideRankingLayer() {
+    if (rankingLayer == null) return;
+    rankingLayer!.setVisibility(false);
+    rankingLayer!.removeFromParent();
+    rankingLayer = null;
+  }
+
+  // 常に最新情報を表示したいため、ランキングボタンが押されるたびに
+  // RankingLayerインスタンスを作成し、情報を取得する。
+  void showScoreHistoryLayer() async {
+    if (rankingLayer == null) {
+      rankingLayer = RankingLayer(Config.IMAGE_SCORE_BACKGROUND);
+      await add(rankingLayer!); // onLoad()が終わるのを待つ
+    }
+    // 再表示時にもランキングデータを更新
+    rankingLayer!.updateScoreHistory(this);
+    rankingLayer!.setVisibility(true);
+  }
+
+  // ランキングが閉じられたらインスタンスを破棄し初期化する。
+  void hideScoreHistoryLayer() {
     if (rankingLayer == null) return;
     rankingLayer!.setVisibility(false);
     rankingLayer!.removeFromParent();

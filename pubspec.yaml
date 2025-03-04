@@ -126,6 +126,7 @@ flutter:
     - assets/images/win.png
     - assets/images/lose.png
     - assets/images/ranking_dialog.png
+    - assets/images/score_dialog.png
     - assets/images/ranking.png
     - assets/images/rank_and_score.png
     - assets/images/score.png

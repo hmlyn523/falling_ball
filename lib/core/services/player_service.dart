@@ -1,6 +1,6 @@
 import 'dart:developer';
 
-import 'package:falling_ball/core/models/player_data.dart';
+// import 'package:falling_ball/core/models/player_data.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class PlayerService {
@@ -12,46 +12,46 @@ class PlayerService {
     return await supabase.auth.currentUser;
   } 
 
-  // プレイヤー情報を取得
-  Future<PlayerData?> getPlayerData() async {
-    final user = await getLoginUser();
-    if (user == null) {
-      log("❌ ユーザがログインしていません");
-      return null;
-    }
+  // // プレイヤー情報を取得
+  // Future<PlayerData?> getPlayerData() async {
+  //   final user = await getLoginUser();
+  //   if (user == null) {
+  //     log("❌ ユーザがログインしていません");
+  //     return null;
+  //   }
 
-    try {
-      final response = await supabase
-          .from('players')
-          .select('*')
-          .eq('id', user.id)
-          .single();
-      return PlayerData.fromJson(response);
-    } catch (error) {
-      log("❌ プレイヤーデータ取得失敗: $error");
-      return null;
-    }
-  }
+  //   try {
+  //     final response = await supabase
+  //         .from('players')
+  //         .select('*')
+  //         .eq('id', user.id)
+  //         .single();
+  //     return PlayerData.fromJson(response);
+  //   } catch (error) {
+  //     log("❌ プレイヤーデータ取得失敗: $error");
+  //     return null;
+  //   }
+  // }
 
   // プレイヤーデータを更新
   // idが一致するusernameを更新する
-  Future<bool> updatePlayerData(PlayerData playerData) async {
-    final user = await getLoginUser();
-    if (user == null) {
-      log("❌ ユーザがログインしていません");
-      return false;
-    }
-    try {
-      await supabase.from('players').update({
-        'username': playerData.username,
-      }).eq('id', playerData.id);
-      log("✅ プレイヤーデータ更新成功");
-      return true;
-    } catch (error) {
-      log("❌ プレイヤーデータ更新失敗: $error");
-      return false;
-    }
-  }
+  // Future<bool> updatePlayerData(PlayerData playerData) async {
+  //   final user = await getLoginUser();
+  //   if (user == null) {
+  //     log("❌ ユーザがログインしていません");
+  //     return false;
+  //   }
+  //   try {
+  //     await supabase.from('players').update({
+  //       'username': playerData.username,
+  //     }).eq('id', playerData.id);
+  //     log("✅ プレイヤーデータ更新成功");
+  //     return true;
+  //   } catch (error) {
+  //     log("❌ プレイヤーデータ更新失敗: $error");
+  //     return false;
+  //   }
+  // }
 
   // スコア履歴を追加
   Future<bool> addScoreHistory(int score) async {

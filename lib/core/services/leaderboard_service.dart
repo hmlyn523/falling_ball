@@ -1,7 +1,10 @@
 import 'dart:developer';
 
+import 'package:falling_ball/core/models/match_result.dart';
 import 'package:falling_ball/core/models/player_data.dart';
+import 'package:falling_ball/core/models/ranking_entry.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:uuid/uuid.dart';
 
 class LeaderboardService {
   final SupabaseClient supabase;
@@ -9,7 +12,7 @@ class LeaderboardService {
   LeaderboardService(this.supabase);
 
   // 得点をアップロード
-  Future<void> uploadScore(supabase, PlayerData playerData) async {
+  // Future<void> uploadScore(supabase, PlayerData playerData) async {
     // // Supabaseや他のバックエンドに得点を送信
     // try {
     //   // 現在保存されている最高スコアを取得
@@ -48,7 +51,7 @@ class LeaderboardService {
     // } catch (e) {
     //   print('得点履歴の追加に失敗: $e');
     // }
-  }
+  // }
 
   // // ランキングを取得
   // Future<List<RankingEntry>> getLeaderboard() async {
@@ -80,6 +83,32 @@ class LeaderboardService {
     }
   }
 
+  // 歴代スコアを取得
+  Future<List<RankingEntry>> getScoreHistory(user_id) async {
+    try {
+      // スコアを降順に取得（上位10人）
+      final response = await supabase
+          .from('score_history')
+          .select('score')
+          .eq('user_id', user_id.id)
+          .order('score', ascending: false)
+          .limit(30);
+
+      // レスポンスを RankingEntry のリストに変換
+      final leaderboard = (response as List)
+          .map((entry) => RankingEntry(
+                playerName: "",
+                score: entry['score'] as int,
+              ))
+          .toList();
+
+      return leaderboard;
+    } catch (e) {
+      log('ランキングの取得に失敗しました: $e');
+      return [];
+    }
+  }
+  
   // 対戦の勝敗をアップロード
   Future<void> uploadMatchResult(String matchId, String winnerId, String loserId) async {
     // 勝敗データをバックエンドに送信
@@ -90,22 +119,4 @@ class LeaderboardService {
     // 対戦履歴を取得
     return [];
   }
-}
-
-// ランキングエントリのデータモデル
-class RankingEntry {
-  // final String playerId;
-  final String playerName;
-  final int score;
-
-  RankingEntry({required this.playerName, required this.score});
-}
-
-// 対戦結果のデータモデル
-class MatchResult {
-  final String matchId;
-  final String winnerId;
-  final String loserId;
-
-  MatchResult({required this.matchId, required this.winnerId, required this.loserId});
 }

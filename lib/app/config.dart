@@ -83,6 +83,7 @@ class Config {
   static const IMAGE_CONNECT = "connect.gif";
   static const IMAGE_CANCEL = "cancel.png";
   static const IMAGE_RANKING_BACKGROUND = "ranking_dialog.png";
+  static const IMAGE_SCORE_BACKGROUND = "score_dialog.png";
   static const IMAGE_CHOOSE_PLAYErS = "choose_players.png";
   static const IMAGE_RANK_AND_SCORE = "rank_and_score.png";
 }

@@ -14,8 +14,9 @@ class RankingLayer extends PositionComponent with HasGameReference, HasVisibilit
   late final BackButton _backButton;
   late final TouchBlocker _touchBlocker;
   late RankingListComponent _scrollTextBox;
+  late final String backgournd_image;
 
-  RankingLayer()
+  RankingLayer(this.backgournd_image)
       : super(
           position: Vector2(Config.WORLD_WIDTH * .5, Config.WORLD_HEIGHT * .5),
           size: Vector2(Config.WORLD_WIDTH * .88, Config.WORLD_HEIGHT * .66),
@@ -36,7 +37,7 @@ class RankingLayer extends PositionComponent with HasGameReference, HasVisibilit
 
     // 背景スプライトの設定
     _background = SpriteComponent(
-      sprite: Sprite((game as FallGame).images.fromCache(Config.IMAGE_RANKING_BACKGROUND)),
+      sprite: Sprite((game as FallGame).images.fromCache(this.backgournd_image)),
       position: Vector2.zero(),
       size: size,
       anchor: Anchor.topLeft,
@@ -87,6 +88,40 @@ class RankingLayer extends PositionComponent with HasGameReference, HasVisibilit
     final leaderboardService = LeaderboardService(game.supabase);
     try {
       final rankings = await leaderboardService.getLeaderboard();
+      List<String> rankings_no = [];
+      List<String> rankings_name = [];
+      List<String> rankings_score = [];
+      for (var i = 0; i < rankings.length; i++) {
+        rankings_no.add('${i + 1}.');
+        rankings_name.add('${rankings[i].playerName}');
+        rankings_score.add('${rankings[i].score}');
+      }
+      // スクロールテキストボックの再作成
+      _scrollTextBox.removeFromParent();
+      _scrollTextBox = RankingListComponent(
+        rankings_no: rankings_no,
+        rankings_name: rankings_name,
+        rankings_score: rankings_score,
+        size: Vector2(size.x * 0.89, size.y * 0.6), // テキストボックスのサイズ
+        position: Vector2(size.x * 0.05, size.y * 0.15), // ランキングの配置位置
+        anchor: Anchor.topLeft,
+      );
+      _scrollTextBox.priority = 150;
+      add(_scrollTextBox);
+
+    } catch (e) {
+      log('ランキングの取得に失敗しました: $e');
+    }
+  }
+
+  /// スコア履歴情報を更新
+  Future<void> updateScoreHistory(game) async {
+    // Supabaseからランキングを取得
+    final leaderboardService = LeaderboardService(game.supabase);
+    try {
+      // final rankings = await leaderboardService.getLeaderboard();
+      final userid = await game.playerService.getLoginUser();
+      final rankings = await leaderboardService.getScoreHistory(userid);
       List<String> rankings_no = [];
       List<String> rankings_name = [];
       List<String> rankings_score = [];

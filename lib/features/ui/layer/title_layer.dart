@@ -17,16 +17,16 @@ class TitleDialog extends PositionComponent
   ){
     _titleDialog = [
       // Menu(),
-      Copyright(),
+      CopyrightLabel(),
       TitleLogo(),
-      ChoosePlayers(),
+      ChoosePlayersLabel(),
       StartButton(),
       Multi2Button(),
       Multi3Button(),
       Multi4Button(),
-      RankAndScore(),
+      RankAndScoreLabel(),
       RankingButton(),
-      ScoreButton(),
+      ScoreHistoryButton(),
       // PostButton(),
     ];
     isVisible = false;
@@ -159,19 +159,11 @@ class RankingButton extends SpriteComponent
   @override
   bool onTapUp(TapUpEvent info) {
     (world as FallGameWorld).showRankingLayer();
-    // RankingLayer aaa = RankingLayer();
-    
-    // GamesServices.showLeaderboards(iOSLeaderboardID: 'tapjump.ranking');
-    // GamesServices.loadLeaderboardScores(
-    //   iOSLeaderboardID: 'tapjump.ranking',
-    //   scope: PlayerScope.global,
-    //   timeScope: TimeScope.allTime,
-    //   maxResults: 10);
     return false;
   }
 }
 
-class ScoreButton extends SpriteComponent
+class ScoreHistoryButton extends SpriteComponent
     with TapCallbacks, HasGameReference, HasWorldReference {
   @override
   Future<void> onLoad() async {
@@ -184,7 +176,7 @@ class ScoreButton extends SpriteComponent
 
   @override
   bool onTapUp(TapUpEvent info) {
-    // (world as FallGameWorld).showRankingLayer();
+    (world as FallGameWorld).showScoreHistoryLayer();
     return false;
   }
 }
@@ -232,7 +224,7 @@ class PostButton extends SpriteComponent
   // }
 }
 
-class Copyright extends SpriteComponent with HasGameReference {
+class CopyrightLabel extends SpriteComponent with HasGameReference {
   @override
   Future<void> onLoad() async {
     sprite =
@@ -244,7 +236,7 @@ class Copyright extends SpriteComponent with HasGameReference {
   }
 }
 
-class ChoosePlayers extends SpriteComponent with HasGameReference {
+class ChoosePlayersLabel extends SpriteComponent with HasGameReference {
   @override
   Future<void> onLoad() async {
     sprite =
@@ -256,7 +248,7 @@ class ChoosePlayers extends SpriteComponent with HasGameReference {
   }
 }
 
-class RankAndScore extends SpriteComponent with HasGameReference {
+class RankAndScoreLabel extends SpriteComponent with HasGameReference {
   @override
   Future<void> onLoad() async {
     sprite =
