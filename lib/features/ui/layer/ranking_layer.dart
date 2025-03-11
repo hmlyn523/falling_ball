@@ -9,15 +9,17 @@ import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 import 'package:flutter/material.dart';
 
-class RankingLayer extends PositionComponent with HasGameReference, HasVisibility {
+class RankingLayer extends PositionComponent
+    with HasGameReference, HasVisibility {
   late final SpriteComponent _background;
   late final BackButton _backButton;
   late final TouchBlocker _touchBlocker;
   late RankingListComponent _scrollTextBox;
   late final String backgournd_image;
 
-  RankingLayer(this.backgournd_image)
+  RankingLayer(this.backgournd_image, layerType)
       : super(
+          key: ComponentKey.named(layerType),
           position: Vector2(Config.WORLD_WIDTH * .5, Config.WORLD_HEIGHT * .5),
           size: Vector2(Config.WORLD_WIDTH * .88, Config.WORLD_HEIGHT * .66),
           anchor: Anchor.center,
@@ -83,11 +85,11 @@ class RankingLayer extends PositionComponent with HasGameReference, HasVisibilit
   }
 
   /// ランキング情報を更新
-  Future<void> updateRanking(game) async {
+  Future<void> updateRanking() async {
     // Supabaseからランキングを取得
-    final leaderboardService = LeaderboardService(game.supabase);
+    final leaderboardService = LeaderboardService((game as FallGame).supabase);
     try {
-      final rankings = await leaderboardService.getLeaderboard();
+      final rankings = await leaderboardService.getRankingList();
       List<String> rankings_no = [];
       List<String> rankings_name = [];
       List<String> rankings_score = [];
@@ -115,20 +117,21 @@ class RankingLayer extends PositionComponent with HasGameReference, HasVisibilit
   }
 
   /// スコア履歴情報を更新
-  Future<void> updateScoreHistory(game) async {
+  Future<void> updateScoreHistory() async {
     // Supabaseからランキングを取得
-    final leaderboardService = LeaderboardService(game.supabase);
+    final leaderboardService = LeaderboardService((game as FallGame).supabase);
     try {
       // final rankings = await leaderboardService.getLeaderboard();
-      final userid = await game.playerService.getLoginUser();
-      final rankings = await leaderboardService.getScoreHistory(userid);
+      final _gameWorld = (game.world as FallGameWorld);
+      final _userid = await _gameWorld.playerService.getLoginUser();
+      final _rankings = await leaderboardService.getScoreHistoryList(_userid);
       List<String> rankings_no = [];
       List<String> rankings_name = [];
       List<String> rankings_score = [];
-      for (var i = 0; i < rankings.length; i++) {
+      for (var i = 0; i < _rankings.length; i++) {
         rankings_no.add('${i + 1}.');
-        rankings_name.add('${rankings[i].playerName}');
-        rankings_score.add('${rankings[i].score}');
+        rankings_name.add('${_rankings[i].playerName}');
+        rankings_score.add('${_rankings[i].score}');
       }
       // スクロールテキストボックの再作成
       _scrollTextBox.removeFromParent();
@@ -142,7 +145,6 @@ class RankingLayer extends PositionComponent with HasGameReference, HasVisibilit
       );
       _scrollTextBox.priority = 150;
       add(_scrollTextBox);
-
     } catch (e) {
       log('ランキングの取得に失敗しました: $e');
     }
@@ -160,6 +162,25 @@ class RankingLayer extends PositionComponent with HasGameReference, HasVisibilit
     _backButton.priority = priority;
     _touchBlocker.priority = priority; // タッチブロッカーも優先度を切り替え
     _scrollTextBox.priority = priority;
+  }
+
+  void showRanking() async {
+    // 再表示時にもランキングデータを更新
+    updateRanking();
+    setVisibility(true);
+  }
+
+  void showScoreHistory() async {
+    // 再表示時にもランキングデータを更新
+    updateScoreHistory();
+    setVisibility(true);
+  }
+
+  // ランキングが閉じられたらインスタンスを破棄し初期化する。
+  void hideLayer() {
+    // if (rankingLayer == null) return;
+    setVisibility(false);
+    // removeFromParent();
   }
 }
 
@@ -288,7 +309,7 @@ class RankingListComponent extends PositionComponent with DragCallbacks {
 }
 
 /// 戻るボタンクラス
-class BackButton extends SpriteComponent with HasWorldReference, TapCallbacks {
+class BackButton extends SpriteComponent with HasGameReference, TapCallbacks {
   BackButton({
     required Sprite sprite,
     required Vector2 position,
@@ -298,7 +319,7 @@ class BackButton extends SpriteComponent with HasWorldReference, TapCallbacks {
   @override
   bool onTapUp(TapUpEvent event) {
     // ダイアログを閉じる
-    (world as FallGameWorld).hideRankingLayer();
+    (parent as RankingLayer).hideLayer();
     return false;
   }
 }

@@ -1,4 +1,5 @@
 import 'package:falling_ball/features/game/world.dart';
+import 'package:falling_ball/features/ui/layer/ranking_layer.dart';
 import 'package:flame/events.dart';
 import 'package:flame/components.dart';
 import 'package:falling_ball/app/config.dart';
@@ -145,44 +146,58 @@ class Multi4Button extends SpriteComponent
   }
 }
 
+// せかいらんきんぐ
 class RankingButton extends SpriteComponent
-    with TapCallbacks, HasGameReference, HasWorldReference {
+    with TapCallbacks, HasGameReference {
+
+  late RankingLayer _ranking;
+  
   @override
   Future<void> onLoad() async {
-    sprite = Sprite((game as FallGame).images.fromCache(Config.IMAGE_RANKING));
+    sprite = Sprite(game.images.fromCache(Config.IMAGE_RANKING));
     position = Vector2(Config.WORLD_WIDTH * .35, Config.WORLD_HEIGHT * .81);
     size = Vector2(Config.WORLD_WIDTH * .25, Config.WORLD_HEIGHT * .09);
     anchor = Anchor.center;
     priority = Config.PRIORITY_MIN;
+
+    _ranking = RankingLayer(Config.IMAGE_RANKING_BACKGROUND, 'rankingLayer');
+    game.world.add(_ranking);
   }
 
   @override
   bool onTapUp(TapUpEvent info) {
-    (world as FallGameWorld).showRankingLayer();
+    _ranking.showRanking();
     return false;
   }
 }
 
+// こじんらんきんぐ
 class ScoreHistoryButton extends SpriteComponent
-    with TapCallbacks, HasGameReference, HasWorldReference {
+    with TapCallbacks, HasGameReference {
+
+  late RankingLayer _scoreHistory;
+
   @override
   Future<void> onLoad() async {
-    sprite = Sprite((game as FallGame).images.fromCache(Config.IMAGE_SCORE));
+    sprite = Sprite(game.images.fromCache(Config.IMAGE_SCORE));
     position = Vector2(Config.WORLD_WIDTH * .65, Config.WORLD_HEIGHT * .81);
     size = Vector2(Config.WORLD_WIDTH * .25, Config.WORLD_HEIGHT * .09);
     anchor = Anchor.center;
     priority = Config.PRIORITY_MIN;
+
+    _scoreHistory = RankingLayer(Config.IMAGE_RANKING_BACKGROUND, 'scoreHistoryLayer');
+    game.world.add(_scoreHistory);
   }
 
   @override
   bool onTapUp(TapUpEvent info) {
-    (world as FallGameWorld).showScoreHistoryLayer();
+    _scoreHistory.showScoreHistory();
     return false;
   }
 }
 
 class PostButton extends SpriteComponent
-    with TapCallbacks, HasGameReference, HasWorldReference {
+    with TapCallbacks, HasGameReference {
   @override
   Future<void> onLoad() async {
     sprite = Sprite((game as FallGame).images.fromCache(Config.IMAGE_POST));

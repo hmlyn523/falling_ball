@@ -574,44 +574,4 @@ class FallGameWorld extends Base
     if (!_isMulti) return;
     autoFallingTime.update(remainingTime);
   }
-
-  // 常に最新情報を表示したいため、ランキングボタンが押されるたびに
-  // RankingLayerインスタンスを作成し、情報を取得する。
-  void showRankingLayer() async {
-    if (rankingLayer == null) {
-      rankingLayer = RankingLayer(Config.IMAGE_RANKING_BACKGROUND);
-      await add(rankingLayer!); // onLoad()が終わるのを待つ
-    }
-    // 再表示時にもランキングデータを更新
-    rankingLayer!.updateRanking(this);
-    rankingLayer!.setVisibility(true);
-  }
-
-  // ランキングが閉じられたらインスタンスを破棄し初期化する。
-  void hideRankingLayer() {
-    if (rankingLayer == null) return;
-    rankingLayer!.setVisibility(false);
-    rankingLayer!.removeFromParent();
-    rankingLayer = null;
-  }
-
-  // 常に最新情報を表示したいため、ランキングボタンが押されるたびに
-  // RankingLayerインスタンスを作成し、情報を取得する。
-  void showScoreHistoryLayer() async {
-    if (rankingLayer == null) {
-      rankingLayer = RankingLayer(Config.IMAGE_SCORE_BACKGROUND);
-      await add(rankingLayer!); // onLoad()が終わるのを待つ
-    }
-    // 再表示時にもランキングデータを更新
-    rankingLayer!.updateScoreHistory(this);
-    rankingLayer!.setVisibility(true);
-  }
-
-  // ランキングが閉じられたらインスタンスを破棄し初期化する。
-  void hideScoreHistoryLayer() {
-    if (rankingLayer == null) return;
-    rankingLayer!.setVisibility(false);
-    rankingLayer!.removeFromParent();
-    rankingLayer = null;
-  }
 }

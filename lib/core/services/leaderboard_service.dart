@@ -59,7 +59,7 @@ class LeaderboardService {
   //   return [];
   // }
   // ランキングを取得
-  Future<List<RankingEntry>> getLeaderboard() async {
+  Future<List<RankingEntry>> getRankingList() async {
     try {
       // スコアを降順に取得（上位10人）
       final response = await supabase
@@ -84,7 +84,7 @@ class LeaderboardService {
   }
 
   // 歴代スコアを取得
-  Future<List<RankingEntry>> getScoreHistory(user_id) async {
+  Future<List<RankingEntry>> getScoreHistoryList(user_id) async {
     try {
       // スコアを降順に取得（上位10人）
       final response = await supabase
