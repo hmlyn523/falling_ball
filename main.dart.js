@@ -46021,7 +46021,7 @@ s.rx=B.b.ga9(r).b
 B.e.cC(a.cx.a,1000)
 s.p3=B.c.f2(s.p3,0,s.p4)},
 pm(a,b){this.NH(0,b)
-if(this.rx!=null)this.R8=b.d.a[1]*-0.002},
+if(this.rx!=null)this.R8=b.d.a[1]*-0.001},
 mj(a){var s,r,q,p,o,n,m,l,k,j,i,h,g,f=this
 f.a3y(a)
 s=f.ax.a
