@@ -44,9 +44,9 @@ class FallGameWorld extends Base
 
   late final LeaderboardService leaderboardService;
 
-  late final Background foreground;
-  late final Background background;
-  late final Background background_game;
+  Background? foreground;
+  Background? background;
+  Background? background_game;
 
   late final PlayerScore playerScore;
   late final OpponentScore opponentScore;
@@ -201,7 +201,7 @@ class FallGameWorld extends Base
     playerScore.reset();
 
     // ゲームオーバーラインの表示
-    foreground.setVisibility(true);
+    foreground?.setVisibility(true);
 
     // タイトル非表示
     titleDialog.setVisibility(false);
@@ -224,8 +224,8 @@ class FallGameWorld extends Base
 
     _startAutoFallingTimer();
 
-    background.setVisibility(false);
-    background_game.setVisibility(true);
+    background?.setVisibility(false);
+    background_game?.setVisibility(true);
   }
 
   double elapsedTime = 0.0;
@@ -262,7 +262,7 @@ class FallGameWorld extends Base
   @override
   void playend(d) async {
     super.playend(d);
-
+    
     playerService.addScoreHistory(playerScore.score);
     playerService.updateScoreIfHigher(playerScore.score);
 
@@ -284,7 +284,7 @@ class FallGameWorld extends Base
     _stopAutoFallingTimer();
 
      // ゲームオーバーラインの非表示
-    foreground.setVisibility(false);
+    foreground?.setVisibility(false);
 
     // 連鎖
     if (_isMulti) {
@@ -329,8 +329,10 @@ class FallGameWorld extends Base
 
     _isWin = true;
 
-    background.setVisibility(true);
-    background_game.setVisibility(false);
+    background?.setVisibility(true);
+    background_game?.setVisibility(false);
+
+    _setupBackground();
 
     // Titleステータスへ遷移
     moveToTitleState();
@@ -430,7 +432,7 @@ class FallGameWorld extends Base
     add(winAndLoseDialog);
 
     createWall().forEach(add);
-    _addBackground();
+    _setupBackground();
 
     // 対戦相手の最大数分の情報を用意しておく
     // 例えば対戦相手が1人だったとしても、2人分用意しておく。
@@ -447,17 +449,32 @@ class FallGameWorld extends Base
     addAll(enemyBallHeight);
   }
 
-  Future<void> _addBackground() async {
+  Future<void> _setupBackground() async {
+    foreground?.removeFromParent();
+    background?.removeFromParent();
+    background_game?.removeFromParent();
+
     final foregroundImage = await images.load(Config.IMAGE_FOREGROUND);
-    final backgroundImage = await images.load(Config.IMAGE_BACKGROUND);
-    final backgroundGameImage = await images.load(Config.IMAGE_BACKGROUND_GAME);
+    // final backgroundImage = await images.load(Config.IMAGE_BACKGROUND);
+    // final backgroundGameImage = await images.load(Config.IMAGE_BACKGROUND_GAME);
+    final backgroundImage = await images.load(getRandomImageName());
+    final backgroundGameImage = await images.load(getRandomImageName());
     foreground = Background(image: foregroundImage, priority: Config.PRIORITY_BACK_F);
     background = Background(image: backgroundImage, priority: Config.PRIORITY_BACK_B);
     background_game = Background(image: backgroundGameImage, priority: Config.PRIORITY_BACK_GAME_B);
-    add(foreground);
-    add(background);
-    add(background_game);
-    background.setVisibility(true);
+    add(foreground as Component);
+    add(background as Component);
+    add(background_game as Component);
+    background?.setVisibility(true);
+  }
+
+  String getRandomImageName() {
+    return [Config.IMAGE_BACKGROUND1,
+            Config.IMAGE_BACKGROUND2,
+            Config.IMAGE_BACKGROUND3,
+            Config.IMAGE_BACKGROUND4,
+            Config.IMAGE_BACKGROUND5,]
+        .elementAt(math.Random().nextInt(5));
   }
 
   void _setupConnectivityListener() {

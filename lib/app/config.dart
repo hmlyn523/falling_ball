@@ -63,8 +63,11 @@ class Config {
   static const IMAGE_11 = "11-icon.png";
   static const IMAGE_12 = "12-icon.png";
   static const IMAGE_FOREGROUND = "back_foreground.png";
-  static const IMAGE_BACKGROUND = "back_background.png";
-  static const IMAGE_BACKGROUND_GAME = "back_background_game.png";
+  static const IMAGE_BACKGROUND1 = "kyoto.png";
+  static const IMAGE_BACKGROUND2 = "fushimi_inari.png";
+  static const IMAGE_BACKGROUND3 = "goryokaku.png";
+  static const IMAGE_BACKGROUND4 = "ikutsushima.png";
+  static const IMAGE_BACKGROUND5 = "skytree.png";
   static const IMAGE_TITLE = "title.png";
   static const IMAGE_START = "start.png";
   static const IMAGE_MULTI2 = "multi2.png";

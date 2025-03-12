@@ -98,9 +98,12 @@ flutter:
     - assets/images/10-icon.png
     - assets/images/11-icon.png
     - assets/images/12-icon.png
-    - assets/images/back_background.png
     - assets/images/back_foreground.png
-    - assets/images/back_background_game.png
+    - assets/images/fushimi_inari.png
+    - assets/images/goryokaku.png
+    - assets/images/ikutsushima.png
+    - assets/images/kyoto.png
+    - assets/images/skytree.png
     - assets/images/title.png
     - assets/images/start.png
     - assets/images/multi2.png

@@ -119,7 +119,7 @@ class _UserNameInputOverlayState extends State<UserNameInputOverlay> {
                 backgroundColor: Colors.black,
                 foregroundColor: Colors.white,
               ),
-              child: Text('Save'),
+              child: Text('保存'),
             ),
           ],
         ),
