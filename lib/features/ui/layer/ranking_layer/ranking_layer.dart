@@ -57,7 +57,7 @@ class RankingLayer extends PositionComponent
     // 戻るボタンの設定
     _backButton = RankingBackButton(
       sprite: Sprite((game as FallGame).images.fromCache(Config.IMAGE_CANCEL)),
-      position: Vector2(size.x * .5, size.y * .85),
+      position: Vector2(size.x * .5, size.y * .875),
       size: Vector2(Config.WORLD_WIDTH * .18, Config.WORLD_HEIGHT * .115),
     );
 
