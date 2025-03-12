@@ -1,5 +1,5 @@
 import 'package:falling_ball/features/game/world.dart';
-import 'package:falling_ball/features/ui/layer/ranking_layer.dart';
+import 'package:falling_ball/features/ui/layer/ranking_layer/ranking_layer.dart';
 import 'package:flame/events.dart';
 import 'package:flame/components.dart';
 import 'package:falling_ball/app/config.dart';

@@ -1,13 +1,12 @@
 import 'dart:developer';
 import 'dart:math' as math;
 
-import 'package:falling_ball/core/models/player_data.dart';
 import 'package:falling_ball/core/services/player_service.dart';
 import 'package:falling_ball/features/game/components/enemyBallHeight.dart';
 import 'package:falling_ball/features/game/helpers/auto_falling_timer.dart';
 import 'package:falling_ball/core/services/leaderboard_service.dart';
 import 'package:falling_ball/features/ui/layer/gameover_layer.dart';
-import 'package:falling_ball/features/ui/layer/ranking_layer.dart';
+import 'package:falling_ball/features/ui/layer/ranking_layer/ranking_layer.dart';
 import 'package:falling_ball/features/ui/layer/title_layer.dart';
 import 'package:falling_ball/features/ui/layer/waiting_layer.dart';
 import 'package:falling_ball/core/services/connectivity_provider.dart';
