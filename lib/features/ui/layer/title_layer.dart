@@ -185,7 +185,7 @@ class ScoreHistoryButton extends SpriteComponent
     anchor = Anchor.center;
     priority = Config.PRIORITY_MIN;
 
-    _scoreHistory = RankingLayer(Config.IMAGE_RANKING_BACKGROUND, 'scoreHistoryLayer');
+    _scoreHistory = RankingLayer(Config.IMAGE_SCORE_BACKGROUND, 'scoreHistoryLayer');
     game.world.add(_scoreHistory);
   }
 
