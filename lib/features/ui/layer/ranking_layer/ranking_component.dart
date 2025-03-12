@@ -1,4 +1,3 @@
-import 'package:falling_ball/app/config.dart';
 import 'package:flame/components.dart';
 import 'package:flame/events.dart';
 import 'package:flutter/material.dart';
@@ -72,9 +71,10 @@ class RankingListComponent extends PositionComponent with DragCallbacks {
 
   @override
   void onDragEnd(DragEndEvent event) {
+    super.onDragEnd(event);
     if (lastDragPosition != null) {
       // 指の移動速度を計算
-      double velocity = event.velocity.y * -0.005; // 速度を調整
+      double velocity = event.velocity.y * -0.002; // 速度を調整
       scrollVelocity = velocity;
     }
   }
