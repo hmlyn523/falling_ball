@@ -46441,7 +46441,7 @@ q.st(0,o)
 q.ay=B.R
 q.eZ()
 q.sbA(-999)
-q.a1=A.aI4("ranking_dialog.png","scoreHistoryLayer")
+q.a1=A.aI4("score_dialog.png","scoreHistoryLayer")
 q.gd1().k4.b5(q.a1)
 return A.n(null,r)}})
 return A.o($async$ae,r)},
