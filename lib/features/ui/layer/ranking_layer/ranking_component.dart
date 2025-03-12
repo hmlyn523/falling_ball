@@ -74,7 +74,7 @@ class RankingListComponent extends PositionComponent with DragCallbacks {
     super.onDragEnd(event);
     if (lastDragPosition != null) {
       // 指の移動速度を計算
-      double velocity = event.velocity.y * -0.002; // 速度を調整
+      double velocity = event.velocity.y * -0.001; // 速度を調整
       scrollVelocity = velocity;
     }
   }
