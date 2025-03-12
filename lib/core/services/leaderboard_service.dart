@@ -1,10 +1,8 @@
 import 'dart:developer';
 
 import 'package:falling_ball/core/models/match_result.dart';
-import 'package:falling_ball/core/models/player_data.dart';
 import 'package:falling_ball/core/models/ranking_entry.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:uuid/uuid.dart';
 
 class LeaderboardService {
   final SupabaseClient supabase;
