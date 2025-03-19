@@ -17,9 +17,8 @@ class RankingLayer extends PositionComponent
   late RankingListComponent _scrollTextBox;
   late final String backgournd_image;
 
-  RankingLayer(this.backgournd_image, layerType)
+  RankingLayer(this.backgournd_image)
       : super(
-          key: ComponentKey.named(layerType),
           position: Vector2(Config.WORLD_WIDTH * .5, Config.WORLD_HEIGHT * .5),
           size: Vector2(Config.WORLD_WIDTH * .88, Config.WORLD_HEIGHT * .66),
           anchor: Anchor.center,
@@ -59,6 +58,9 @@ class RankingLayer extends PositionComponent
       sprite: Sprite((game as FallGame).images.fromCache(Config.IMAGE_CANCEL)),
       position: Vector2(size.x * .5, size.y * .875),
       size: Vector2(Config.WORLD_WIDTH * .18, Config.WORLD_HEIGHT * .115),
+      onPressed: () {
+        setVisibility(false);
+      }
     );
 
     add(_touchBlocker);

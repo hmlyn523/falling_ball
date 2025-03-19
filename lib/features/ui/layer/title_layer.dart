@@ -160,7 +160,7 @@ class RankingButton extends SpriteComponent
     anchor = Anchor.center;
     priority = Config.PRIORITY_MIN;
 
-    _ranking = RankingLayer(Config.IMAGE_RANKING_BACKGROUND, 'rankingLayer');
+    _ranking = RankingLayer(Config.IMAGE_RANKING_BACKGROUND);
     game.world.add(_ranking);
   }
 
@@ -185,7 +185,7 @@ class ScoreHistoryButton extends SpriteComponent
     anchor = Anchor.center;
     priority = Config.PRIORITY_MIN;
 
-    _scoreHistory = RankingLayer(Config.IMAGE_SCORE_BACKGROUND, 'scoreHistoryLayer');
+    _scoreHistory = RankingLayer(Config.IMAGE_SCORE_BACKGROUND);
     game.world.add(_scoreHistory);
   }
 
