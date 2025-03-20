@@ -96,12 +96,12 @@ class RankingListComponent extends PositionComponent with DragCallbacks {
 
     double y = 0;
     for (var no in rankings_no) {
-      renderRightAlignedText(canvas, no, textPaint, 7, y);
+      renderRightAlignedText(canvas, no, textPaint, 6, y);
       y += 3; // 各行の間隔
     }
     y = 0;
     for (var name in rankings_name) {
-      textPaint.render(canvas, name, Vector2(8, y)); // テキストを描画
+      textPaint.render(canvas, name, Vector2(6, y)); // テキストを描画
       y += 3; // 各行の間隔
     }
     y = 0;

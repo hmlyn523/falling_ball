@@ -70,7 +70,7 @@ class RankingLayer extends PositionComponent
   }
 
   /// ランキング情報を更新
-  Future<void> updateRanking() async {
+  Future<void> getRanking() async {
     // Supabaseからランキングを取得
     final leaderboardService = LeaderboardService((game as FallGame).supabase);
     try {
@@ -102,11 +102,10 @@ class RankingLayer extends PositionComponent
   }
 
   /// スコア履歴情報を更新
-  Future<void> updateScoreHistory() async {
+  Future<void> getScoreHistory() async {
     // Supabaseからランキングを取得
     final leaderboardService = LeaderboardService((game as FallGame).supabase);
     try {
-      // final rankings = await leaderboardService.getLeaderboard();
       final _gameWorld = (game.world as FallGameWorld);
       final _userid = await _gameWorld.playerService.getLoginUser();
       final _rankings = await leaderboardService.getScoreHistoryList(_userid);
@@ -115,7 +114,7 @@ class RankingLayer extends PositionComponent
       List<String> rankings_score = [];
       for (var i = 0; i < _rankings.length; i++) {
         rankings_no.add('${i + 1}.');
-        rankings_name.add('${_rankings[i].playerName}');
+        rankings_name.add('${_rankings[i].datetime}');
         rankings_score.add('${_rankings[i].score}');
       }
       // スクロールテキストボックの再作成
@@ -151,13 +150,13 @@ class RankingLayer extends PositionComponent
 
   void showRanking() async {
     // 再表示時にもランキングデータを更新
-    updateRanking();
+    getRanking();
     setVisibility(true);
   }
 
   void showScoreHistory() async {
     // 再表示時にもランキングデータを更新
-    updateScoreHistory();
+    getScoreHistory();
     setVisibility(true);
   }
 

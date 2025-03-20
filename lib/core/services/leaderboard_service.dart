@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:falling_ball/core/models/match_result.dart';
 import 'package:falling_ball/core/models/ranking_entry.dart';
+import 'package:intl/intl.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class LeaderboardService {
@@ -62,7 +63,7 @@ class LeaderboardService {
       // スコアを降順に取得（上位10人）
       final response = await supabase
           .from('scores')
-          .select('score, players(username)')
+          .select('score, players(username), created_at')
           .order('score', ascending: false)
           .limit(10);
 
@@ -71,6 +72,7 @@ class LeaderboardService {
           .map((entry) => RankingEntry(
                 playerName: entry['players']['username'] as String,
                 score: entry['score'] as int,
+                datetime: null,
               ))
           .toList();
 
@@ -87,16 +89,17 @@ class LeaderboardService {
       // スコアを降順に取得（上位10人）
       final response = await supabase
           .from('score_history')
-          .select('score')
+          .select('score, created_at')
           .eq('user_id', user_id.id)
           .order('score', ascending: false)
-          .limit(30);
+          .limit(100);
 
       // レスポンスを RankingEntry のリストに変換
       final leaderboard = (response as List)
           .map((entry) => RankingEntry(
                 playerName: "",
                 score: entry['score'] as int,
+                datetime: DateFormat('yyMMdd HH:mm').format(DateTime.parse(entry['created_at']).toLocal()),
               ))
           .toList();
 
