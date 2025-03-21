@@ -3,9 +3,9 @@ import 'package:flame/events.dart';
 import 'package:flutter/material.dart';
 
 class RankingListComponent extends PositionComponent with DragCallbacks {
-  final List<String> rankings_no;
-  final List<String> rankings_name;
-  final List<String> rankings_score;
+  final List<String> ranking;
+  final List<String> data_1;
+  final List<String> data_2;
   late final TextPaint textPaint;
   
   double scrollOffset = 0; // 現在のスクロール位置
@@ -17,9 +17,9 @@ class RankingListComponent extends PositionComponent with DragCallbacks {
   double lastDragTime = 0; // 直前のドラッグ時間
 
   RankingListComponent({
-    required this.rankings_no,
-    required this.rankings_name,
-    required this.rankings_score,
+    required this.ranking,
+    required this.data_1,
+    required this.data_2,
     required Vector2 position,
     required Vector2 size,
     required Anchor anchor,
@@ -36,7 +36,7 @@ class RankingListComponent extends PositionComponent with DragCallbacks {
   @override
   Future<void> onLoad() async {
     super.onLoad();
-    maxScrollOffset = (rankings_no.length * 3 - size.y).clamp(0, double.infinity); // 最大スクロール量を計算
+    maxScrollOffset = (ranking.length * 3 - size.y).clamp(0, double.infinity); // 最大スクロール量を計算
   }
 
   @override
@@ -95,17 +95,17 @@ class RankingListComponent extends PositionComponent with DragCallbacks {
     canvas.translate(0, -scrollOffset);
 
     double y = 0;
-    for (var no in rankings_no) {
-      renderRightAlignedText(canvas, no, textPaint, 6, y);
+    for (var no in ranking) {
+      renderRightAlignedText(canvas, no, textPaint, 5.5, y);
       y += 3; // 各行の間隔
     }
     y = 0;
-    for (var name in rankings_name) {
+    for (var name in data_1) {
       textPaint.render(canvas, name, Vector2(6, y)); // テキストを描画
       y += 3; // 各行の間隔
     }
     y = 0;
-    for (var score in rankings_score) {
+    for (var score in data_2) {
       renderRightAlignedText(canvas, score, textPaint, 31, y);
       y += 3; // 各行の間隔
     }

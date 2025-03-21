@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:falling_ball/app/config.dart';
 import 'package:falling_ball/core/components/touch_blocker.dart';
+import 'package:falling_ball/core/models/ranking_entry.dart';
 import 'package:falling_ball/core/services/leaderboard_service.dart';
 import 'package:falling_ball/features/game/game.dart';
 import 'package:falling_ball/features/game/world.dart';
@@ -45,9 +46,9 @@ class RankingLayer extends PositionComponent
     );
 
     _scrollTextBox = RankingListComponent(
-      rankings_no: [],
-      rankings_name: [],
-      rankings_score: [],
+      ranking: [],
+      data_1: [],
+      data_2: [],
       size: Vector2(size.x * 0.89, size.y * 0.6), // テキストボックスのサイズ
       position: Vector2(size.x * 05, size.y * 0.15), // ランキングの配置位置
       anchor: Anchor.topLeft,
@@ -75,24 +76,16 @@ class RankingLayer extends PositionComponent
     final leaderboardService = LeaderboardService((game as FallGame).supabase);
     try {
       final rankings = await leaderboardService.getRankingList();
-      List<String> rankings_no = [];
-      List<String> rankings_name = [];
-      List<String> rankings_score = [];
+      List<String> ranking = [];
+      List<String> data_1 = [];
+      List<String> data_2 = [];
       for (var i = 0; i < rankings.length; i++) {
-        rankings_no.add('${i + 1}.');
-        rankings_name.add('${rankings[i].playerName}');
-        rankings_score.add('${rankings[i].score}');
+        ranking.add('${i + 1}.');
+        data_1.add('${rankings[i].playerName}');
+        data_2.add('${rankings[i].score}');
       }
       // スクロールテキストボックの再作成
-      _scrollTextBox.removeFromParent();
-      _scrollTextBox = RankingListComponent(
-        rankings_no: rankings_no,
-        rankings_name: rankings_name,
-        rankings_score: rankings_score,
-        size: Vector2(size.x * 0.89, size.y * 0.6), // テキストボックスのサイズ
-        position: Vector2(size.x * 0.05, size.y * 0.15), // ランキングの配置位置
-        anchor: Anchor.topLeft,
-      );
+      _makeScrollComponent(ranking, data_1, data_2);
       _scrollTextBox.priority = 150;
       add(_scrollTextBox);
 
@@ -109,29 +102,34 @@ class RankingLayer extends PositionComponent
       final _gameWorld = (game.world as FallGameWorld);
       final _userid = await _gameWorld.playerService.getLoginUser();
       final _rankings = await leaderboardService.getScoreHistoryList(_userid);
-      List<String> rankings_no = [];
-      List<String> rankings_name = [];
-      List<String> rankings_score = [];
+      List<String> ranking = [];
+      List<String> data_1 = [];
+      List<String> data_2 = [];
       for (var i = 0; i < _rankings.length; i++) {
-        rankings_no.add('${i + 1}.');
-        rankings_name.add('${_rankings[i].datetime}');
-        rankings_score.add('${_rankings[i].score}');
+        ranking.add('${i + 1}.');
+        data_1.add('${_rankings[i].datetime}');
+        data_2.add('${_rankings[i].score}');
       }
+      // スクロールテキストボックの再作成
+      _makeScrollComponent(ranking, data_1, data_2);
+    } catch (e) {
+      log('ランキングの取得に失敗しました: $e');
+    }
+  }
+
+  void _makeScrollComponent(ranking, data_1, data_2) {
       // スクロールテキストボックの再作成
       _scrollTextBox.removeFromParent();
       _scrollTextBox = RankingListComponent(
-        rankings_no: rankings_no,
-        rankings_name: rankings_name,
-        rankings_score: rankings_score,
+        ranking: ranking,
+        data_1: data_1,
+        data_2: data_2,
         size: Vector2(size.x * 0.89, size.y * 0.6), // テキストボックスのサイズ
         position: Vector2(size.x * 0.05, size.y * 0.15), // ランキングの配置位置
         anchor: Anchor.topLeft,
       );
       _scrollTextBox.priority = 150;
       add(_scrollTextBox);
-    } catch (e) {
-      log('ランキングの取得に失敗しました: $e');
-    }
   }
 
   /// 表示/非表示を切り替える
