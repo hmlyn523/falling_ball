@@ -73,41 +73,21 @@ class FallGameWorld extends Base
   late final autoFallingTimer;
 
   late final PlayerService playerService;
-  // late PlayerData? playerData = null;
+
+  // コンストラクタ
 
   FallGameWorld(this.context, this.supabase)
   {
     Audio.bgmPlay(Audio.AUDIO_TITLE);
   }
 
+  // パブリックメソッド
+
   void chain(position) {
     if (_isMulti) {
       _multiGame.chain.addChain();
-      // if (_multiGame.chain.sendChains > 1 ) {
-      //   _showCombo(position);
-      // } 
     }
   }
-
-  // void _showCombo(Vector2 position) {
-  //   final scoreText = TextComponent(
-  //     text: 'Combo!',
-  //     position: position,
-  //     anchor: Anchor.center,
-  //     textRenderer: TextPaint(
-  //       style: const TextStyle(
-  //         fontFamily: 'Square-L',
-  //         color: Colors.black54,
-  //         fontSize: 12,
-  //       ),
-  //     ),
-  //     priority: Config.PRIORITY_COMBO,
-  //   );
-  //   add(scoreText);
-
-  //   scoreText.add(MoveEffect.by(Vector2(0, -10), EffectController(duration: .8)));
-  //   scoreText.add(RemoveEffect(delay: .8, onComplete: () => scoreText.removeFromParent()));
-  // }
 
   // プレイ中かつ落下中のみアイテムをスポーンし、落下位置確認用ラインを消す。
   void spawn(position) {
@@ -137,6 +117,20 @@ class FallGameWorld extends Base
     moveToTitleState();
   }
 
+  final List<String> backgroundImages = [
+    Config.IMAGE_BACKGROUND1,
+    Config.IMAGE_BACKGROUND2,
+    Config.IMAGE_BACKGROUND3,
+    Config.IMAGE_BACKGROUND4,
+    Config.IMAGE_BACKGROUND5,
+  ];
+
+  String getRandomImageName() {
+    return backgroundImages[math.Random().nextInt(backgroundImages.length)];
+  }
+
+  // オーバーライドメソッド
+
   @override
   Future<void> onLoad() async {
     await super.onLoad();
@@ -161,6 +155,8 @@ class FallGameWorld extends Base
     playerService = PlayerService(Supabase.instance.client);
   }
 
+  // 状態遷移ループ
+
   @override
   void title(d) async {
     super.title(d);
@@ -176,10 +172,6 @@ class FallGameWorld extends Base
 
     // タイトル表示
     titleDialog.setVisibility(true);
-
-    // if (playerData == null) {
-    //   playerData = (await playerService.getPlayerData());
-    // }
   }
 
   @override
@@ -254,31 +246,17 @@ class FallGameWorld extends Base
       }
     } else {
       if (_isGameOver()) {
-        moveToPlayEndState();
+        moveToFinalizingState();
       }
     }
   }
 
   @override
-  void playend(d) async {
-    super.playend(d);
+  void finalizing(d) async {
+    super.finalizing(d);
     
     playerService.addScoreHistory(playerScore.score);
     playerService.updateScoreIfHigher(playerScore.score);
-
-    // // ユーザ名取得
-    // final prefs = await SharedPreferences.getInstance();
-    // final userName = prefs.getString('userName');
-    // final uuid = prefs.getString('uuid');
-    // if (userName != null && userName.isNotEmpty && uuid != null && uuid.isNotEmpty){
-    //   final playerData = PlayerData(
-    //     username: userName,
-    //     uuid: uuid,
-    //     score: playerScore.score,
-    //   );
-    //   // スコア更新
-    //   leaderboardService.uploadScore(supabase, playerData);
-    // }
 
     // アイテムの自動落下タイマー停止
     _stopAutoFallingTimer();
@@ -337,6 +315,8 @@ class FallGameWorld extends Base
     // Titleステータスへ遷移
     moveToTitleState();
   }
+
+  // プライベートメソッド
 
   Future<void> _initializeCamera() async {
     game.camera.viewfinder.anchor = Anchor.topLeft;
@@ -442,7 +422,7 @@ class FallGameWorld extends Base
 
     for(int i = 0; i < values.length; i++) {
       final imageName = Config.ENEMY_BALL_HEIGHT_IMAGES[values[i]];
-      final loadImage = await images.load(imageName);
+      final loadImage = await images.fromCache(imageName);
       var height = EnemyBallHeightImage(loadImage);
       enemyBallHeight.add(height);
     }
@@ -454,7 +434,7 @@ class FallGameWorld extends Base
     background?.removeFromParent();
     background_game?.removeFromParent();
 
-    final foregroundImage = await images.load(Config.IMAGE_FOREGROUND);
+    final foregroundImage = await images.fromCache(Config.IMAGE_FOREGROUND);
     // final backgroundImage = await images.load(Config.IMAGE_BACKGROUND);
     // final backgroundGameImage = await images.load(Config.IMAGE_BACKGROUND_GAME);
     final backgroundImage = await images.load(getRandomImageName());
@@ -466,15 +446,6 @@ class FallGameWorld extends Base
     add(background as Component);
     add(background_game as Component);
     background?.setVisibility(true);
-  }
-
-  String getRandomImageName() {
-    return [Config.IMAGE_BACKGROUND1,
-            Config.IMAGE_BACKGROUND2,
-            Config.IMAGE_BACKGROUND3,
-            Config.IMAGE_BACKGROUND4,
-            Config.IMAGE_BACKGROUND5,]
-        .elementAt(math.Random().nextInt(5));
   }
 
   void _setupConnectivityListener() {
@@ -491,7 +462,7 @@ class FallGameWorld extends Base
   }
 
   void _onMultiGameOver() {
-    moveToPlayEndState();
+    moveToFinalizingState();
   }
 
   void _onMultiCombo() {
@@ -590,4 +561,6 @@ class FallGameWorld extends Base
     if (!_isMulti) return;
     autoFallingTime.update(remainingTime);
   }
+
+  // endregion
 }
