@@ -437,8 +437,8 @@ class FallGameWorld extends Base
     final foregroundImage = await images.fromCache(Config.IMAGE_FOREGROUND);
     // final backgroundImage = await images.load(Config.IMAGE_BACKGROUND);
     // final backgroundGameImage = await images.load(Config.IMAGE_BACKGROUND_GAME);
-    final backgroundImage = await images.load(getRandomImageName());
-    final backgroundGameImage = await images.load(getRandomImageName());
+    final backgroundImage = await images.fromCache(getRandomImageName());
+    final backgroundGameImage = await images.fromCache(getRandomImageName());
     foreground = Background(image: foregroundImage, priority: Config.PRIORITY_BACK_F);
     background = Background(image: backgroundImage, priority: Config.PRIORITY_BACK_B);
     background_game = Background(image: backgroundGameImage, priority: Config.PRIORITY_BACK_GAME_B);
