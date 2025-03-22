@@ -2,7 +2,6 @@ import 'dart:developer';
 
 import 'package:falling_ball/app/config.dart';
 import 'package:falling_ball/core/components/touch_blocker.dart';
-import 'package:falling_ball/core/models/ranking_entry.dart';
 import 'package:falling_ball/core/services/leaderboard_service.dart';
 import 'package:falling_ball/features/game/game.dart';
 import 'package:falling_ball/features/game/world.dart';
